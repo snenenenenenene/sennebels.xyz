@@ -7,40 +7,24 @@ export default function Contact() {
   const [email, setEmail] = React.useState("");
   const [message, setMessage] = React.useState("");
 
-  function encode(data : any) {
-    return Object.keys(data)
-      .map(
-        (key) => encodeURIComponent(key) + "=" + encodeURIComponent(data[key])
-      )
-      .join("&");
-  }
-
   function handleSubmit(e : any) {
     e.preventDefault();
-    // emailjs.init("user_iKcb9b4DVPIx7HcQpW8gf");
-    fetch("/", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: encode({ "form-name": "contact", name, email, message }),
+    const toastId = toast.loading('Sending Message...');
+    const templateParams = {
+      from_name: email,
+      to_name: "sennebels@gmail.com",
+      message: message
+    };
+    emailjs
+    .send("service_vb780fd", "template_1f0e3rf", templateParams, "user_iKcb9b4DVPIx7HcQpW8gf")
+    .then(() => {
+      toast.dismiss(toastId)
+      toast.success("Message sent!")
     })
-      .then(() => {
-        const templateParams = {
-          from_name: email,
-          to_name: "sennebels@gmail.com",
-          message: message
-        };
-        emailjs
-      .send("service_vb780fd", "template_1f0e3rf", templateParams, "user_iKcb9b4DVPIx7HcQpW8gf")
-      .then(() => {
-        toast.success("Message sent!")
-      })
-      .catch(error => {
-        console.log(error)
-        toast.error("Your message was not able to be sent");
-      })
-        })
-        .catch((error) => toast.error("Oops... Something Went Wrong!"));
-      }
+    .catch(error => {
+      toast.error("Your message was not able to be sent");
+    })
+    }
 
   return (
     <section id="contact" className="relative text-gray-400 bg-gray-900 body-font">
