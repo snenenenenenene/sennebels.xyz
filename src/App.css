@@ -8,7 +8,7 @@
 section {
   height: 100vh;
   display: flex;
-  justify-content: center;
+  /* justify-content: center; */
   align-items: center;
   color: white;
   scroll-snap-align: start;
@@ -32,4 +32,14 @@ section {
 }
 .four {
   background: lightsalmon;
+}
+
+.contact-form {
+  justify-content: center;
+  align-content: center;
+}
+
+.text-input {
+  border-radius: 5%;
+  border-width: 0px;
 }
