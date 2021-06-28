@@ -27,11 +27,10 @@ export default function Navbar() {
         </nav>
         
         <a
-          href="/public/Files/Resume.pdf"
+          href="Files/Senne Bels Resume.pdf"
           download
           className="inline-flex items-center inline-flex text-white bg-green-500 border-0 py-2 px-6 focus:outline-none hover:bg-green-600 rounded text-lg">
           Download My Resume
-          {/* <p className="w-4 h-4 ml-1" /> */}
         </a>
       </div>
     </header>

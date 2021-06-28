@@ -1,6 +1,6 @@
 import React from "react";
 import toast from "react-hot-toast";
-
+import emailjs from 'emailjs-com'
 
 export default function Contact() {
   const [name, setName] = React.useState("");
@@ -17,14 +17,30 @@ export default function Contact() {
 
   function handleSubmit(e : any) {
     e.preventDefault();
+    // emailjs.init("user_iKcb9b4DVPIx7HcQpW8gf");
     fetch("/", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: encode({ "form-name": "contact", name, email, message }),
     })
-      .then(() => toast.success("Message sent!"))
-      .catch((error) => toast.error("Oops... Something Went Wrong!"));
-  }
+      .then(() => {
+        const templateParams = {
+          from_name: email,
+          to_name: "sennebels@gmail.com",
+          message: message
+        };
+        emailjs
+      .send("service_vb780fd", "template_1f0e3rf", templateParams, "user_iKcb9b4DVPIx7HcQpW8gf")
+      .then(() => {
+        toast.success("Message sent!")
+      })
+      .catch(error => {
+        console.log(error)
+        toast.error("Your message was not able to be sent");
+      })
+        })
+        .catch((error) => toast.error("Oops... Something Went Wrong!"));
+      }
 
   return (
     <section id="contact" className="relative text-gray-400 bg-gray-900 body-font">
@@ -74,9 +90,7 @@ export default function Contact() {
             Hire Me
           </h2>
           <p className="leading-relaxed mb-5">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Illum
-            suscipit officia aspernatur veritatis. Asperiores, aliquid?
-          </p>
+Feel free to contact me by leaving your name, email & message. This does not have to be business related.          </p>
           <div className="relative mb-4">
             <label htmlFor="name" className="leading-7 text-sm text-gray-400">
               Name
