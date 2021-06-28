@@ -21,7 +21,7 @@ section {
   scroll-padding: 100px;
 }
 
-.one {
+html {
   background: rgb(36, 164, 138);
 }
 .two {
@@ -42,4 +42,10 @@ section {
 .text-input {
   border-radius: 5%;
   border-width: 0px;
+}
+
+.project-icon {
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
 }
