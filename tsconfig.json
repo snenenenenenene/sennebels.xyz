@@ -23,7 +23,7 @@
   },
   "include": [
     "src"
-, "pages/Components", "pages/Data"  ],
+, "pages/Components", "public/Data"  ],
   "exclude": [
     "node_modules"
   ]
