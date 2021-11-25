@@ -1,15 +1,6 @@
 {
-  "/Components/About": "pages/Components/About.js",
-  "/Components/Contact": "pages/Components/Contact.js",
-  "/Components/Navbar": "pages/Components/Navbar.js",
-  "/Components/Projects": "pages/Components/Projects.js",
-  "/Components/Skills": "pages/Components/Skills.js",
-  "/Components/Testimonials": "pages/Components/Testimonials.js",
-  "/Data/Projects": "pages/Data/Projects.js",
-  "/Data/Skills": "pages/Data/Skills.js",
-  "/Data/Testimonials": "pages/Data/Testimonials.js",
   "/_app": "pages/_app.js",
-  "/": "pages/index.js",
   "/_error": "pages/_error.js",
-  "/_document": "pages/_document.js"
+  "/_document": "pages/_document.js",
+  "/": "pages/index.js"
 }

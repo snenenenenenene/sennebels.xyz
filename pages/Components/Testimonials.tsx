@@ -1,5 +1,5 @@
 import React from "react";
-import { testimonials } from "../Data/Testimonials";
+import { testimonials } from "../../public/Data/Testimonials";
 import Image from 'next/image'
 
 export default function Testimonials() {

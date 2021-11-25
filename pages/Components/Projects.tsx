@@ -1,5 +1,5 @@
 import React from "react";
-import { projects } from "../Data/Projects";
+import { projects } from "../../public/Data/Projects";
 
 export default function Projects() {
   return (
