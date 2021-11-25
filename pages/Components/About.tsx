@@ -6,11 +6,11 @@ export default function About() {
       <div className="container mx-auto flex px-10 py-20 md:flex-row flex-col items-center">
         <div className="lg:flex-grow md:w-1/2 lg:pr-24 md:pr-16 flex flex-col md:items-start md:text-left mb-16 md:mb-0 items-center text-center">
           <h1 className="title-font sm:text-4xl text-3xl mb-4 font-medium text-white">
-            Hi, I'm Senne.
+            Hi, I&apos;m Senne.
             <br className="hidden lg:inline-block" />I am a software developer!
           </h1>
           <p className="mb-8 leading-relaxed">
-            Technology is all around us! I live to put even more software out there. You might think: Why does this 20-year old act as if he were a seasoned senior developer. To that I say: "I might not be as experienced as the developer next door. However, I do and will do my best to make software that reaches your expectations and more. Adding the extra spice wherever needed."
+            Technology is all around us! I live to put even more software out there. You might think: Why does this 20-year old act as if he were a seasoned senior developer. To that I say: &quo; I might not be as experienced as the developer next door. However, I do and will do my best to make software that reaches your expectations and more. Adding the extra spice wherever needed.&quo;
           </p>
           <div className="flex justify-center">
             <a

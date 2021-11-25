@@ -1,3 +1,7 @@
+// Added the follow configs into next.config.js
 module.exports = {
-        "extends": ["next/babel"]
-}
+        cleanDistDir: false,
+        images: {
+          disableStaticImages: true,
+        },
+      }

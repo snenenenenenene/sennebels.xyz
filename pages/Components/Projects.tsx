@@ -8,15 +8,16 @@ export default function Projects() {
         <div className="flex flex-col w-full mb-20">
           {/* <p className="mx-auto inline-block w-10 mb-4" />  ICON */}
           <h1 className="sm:text-4xl text-3xl font-medium title-font mb-4 text-white">
-            Apps I've Built
+            Apps I&apos;ve Built
           </h1>
           <p className="lg:w-2/3 mx-auto leading-relaxed text-base">
-            These are the projects I've been involved with since I started studying Computer Science.
+            These are the projects I&apos;ve been involved with since I started studying Computer Science.
           </p>
         </div>
         <div className="flex flex-wrap -m-4">
           {projects.map((project) => (
             <a
+            key={project.title}
               href={project.link}
               className="sm:w-1/2 w-100 p-4">
               <div className="flex relative">
