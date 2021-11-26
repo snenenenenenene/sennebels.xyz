@@ -28,8 +28,8 @@ export const skills = [
       link: "#",
     },
     {
-      skill: "Angular",
+      skill: "Nextjs",
       link: "#",
     },
-    
+
   ];
