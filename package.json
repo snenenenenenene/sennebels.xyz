@@ -10,6 +10,7 @@
     "@chakra-ui/icons": "^1.1.1",
     "@chakra-ui/system": "^1.8.2",
     "@emotion/react": "^11.7.0",
+    "@emotion/styled": "^11.6.0",
     "@types/react": "^17.0.35",
     "emailjs": "^3.6.0",
     "emailjs-com": "^3.2.0",
