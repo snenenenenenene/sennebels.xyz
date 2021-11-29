@@ -17,11 +17,12 @@ export default function About() {
           <p className="mb-8 leading-relaxed text-justify">
             Technology is all around us! I live to put even more software out there. You might think: Why does this 21-year old act as if he were a seasoned senior developer. To that I say:&quot;I might not be as experienced as the developer next door. However, I do and will do my best to make software that reaches your expectations and more. Adding the extra spice wherever needed.&quot;
           </p>
-          <div className="flex justify-center m-auto">
+          <div className="flex justify-center mb-5">
             <a
-              href="#contact"
+              href="/Files/resume.pdf"
+              download
               className="inline-flex text-black bg-cyan border-0 py-2 px-6 focus:outline-none hover:bg-cyan-dark rounded text-lg">
-              Contact Me
+              My Resume
             </a>
           </div>
         </div>

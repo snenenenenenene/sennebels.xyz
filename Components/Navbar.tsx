@@ -30,13 +30,6 @@ export default function Navbar() {
             Source Code
           </a>
         </nav>
-
-        <a
-          href="/Files/resume.pdf"
-          download
-          className="inline-flex items-center inline-flex text-black bg-cyan border-0 py-2 px-6 focus:outline-none hover:bg-cyan-dark rounded text-lg">
-          My Resume
-        </a>
         <a
           className="inline-flex items-center inline-flex text-black bg-change-light border-0 p-3 m-2 sm:m-1 focus:outline-none hover:bg-change-lighthover rounded text-lg">
           <SunIcon/>
