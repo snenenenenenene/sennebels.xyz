@@ -1,26 +1,26 @@
 export const skills = [
     {
-      skill: "MERN Stack",
+      skill: "Frontend",
+      link: "#",
+    },
+    {
+      skill: "Backend",
+      link: "#",
+    },
+    {
+      skill: "React",
+      link: "#",
+    },
+    {
+      skill: "Java Spring Boot",
+      link: "#",
+    },
+    {
+      skill: "React Native",
       link: "#",
     },
     {
       skill: "Django",
-      link: "#",
-    },
-    {
-      skill: "Bootstrap",
-      link: "#",
-    },
-    {
-      skill: "Game Development",
-      link: "#",
-    },
-    {
-      skill: "Java Spring Boot & Hibernate",
-      link: "#",
-    },
-    {
-      skill: "C#",
       link: "#",
     },
     {

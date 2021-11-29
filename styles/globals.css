@@ -2,6 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
+.website-container {
+-webkit-margin-start: auto;
+-webkit-margin-end: auto;
+max-width: 800px;
+}
+
+.underline-css:after {
+  content:"";
+  float:left;
+  background:#43434aAA;
+  width:100%;
+  height:6px;
+  border-radius: 3px;
+}
+
 html,
 body {
   background-color: #202023;
