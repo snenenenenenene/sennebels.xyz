@@ -1,36 +1,19 @@
 import React, { useEffect } from "react";
-import About from "../pages/Components/About";
-import Contact from "../pages/Components/Contact";
-import Navbar from "../pages/Components/Navbar";
-import Skills from "../pages/Components/Skills";
-import Testimonials from "../pages/Components/Testimonials"
+import About from "../Components/About";
+import Contact from "../Components/Contact";
+import Navbar from "../Components/Navbar";
+import Skills from "../Components/Skills";
+import Socials from "../Components/Socials";
 import toast, { Toaster } from 'react-hot-toast';
 import '../styles/globals.css'
 import Head from 'next/head'
+import Script from 'next/script'
+import Home from "./Home.tsx"
 
 function MyApp() {
-
-  // useEffect(() => {
-  //   toast.success("Welcome Human!" , {
-  //     icon: '👋',
-  // iconTheme: {
-  //   primary: '#000',
-  //   secondary: '#fff',
-  // },
-  //   })
-  // })
   return (
     <main>
-      <Head>
-        <title>Senne Bels</title>
-        <link rel="icon" href="/doggy.svg" />
-      </Head>
-      <Toaster/>
-      <Navbar />
-      <About />
-      <Skills />
-      {/* <Testimonials /> */}
-      <Contact />
+      <Home/>
     </main>
   );
 }
