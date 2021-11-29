@@ -1,6 +1,6 @@
 import React from "react";
 import '../styles/globals.css'
-import Home from "./Home.tsx"
+import Home from "./home/index.tsx"
 import 'tailwindcss/tailwind.css'
 
 function MyApp() {
