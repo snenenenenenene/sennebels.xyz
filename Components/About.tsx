@@ -4,8 +4,10 @@ import Image from "next/image";
 export default function About() {
   return (
     <section id="about" className="text-gray-400 bg-grey body-font mt-10">
-      <div className="w-150 h-150 absolute top-70 right-40">
+      <div className="absolute inset-y-0 right-0 px-40">
+      <div className="w-150 h-150 relative top-80 invisible md:visible ">
       <Image src="/profilepic.jpeg" width="150" height="150" className="rounded-full"/>
+      </div>
       </div>
       <div className="container mx-auto flex flex-col">
         <div className=" flex flex-col items-start mb-16 md:mb-0">
