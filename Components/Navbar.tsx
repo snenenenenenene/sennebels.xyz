@@ -30,10 +30,10 @@ export default function Navbar() {
             Source Code
           </a>
         </nav>
-        <a
+        {/* <a
           className="inline-flex items-center inline-flex text-black bg-change-light border-0 p-3 m-2 sm:m-1 focus:outline-none hover:bg-change-lighthover rounded text-lg">
           <SunIcon/>
-        </a>
+        </a> */}
       </div>
     </header>
   );

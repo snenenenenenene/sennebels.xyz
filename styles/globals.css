@@ -2,11 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
+.image-container {
+top: 50%;
+right: -140%;
+}
+
 .website-container {
--webkit-margin-start: auto;
+  -webkit-margin-start: auto;
 -webkit-margin-end: auto;
-max-width: 60vh;
-/* width: 40vh; */
+  width: 50vh;
+  }
+
+
+@media (min-width: 768px) {
+.website-container {
+
+  width: 70vh;
+}
 }
 
 .underline-css:after {

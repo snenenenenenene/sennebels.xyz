@@ -4,9 +4,9 @@ import Image from "next/image";
 export default function About() {
   return (
     <section id="about" className="text-gray-400 bg-grey body-font mt-10">
-      <div className="absolute inset-y-0 right-0 px-40">
-      <div className="w-150 h-150 relative top-80 invisible md:visible ">
-      <Image src="/profilepic.jpeg" width="150" height="150" className="rounded-full"/>
+      <div className="absolute inset-y-0 px-40">
+      <div className="w-150 h-150 relative image-container invisible md:visible ">
+      <Image src="/profilepic.jpeg" width="150" height="150" className="rounded-full hover:opacity-50 transition-all"/>
       </div>
       </div>
       <div className="container mx-auto flex flex-col">
@@ -15,7 +15,8 @@ export default function About() {
             Hi, I&apos;m Senne!
           </h1>
           <p className="mb-8 leading-relaxed text-justify">
-            Technology is all around us! I live to put even more software out there. You might think: Why does this 21-year old act as if he were a seasoned senior developer. To that I say:&quot;I might not be as experienced as the developer next door. However, I do and will do my best to make software that reaches your expectations and more. Adding the extra spice wherever needed.&quot;
+            I&apos;m a fullstack developer from Antwerp, Belgium. I love using Javascript and Python! Frontend development is definitely my passion because it allows me to still be somewhat creative while profusely console.logging. Outside of web development I&apos;m also into Machine Learning &amp; Data Mining.
+            Though I was born and raised in Belgium, it&apos;s always been my main ambition &amp; dream to move to Australia or Canada. A work permit or visa sponsorship is hence my number one must-have in a job.
           </p>
           <div className="flex justify-center mb-5">
             <a

@@ -27,7 +27,7 @@ export default function Contact() {
     }
 
   return (
-    <section id="contact" className="relative text-gray-400 bg-grey body-font mt-10">
+    <section id="contact" className="relative text-gray-400 bg-grey body-font mt-5">
       <div className="container mx-auto flex sm:flex-nowrap flex-wrap">
         <form
           name="contact"
