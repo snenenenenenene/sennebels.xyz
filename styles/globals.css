@@ -3,8 +3,9 @@
 @tailwind utilities;
 
 .image-container {
-top: 50%;
-right: -140%;
+position: absolute;
+top: 40%;
+left: 60%;
 }
 
 .website-container {
