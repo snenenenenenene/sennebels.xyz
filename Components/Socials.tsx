@@ -1,5 +1,6 @@
 import React from "react";
 import { socials } from "../public/Data/Socials";
+import Image from "next/image";
 
 export default function Socials() {
   return (
@@ -20,6 +21,11 @@ export default function Socials() {
               </a>
             </div>
           ))}
+          </div>
+          <div className="rounded w-80">
+      <div className="w-100 h-100 md:w-150 md:h-150 ">
+      <Image src="/profilepic.jpeg" width="200" height="200" className="rounded-full hover:opacity-50 transition-all"/>
+      </div>
           </div>
         </div>
       </div>

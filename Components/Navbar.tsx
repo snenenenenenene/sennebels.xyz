@@ -1,12 +1,12 @@
 import React from "react";
-import { SunIcon, MoonIcon } from '@chakra-ui/icons'
+// import { SunIcon, MoonIcon } from '@chakra-ui/icons'
 import Link from 'next/link'
 
 export default function Navbar() {
   return (
     <header className="bg-grey-transparent backdrop-filter backdrop-blur-sm md:sticky top-0 z-10">
       <div className="container mx-auto flex flex-wrap flex-row items-center">
-        <a className="title-font font-medium hover:shadow-lg hover:text-cyan text-white mb-0">
+        <a className="title-font font-medium cursor-pointer hover:text-cyan text-white mb-0">
           <Link href="/home">
             <div className="mx-1.5 text-xl flex">
             <img src="/minecraft.svg" className="w-10"/>

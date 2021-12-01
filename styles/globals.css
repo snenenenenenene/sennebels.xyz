@@ -4,16 +4,16 @@
 
 .image-container {
 position: absolute;
-top: 40%;
+top: 50%;
 left: 60%;
 }
 
 .website-container {
   -webkit-margin-start: auto;
 -webkit-margin-end: auto;
-  width: 50vh;
+margin: auto;
+  width: 40vh;
   }
-
 
 @media (min-width: 768px) {
 .website-container {

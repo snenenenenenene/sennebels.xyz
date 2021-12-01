@@ -7,6 +7,7 @@ import Socials from "../../Components/Socials";
 import toast, { Toaster } from 'react-hot-toast';
 import Head from 'next/head'
 import Script from 'next/script'
+import Footer from "../../Components/Footer";
 
 const Home = () => {
   return (
@@ -23,6 +24,7 @@ const Home = () => {
       <About />
       <Skills />
       <Contact />
+      <Footer/>
       </section>
     </main>
   );
