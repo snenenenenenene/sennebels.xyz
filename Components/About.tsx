@@ -1,14 +1,9 @@
 import React from "react";
 import Socials from "./Socials";
-import Image from "next/image";
+
 export default function About() {
   return (
     <section id="about" className="text-gray-400 bg-grey body-font mt-10">
-      <div className="image-container">
-      <div className="w-150 h-150 relative invisible md:visible ">
-      <Image src="/profilepic.jpeg" width="150" height="150" className="rounded-full hover:opacity-50 transition-all"/>
-      </div>
-      </div>
       <div className="container mx-auto flex flex-col">
         <div className=" flex flex-col items-start mb-16 md:mb-0">
           <h1 className="title-font sm:text-4xl text-3xl mb-4 font-medium text-white">
