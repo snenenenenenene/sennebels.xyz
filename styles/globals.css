@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;700&display=swap');
 
 .image-container {
 position: absolute;
@@ -8,11 +9,88 @@ top: 50%;
 left: 60%;
 }
 
+h2 {
+  font-family: 'Rubik', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: 3.6px;
+  word-spacing: 0px;
+  line-height: 18px;
+  text-transform: uppercase;
+  text-align: center
+}
+h3 {
+  font-family: 'Rubik', sans-serif;
+  font-weight: bolder;
+  font-size: 40px;
+  letter-spacing: 1.2px;
+  word-spacing: 0px;
+  line-height: 52px;
+  text-align: center;
+  padding-bottom: .05em;
+border-bottom-width: 1px;
+border-bottom-style: solid;
+border-bottom-color: rgba(0,0,0,.3);
+}
+
+.typed {
+  font-family: 'Rubik', sans-serif;
+  font-weight: lighter;
+  font-size: 30px;
+  letter-spacing: 1.2px;
+  word-spacing: 0px;
+  line-height: 52px;
+  text-align: center;
+  padding-bottom: .05em;
+border-bottom-color: rgba(0,0,0,.3);
+}
+.Typewriter__cursor {
+  font-size: 36px;
+  transform: translateX(-100%);
+  transform: translateY(-10%);
+  user-select: none;
+}
+
+.globe {
+  /* border: 2px solid #000; */
+  border-radius: 40%;
+  height: 30vh;
+  width: 30vh;
+  /* left: 50%; */
+  overflow: hidden;
+  /* position: absolute; */
+  /* left: 25%;
+  transform: translateX(-50%); */
+
+
+}
+.globe svg {
+  animation: rotation 30s linear 0s infinite;
+
+
+}
+
+.globe svg path {
+  stroke: #FFF;
+  stroke-width: 0.5px;
+}
+
+@keyframes rotation {
+  from {
+    transform: translateX(0);
+  }
+
+  from {
+    transform: translateX(-50%);
+  }
+}
+
 .website-container {
   -webkit-margin-start: auto;
 -webkit-margin-end: auto;
-margin: auto;
-  width: 40vh;
+margin: auto ;
+  width: 60vh;
+  overflow-x: hidden;
   }
 
 @media (min-width: 768px) {
@@ -33,10 +111,11 @@ margin: auto;
 
 html,
 body {
-  background-color: #202023;
+  /* background-color: #202023; */
   scroll-behavior: smooth;
   padding: 0;
   margin: 0;
+  overflow-x: hidden;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }

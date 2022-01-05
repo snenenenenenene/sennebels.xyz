@@ -16,16 +16,20 @@ const Home = () => {
         <title>Senne Bels - Home</title>
         <link rel="icon" href="/doggy.svg" />
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css"/>
+        <link
+          href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;700&display=swap"
+          rel="stylesheet"
+        />
       </Head>
-      <Script src="js/three.js"></Script>
+      {/* <Script src="js/three.js"></Script> */}
       <Toaster/>
       <Navbar />
       <section className="website-container">
       <About />
       <Skills />
       <Contact />
-      <Footer/>
       </section>
+      <Footer/>
     </main>
   );
 }
