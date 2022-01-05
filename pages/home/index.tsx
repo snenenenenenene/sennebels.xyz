@@ -15,7 +15,7 @@ const Home = () => {
     <main>
       <Head>
         <title>Senne Bels - Home</title>
-        <link rel="icon" href="/doggy.svg" />
+        <link rel="icon" href="/react.svg" />
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css"/>
         <link
           href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;700&display=swap"
