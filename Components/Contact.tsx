@@ -29,26 +29,32 @@ export default function Contact() {
 
   function handleSubmit(e: any) {
     e.preventDefault();
-    const toastId = toast.loading("Sending Message...");
-    const templateParams = {
-      from_name: email,
-      to_name: "sennebels@gmail.com",
-      message: message,
-    };
-    emailjs
-      .send(
-        "service_vb780fd",
-        "template_1f0e3rf",
-        templateParams,
-        "user_iKcb9b4DVPIx7HcQpW8gf"
-      )
-      .then(() => {
-        toast.dismiss(toastId);
-        toast.success("Message sent!");
-      })
-      .catch((error) => {
-        toast.error("Your message was not able to be sent");
-      });
+    if (email !== "" && message !== "") {
+      const toastId = toast.loading("Sending Message...");
+      const templateParams = {
+        from_name: email,
+        to_name: "sennebels@gmail.com",
+        message: message,
+      };
+      emailjs
+        .send(
+          "service_vb780fd",
+          "template_1f0e3rf",
+          templateParams,
+          "user_iKcb9b4DVPIx7HcQpW8gf"
+        )
+        .then(() => {
+          toast.dismiss(toastId);
+          toast.success("Message sent!");
+        })
+        .catch((error) => {
+          toast.error("Your message was not able to be sent");
+        });
+    }
+    else {
+      toast.error("Please enter an email and a message")
+    }
+
   }
 
   return (
@@ -67,6 +73,7 @@ export default function Contact() {
             <br />
             This does not have to be business related.{" "}
           </p>
+          <div className="mx-auto w-3/4 md:w-2/3">
           <div className="relative mb-4">
             <Input name="name" onChange={(e) => setName(e.target.value)} />
           </div>
@@ -90,13 +97,14 @@ export default function Contact() {
           <div className="flex justify-center">
           <button
             type="submit"
-            className="bg-black text-white border-0 py-4 px-16 focus:outline-none hover:bg-gray-800 rounded"
+            className="bg-black mt-2 text-white border-0 py-4 px-16 focus:outline-none hover:bg-gray-800 rounded"
           >
             <h2 className="text-2xl font-bold">
             Submit
 
             </h2>
           </button>
+          </div>
           </div>
         </form>
       </div>

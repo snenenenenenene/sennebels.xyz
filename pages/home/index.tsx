@@ -24,11 +24,11 @@ const Home = () => {
       {/* <Script src="js/three.js"></Script> */}
       <Toaster/>
       <Navbar />
-      <section className="website-container">
+      {/* <div className="website-container"> */}
       <About />
       <Skills />
       <Contact />
-      </section>
+      {/* </div> */}
       <Footer/>
     </main>
   );

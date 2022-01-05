@@ -96,7 +96,7 @@ margin: auto ;
 @media (min-width: 768px) {
 .website-container {
 
-  width: 70vh;
+  max-width: 40vh;
 }
 }
 
@@ -118,6 +118,11 @@ body {
   overflow-x: hidden;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+.website-container {
+
+  max-width: 60vh;
 }
 
 a {

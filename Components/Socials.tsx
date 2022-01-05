@@ -5,16 +5,15 @@ import Image from "next/image";
 export default function Socials() {
   return (
     <section id="skills">
-      <div className="container mx-auto mt-16">
-        <div className="flex">
-          <div className="p-2 "></div>
-          <div className="flex text-white rounded-xl rounded bg-black p-8 flex-wrap">
+      <div className="mt-3 w-screen flex">
+        <div className="flex mx-auto md:w-1/2">
+          <div className="flex text-white rounded-xl rounded bg-black md:p-8 mx-2 p-4 flex-wrap">
             {socials.map((social, index) => (
               <div className="p-2 w-1/2" key={index}>
                 <div key={social.name}>
                   <a
                     href={social.link}
-                    className="rounded flex py-2 hover:underline hover:bg-gray-100"
+                    className="rounded flex py-2 hover:underline rounded font-thin text-sm md:text-lg"
                   >
                     <i className={`${social.icon} mx-4`}></i>
                     <p className="flex-shrink-0 mr-4">{social.name}</p>
