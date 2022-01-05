@@ -28,7 +28,7 @@ const Home = () => {
       {/* <div className="website-container"> */}
       <About />
       <Skills />
-      <Music/>
+      {/* <Music/> */}
       <Contact />
       {/* </div> */}
       <Footer/>

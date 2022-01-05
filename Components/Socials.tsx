@@ -1,15 +1,16 @@
 import React from "react";
 import { socials } from "../public/Data/Socials";
 import Image from "next/image";
+import Container from "./Container";
 
 export default function Socials() {
   return (
     <section id="skills">
-      <div className="mt-3 w-screen flex">
+      <Container className="mt-3 w-screen flex">
         <div className="flex mx-auto md:w-1/2">
           <div className="flex text-white rounded-xl rounded bg-black md:p-8 mx-2 p-4 flex-wrap">
             {socials.map((social, index) => (
-              <div className="p-2 w-1/2" key={index}>
+              <Container className="p-2 w-1/2" key={index}>
                 <div key={social.name}>
                   <a
                     href={social.link}
@@ -19,7 +20,7 @@ export default function Socials() {
                     <p className="flex-shrink-0 mr-4">{social.name}</p>
                   </a>
                 </div>
-              </div>
+              </Container>
             ))}
           </div>
           {/* <div className="rounded w-80">
@@ -28,7 +29,7 @@ export default function Socials() {
       </div>
           </div> */}
         </div>
-      </div>
+      </Container>
     </section>
   );
 }

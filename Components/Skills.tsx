@@ -1,12 +1,13 @@
 import React from "react";
 import { skills } from "../public/Data/Skills";
 import ReactTooltip from 'react-tooltip';
+import Container from "./Container";
 
 export default function Skills() {
   return (
     <section id="skills" className="body-font mx-auto mt-5">
       <div className="container mx-auto">
-        <div className="text-center mb-5">
+        <Container className="text-center mb-5">
           {/* <p className="w-10 inline-block mb-4" /> */}
           <h1 className="sm:text-4xl text-3xl font-medium title-font text-white mb-4">
             Skills &amp; Technologies
@@ -17,8 +18,8 @@ export default function Skills() {
             or obstacles is one of my main motivation drives so feel free to
             suggest ones not in this list.
           </p>
-        </div>
-        <div className="flex flex-wrap">
+        </Container>
+        <Container className="flex flex-wrap">
           {skills.map((skill, index) => (
             <div className="p-2 w-1/3" key={index}>
               <div className="hover:bg-gray-100 rounded flex p-2 h-full items-center justify-center">
@@ -28,7 +29,7 @@ export default function Skills() {
               </div>
             </div>
           ))}
-        </div>
+        </Container>
       </div>
     </section>
   );

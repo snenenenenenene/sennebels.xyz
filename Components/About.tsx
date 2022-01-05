@@ -1,6 +1,8 @@
 import React from "react";
 import Socials from "./Socials";
 import Typewriter from "typewriter-effect";
+import { motion } from 'framer-motion'
+import Container from "./Container";
 
 const Button = ({ text, link, ...props }) => {
   return (
@@ -36,7 +38,8 @@ export default function About() {
       }}
       />
       </div>
-      <div className="container mx-auto flex flex-col">
+      <Container
+       className="container mx-auto flex flex-col">
         <div className=" flex flex-col items-center mb-16 md:mb-0">
           <p className="mb-24 leading-relaxed text-center">
             I&apos;m Senne Bels, a fullstack developer from Antwerp, Belgium. I love using
@@ -50,7 +53,7 @@ export default function About() {
           </p>
           <Button text={"My Resume"} link={"/Files/resume.pdf"} />
         </div>
-      </div>
+      </Container>
       <Socials />
     </section>
   );
