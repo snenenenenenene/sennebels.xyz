@@ -8,6 +8,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import Head from 'next/head'
 import Script from 'next/script'
 import Footer from "../../Components/Footer";
+import Music from "../../Components/Music";
 
 const Home = () => {
   return (
@@ -27,6 +28,7 @@ const Home = () => {
       {/* <div className="website-container"> */}
       <About />
       <Skills />
+      <Music/>
       <Contact />
       {/* </div> */}
       <Footer/>

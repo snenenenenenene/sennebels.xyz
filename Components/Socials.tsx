@@ -13,7 +13,7 @@ export default function Socials() {
                 <div key={social.name}>
                   <a
                     href={social.link}
-                    className="rounded flex py-2 hover:underline rounded font-thin text-sm md:text-lg"
+                    className="rounded flex py-2 hover:underline rounded font-thin text-sm md:text-md"
                   >
                     <i className={`${social.icon} mx-4`}></i>
                     <p className="flex-shrink-0 mr-4">{social.name}</p>

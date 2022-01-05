@@ -17,6 +17,7 @@
     "@emotion/react": "^11.7.0",
     "@emotion/styled": "^11.6.0",
     "@types/react": "^17.0.35",
+    "axios": "^0.24.0",
     "bootstrap-icons": "^1.7.1",
     "emailjs": "^3.6.0",
     "emailjs-com": "^3.2.0",

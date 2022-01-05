@@ -5,8 +5,8 @@ import Typewriter from "typewriter-effect";
 const Button = ({ text, link, ...props }) => {
   return (
     <div className="flex justify-center">
-      <a href={link}>
-        <h3 className="text-4xl font-bold">{text}</h3>
+      <a href={link} className="clickMe">
+        <h3 className="relative text-4xl font-bold">{text}</h3>
       </a>
     </div>
   );
@@ -15,7 +15,7 @@ const Button = ({ text, link, ...props }) => {
 export default function About() {
 
   return (
-    <section id="about" className="body-font mt-10">
+    <section id="about" className="body-font my-5">
       <div className="flex justify-center m-5">
       <Typewriter
         onInit={(typewriter) => {
@@ -38,7 +38,7 @@ export default function About() {
       </div>
       <div className="container mx-auto flex flex-col">
         <div className=" flex flex-col items-center mb-16 md:mb-0">
-          <p className="mb-8 leading-relaxed text-center">
+          <p className="mb-24 leading-relaxed text-center">
             I&apos;m Senne Bels, a fullstack developer from Antwerp, Belgium. I love using
             Javascript and Python! Frontend development is definitely my passion
             because it allows me to still be somewhat creative while profusely

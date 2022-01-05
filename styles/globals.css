@@ -4,9 +4,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;700&display=swap');
 
 .image-container {
-position: absolute;
-top: 50%;
-left: 60%;
+  position: absolute;
+  top: 50%;
+  left: 60%;
 }
 
 h2 {
@@ -19,6 +19,7 @@ h2 {
   text-transform: uppercase;
   text-align: center
 }
+
 h3 {
   font-family: 'Rubik', sans-serif;
   font-weight: bolder;
@@ -28,9 +29,9 @@ h3 {
   line-height: 52px;
   text-align: center;
   padding-bottom: .05em;
-border-bottom-width: 1px;
-border-bottom-style: solid;
-border-bottom-color: rgba(0,0,0,.3);
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: rgba(0, 0, 0, .3);
 }
 
 .typed {
@@ -42,8 +43,9 @@ border-bottom-color: rgba(0,0,0,.3);
   line-height: 52px;
   text-align: center;
   padding-bottom: .05em;
-border-bottom-color: rgba(0,0,0,.3);
+  border-bottom-color: rgba(0, 0, 0, .3);
 }
+
 .Typewriter__cursor {
   font-size: 36px;
   transform: translateX(-100%);
@@ -64,6 +66,7 @@ border-bottom-color: rgba(0,0,0,.3);
 
 
 }
+
 .globe svg {
   animation: rotation 30s linear 0s infinite;
 
@@ -87,25 +90,25 @@ border-bottom-color: rgba(0,0,0,.3);
 
 .website-container {
   -webkit-margin-start: auto;
--webkit-margin-end: auto;
-margin: auto ;
+  -webkit-margin-end: auto;
+  margin: auto;
   width: 60vh;
   overflow-x: hidden;
-  }
+}
 
 @media (min-width: 768px) {
-.website-container {
+  .website-container {
 
-  max-width: 40vh;
-}
+    max-width: 40vh;
+  }
 }
 
 .underline-css:after {
-  content:"";
-  float:left;
-  background:#43434aAA;
-  width:100%;
-  height:6px;
+  content: "";
+  float: left;
+  background: #43434aAA;
+  width: 100%;
+  height: 6px;
   border-radius: 3px;
 }
 
@@ -132,4 +135,49 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+.clickMe::after {
+  content: '';
+  transform: translateY(-350%) translateX(220%);
+  width: 0;
+  height: 0;
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+  border-top: 20px solid #000;
+  text-align: center;
+  clear: both;
+  position: absolute;
+  font-weight: bold;
+  transition: ease-in .4s;
+}
+
+.clickMe::before {
+  content: 'Click Me!';
+  transform: translateY(-70px) translateX(-50%);
+  min-width: 100px;
+  left: 50%;
+  word-break:unset;
+  font-size: x-large;
+  height: 0px;
+  /* text-align: center; */
+  clear: both;
+  position: absolute;
+  font-weight: bold;
+  transition: ease-in .4s;
+}
+
+.clickMe:hover::after {
+  border-top: 20px solid #FFFFFF00;
+  transform: translateY(-400%) translateX(220%)
+}
+
+.clickMe:hover::before {
+  content: "...Go To Resume ➔";
+  font-size: xx-large;
+
+}
+
+.clickMe:hover {
+  color: #AAAAAA;
 }
