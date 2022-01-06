@@ -1,6 +1,6 @@
 import { FaDiceD20 } from "react-icons/fa";
 import { GiStoneAxe, GiStoneBlock, GiSittingDog, GiTreasureMap, GiTeacher} from "react-icons/gi";
-import ManUtd from './manutd'
+import ManUtd from './ManUtd'
 
 export const hobbies = [
     {
