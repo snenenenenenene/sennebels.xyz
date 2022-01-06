@@ -115,6 +115,7 @@ h3 {
 html,
 body {
   /* background-color: #202023; */
+  /* cursor: none; */
   scroll-behavior: smooth;
   padding: 0;
   margin: 0;
@@ -149,7 +150,7 @@ a {
   clear: both;
   position: absolute;
   font-weight: bold;
-  transition: ease-in .4s;
+  transition: all .8s;
 }
 
 .clickMe::before {
@@ -164,22 +165,25 @@ a {
   clear: both;
   position: absolute;
   font-weight: bold;
-  transition: ease-in .4s;
+  transition: all .8s;
 }
 
 .clickMe:hover::after {
   border-top: 20px solid #FFFFFF00;
-  transform: translateY(-400%) translateX(220%)
+  transform: translateY(-350%) translateX(220%);
+  transition: all .8s;
 }
 
 .clickMe:hover::before {
-  content: "...Go To Resume ➔";
+  content: "...Open ➔";
+  transition: all .8s;
   font-size: xx-large;
 
 }
 
 .clickMe:hover {
-  color: #AAAAAA;
+  color: #333333;
+  transition: all .8s;
 }
 
 div#wave {
@@ -236,3 +240,4 @@ div#wave .dot:nth-child(4) {
   background-color: white;
 
 }
+

@@ -1,11 +1,14 @@
 import About from "../Components/About";
 import Contact from "../Components/Contact";
 import Navbar from "../Components/Navbar";
+import Socials from "../Components/Socials";
 import Skills from "../Components/Skills";
 import toast, { Toaster } from 'react-hot-toast';
 import Head from 'next/head'
 import Footer from "../Components/Footer";
 import Music from "../Components/Music";
+import Introduction from "../Components/Introduction";
+import Hobbies from "../Components/Hobbies";
 
 const Home = () => {
   return (
@@ -21,8 +24,11 @@ const Home = () => {
       </Head>
       <Toaster/>
       <Navbar />
-      <About />
+      <Introduction />
+      <Socials/>
+      <About/>
       <Skills />
+      <Hobbies/>
       {/* <Music/> */}
       <Contact />
       <Footer/>

@@ -8,7 +8,7 @@ export default function Footer() {
       <div className="flex flex-wrap flex-row items-center h-full align-middle">
           <div className="text-white m-auto">
           <p >
-          © 2021 Senne Bels. All Rights Reserved.
+          © 2022 Senne Bels. All Rights Reserved.
           </p>
           </div>
       </div>

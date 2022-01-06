@@ -1,6 +1,7 @@
 import React from "react";
 import toast from "react-hot-toast";
 import emailjs from "emailjs-com";
+import Container from "./Container";
 
 export const Input = ({ name, onChange }) => {
   return (
@@ -110,7 +111,9 @@ export default function Contact() {
       </div>
       <div className="flex relative mx-auto justify-center">
         <div className="block"></div>
+        <Container className="">
         <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d84538.59334235948!2d4.310963388259428!3d51.21307880368991!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c3f5e038389465%3A0x1125d409660336fc!2sAntwerp%2C%202000%20Antwerp!5e0!3m2!1sen!2sbe!4v1641414457228!5m2!1sen!2sbe" width="600" height="450" className="map" style={{border:0}} allowFullScreen={false} loading="lazy"></iframe>
+        </Container>
       </div>
     </div>
   );

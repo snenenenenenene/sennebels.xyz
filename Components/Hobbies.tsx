@@ -1,25 +1,24 @@
-import React from "react";
-import { skills } from "../public/Data/Skills";
+import { hobbies } from "../public/Data/Hobbies";
 import ReactTooltip from 'react-tooltip';
 import Container from "./Container";
 
-export default function Skills() {
+export default function Hobbies() {
   return (
-    <section id="skills" className="body-font mx-auto">
+    <section id="skills" className="body-font my-20 mx-auto">
       <div className="container mx-auto">
         <Container className="text-center mb-5">
           <h2 className="sm:text-4xl text-3xl font-medium title-font mb-4">
-            Skills
+            Hobbies
           </h2>
           <p className="leading-relaxed my-2 font-light">
-            A shortlist of the different technologies I&apos;ve worked with I can think of off the top of my head.
+            These are just a few of the different things that either entertain me or with which I entertain myself in my free time.
           </p>
         </Container>
-        <div className="flex flex-wrap">
-          {skills.map((skill, index) => (
-            <div className="p-2 w-1/3" key={index}>
+        <div className="flex flex-wrap justify-center align-middle">
+          {hobbies.map((hobby, index) => (
+            <div className="p-2 w-20 h-20" key={index}>
               <Container className="hover:bg-gray-100 rounded flex p-2 h-full items-center justify-center">
-                <a data-tip={skill.skill} className="md:text-6xl text-4xl">{skill.icon}</a>
+                <a data-tip={hobby.hobby} className="md:text-5xl text-5xl">{hobby.icon}</a>
                 <ReactTooltip place="top" type="dark" effect="solid"/>
               </Container>
             </div>
