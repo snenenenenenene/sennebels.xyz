@@ -10,7 +10,7 @@ export default function Socials() {
         <div className="flex mx-auto md:w-1/2">
           <div className="flex text-white rounded-xl rounded bg-black md:p-8 mx-2 p-4 flex-wrap">
             {socials.map((social, index) => (
-              <Container className="p-2 w-1/2" key={index}>
+              <div className="p-2 w-1/2" key={index}>
                 <div key={social.name}>
                   <a
                     href={social.link}
@@ -20,7 +20,7 @@ export default function Socials() {
                     <p className="flex-shrink-0 mr-4">{social.name}</p>
                   </a>
                 </div>
-              </Container>
+              </div>
             ))}
           </div>
           {/* <div className="rounded w-80">

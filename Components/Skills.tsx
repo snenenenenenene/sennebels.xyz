@@ -19,17 +19,17 @@ export default function Skills() {
             suggest ones not in this list.
           </p>
         </Container>
-        <Container className="flex flex-wrap">
+        <div className="flex flex-wrap">
           {skills.map((skill, index) => (
             <div className="p-2 w-1/3" key={index}>
-              <div className="hover:bg-gray-100 rounded flex p-2 h-full items-center justify-center">
+              <Container className="hover:bg-gray-100 rounded flex p-2 h-full items-center justify-center">
                 {/* <p className="text-green-400 flex-shrink-0">{skill.skill}</p> */}
                 <a data-tip={skill.skill} className="md:text-6xl text-4xl">{skill.icon}</a>
                 <ReactTooltip place="top" type="dark" effect="solid"/>
-              </div>
+              </Container>
             </div>
           ))}
-        </Container>
+        </div>
       </div>
     </section>
   );

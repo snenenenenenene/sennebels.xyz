@@ -27,6 +27,7 @@
     "react-dom": "^17.0.2",
     "react-hot-toast": "^2.1.1",
     "react-icons": "^4.3.1",
+    "react-intersection-observer": "^8.33.1",
     "react-routing": "^0.0.7",
     "react-tooltip": "^4.2.21",
     "tailwind": "^4.0.0",

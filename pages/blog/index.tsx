@@ -2,7 +2,7 @@ import React from "react";
 import Navbar from "../../Components/Navbar";
 import Head from 'next/head'
 
-function Blog() {
+const Blog = () => {
 
   return (
     <main>

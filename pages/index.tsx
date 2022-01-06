@@ -1,14 +1,11 @@
-import React from "react";
-import About from "../../Components/About";
-import Contact from "../../Components/Contact";
-import Navbar from "../../Components/Navbar";
-import Skills from "../../Components/Skills";
-import Socials from "../../Components/Socials";
+import About from "../Components/About";
+import Contact from "../Components/Contact";
+import Navbar from "../Components/Navbar";
+import Skills from "../Components/Skills";
 import toast, { Toaster } from 'react-hot-toast';
 import Head from 'next/head'
-import Script from 'next/script'
-import Footer from "../../Components/Footer";
-import Music from "../../Components/Music";
+import Footer from "../Components/Footer";
+import Music from "../Components/Music";
 
 const Home = () => {
   return (
@@ -22,15 +19,12 @@ const Home = () => {
           rel="stylesheet"
         />
       </Head>
-      {/* <Script src="js/three.js"></Script> */}
       <Toaster/>
       <Navbar />
-      {/* <div className="website-container"> */}
       <About />
       <Skills />
       {/* <Music/> */}
       <Contact />
-      {/* </div> */}
       <Footer/>
     </main>
   );
