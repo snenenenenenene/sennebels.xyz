@@ -36,8 +36,8 @@ export default function Navbar() {
     <nav className="w-screen flex justify-between overflow-hidden px-8 md:px-40 lg:px-72 align-middle justify-center h-40 bg-black inset-0">
       {/* <img src="https://i.ytimg.com/vi/MTXLqDbBkX4/maxresdefault.jpg" /> */}
       <Logo/>
-      <Link href="/home">
-        <h2 className="my-auto cursor-pointer hover:text-gray-400 font-extrabold text-2xl text-white" id="title">
+      <Link href="/">
+        <h2 className="my-auto cursor-pointer z-40 hover:text-gray-400 font-extrabold text-2xl text-white" id="title">
           Senne Bels
         </h2>
       </Link>
