@@ -16,7 +16,7 @@ function MyApp({ Component, pageprops }) {
         />
         <meta
           name="twitter:image"
-          content="http://www.sennebels.xyz/profilepic.jpeg"
+          content="http://www.sennebels.xyz/preview.jpeg"
         />
         <meta name="twitter:site" content="@snenenenene" />
         <meta name="twitter:creator" content="@snenenenene" />
@@ -29,7 +29,7 @@ function MyApp({ Component, pageprops }) {
         <meta property="og:description" content="Who Am I?" />
         <meta
           property="og:image"
-          content="http://www.sennebels.xyz/profilepic.jpeg"
+          content="http://www.sennebels.xyz/preview.jpeg"
         />
       </Head>
       <Component {...pageprops} />
