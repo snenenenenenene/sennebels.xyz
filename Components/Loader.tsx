@@ -1,0 +1,191 @@
+import { SVGProps } from "react"
+
+const Loader = (props: SVGProps<SVGSVGElement>) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    style={{
+      margin: "auto",
+      background: "0 0",
+      display: "block",
+      shapeRendering: "auto",
+    }}
+    width={100}
+    height={100}
+    viewBox="0 0 100 100"
+    preserveAspectRatio="xMidYMid"
+    {...props}
+  >
+    <rect
+      x={43.5}
+      y={11.5}
+      rx={6.5}
+      ry={6.84}
+      width={13}
+      height={19}
+      fill="#000"
+    >
+      <animate
+        attributeName="opacity"
+        values="1;0"
+        keyTimes="0;1"
+        dur="3.3333333333333335s"
+        begin="-2.9629629629629632s"
+        repeatCount="indefinite"
+      />
+    </rect>
+    <rect
+      x={43.5}
+      y={11.5}
+      rx={6.5}
+      ry={6.84}
+      width={13}
+      height={19}
+      fill="#000"
+      transform="rotate(40 50 50)"
+    >
+      <animate
+        attributeName="opacity"
+        values="1;0"
+        keyTimes="0;1"
+        dur="3.3333333333333335s"
+        begin="-2.592592592592593s"
+        repeatCount="indefinite"
+      />
+    </rect>
+    <rect
+      x={43.5}
+      y={11.5}
+      rx={6.5}
+      ry={6.84}
+      width={13}
+      height={19}
+      fill="#000"
+      transform="rotate(80 50 50)"
+    >
+      <animate
+        attributeName="opacity"
+        values="1;0"
+        keyTimes="0;1"
+        dur="3.3333333333333335s"
+        begin="-2.2222222222222223s"
+        repeatCount="indefinite"
+      />
+    </rect>
+    <rect
+      x={43.5}
+      y={11.5}
+      rx={6.5}
+      ry={6.84}
+      width={13}
+      height={19}
+      fill="#000"
+      transform="rotate(120 50 50)"
+    >
+      <animate
+        attributeName="opacity"
+        values="1;0"
+        keyTimes="0;1"
+        dur="3.3333333333333335s"
+        begin="-1.851851851851852s"
+        repeatCount="indefinite"
+      />
+    </rect>
+    <rect
+      x={43.5}
+      y={11.5}
+      rx={6.5}
+      ry={6.84}
+      width={13}
+      height={19}
+      fill="#000"
+      transform="rotate(160 50 50)"
+    >
+      <animate
+        attributeName="opacity"
+        values="1;0"
+        keyTimes="0;1"
+        dur="3.3333333333333335s"
+        begin="-1.4814814814814816s"
+        repeatCount="indefinite"
+      />
+    </rect>
+    <rect
+      x={43.5}
+      y={11.5}
+      rx={6.5}
+      ry={6.84}
+      width={13}
+      height={19}
+      fill="#000"
+      transform="rotate(200 50 50)"
+    >
+      <animate
+        attributeName="opacity"
+        values="1;0"
+        keyTimes="0;1"
+        dur="3.3333333333333335s"
+        begin="-1.1111111111111112s"
+        repeatCount="indefinite"
+      />
+    </rect>
+    <rect
+      x={43.5}
+      y={11.5}
+      rx={6.5}
+      ry={6.84}
+      width={13}
+      height={19}
+      fill="#000"
+      transform="rotate(240 50 50)"
+    >
+      <animate
+        attributeName="opacity"
+        values="1;0"
+        keyTimes="0;1"
+        dur="3.3333333333333335s"
+        begin="-0.7407407407407408s"
+        repeatCount="indefinite"
+      />
+    </rect>
+    <rect
+      x={43.5}
+      y={11.5}
+      rx={6.5}
+      ry={6.84}
+      width={13}
+      height={19}
+      fill="#000"
+      transform="rotate(280 50 50)"
+    >
+      <animate
+        attributeName="opacity"
+        values="1;0"
+        keyTimes="0;1"
+        dur="3.3333333333333335s"
+        begin="-0.3703703703703704s"
+        repeatCount="indefinite"
+      />
+    </rect>
+    <rect
+      x={43.5}
+      y={11.5}
+      rx={6.5}
+      ry={6.84}
+      width={13}
+      height={19}
+      fill="#000"
+      transform="rotate(320 50 50)"
+    >
+      <animate
+        attributeName="opacity"
+        values="1;0"
+        keyTimes="0;1"
+        dur="3.3333333333333335s"
+        begin="0s"
+        repeatCount="indefinite"
+      />
+    </rect>
+  </svg>
+)
+
+export default Loader;

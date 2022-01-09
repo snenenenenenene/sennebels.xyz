@@ -25,6 +25,8 @@ const About = () => {
             in web development. Outside of working on different front- and backends in both commercial and recreational settings
             I like to immerse myself in the wonderful world of <b>Artificial Intelligence</b>, <b>Machine Learning</b> and <b>Data Mining</b>, which
             is conveniently also the matter I&apos;m majoring in at university.
+             <br />
+             <a href="https://youthful-saha-573a03.netlify.app" className="underline hover:text-gray-500">Check out this pet classification project!</a>
             <br />
             <br />
             It&apos;s always been my main ambition &amp; dream to move

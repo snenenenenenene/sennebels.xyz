@@ -3,6 +3,16 @@
 @tailwind utilities;
 @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;700&display=swap');
 
+::-moz-selection { /* Code for Firefox */
+  color: #fff;
+  background: #000;
+}
+
+::selection {
+  color: #fff;
+  background: #000;
+}
+
 .image-container {
   position: absolute;
   top: 50%;
@@ -44,6 +54,14 @@ h3 {
   text-align: center;
   padding-bottom: .05em;
   border-bottom-color: rgba(0, 0, 0, .3);
+}
+
+.soup {
+  z-index: 1000;
+}
+
+.hidden-input {
+  display: none;
 }
 
 .Typewriter__cursor {

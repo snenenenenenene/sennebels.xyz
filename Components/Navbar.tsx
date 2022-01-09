@@ -2,7 +2,7 @@
 import Link from "next/link";
 const NavItem = ({ name, link }) => {
   return (
-    <div className="my-auto font-bold text-white hover:text-gray-400 cursor-pointer">
+    <div className="my-auto font-bold text-white hover:text-gray-400 cursor-pointer z-40">
       <Link href={link}>
         <h2>{name}</h2>
       </Link>
