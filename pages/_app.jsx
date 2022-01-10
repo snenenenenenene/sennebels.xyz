@@ -31,6 +31,13 @@ function MyApp({ Component, pageprops }) {
           property="og:image"
           content="http://www.sennebels.xyz/preview.png"
         />
+        <title>Senne Bels</title>
+        <link rel="icon" href="/react.svg" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css"/>
+        <link
+          href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;700&display=swap"
+          rel="stylesheet"
+        />
       </Head>
       <Component {...pageprops} />
     </main>

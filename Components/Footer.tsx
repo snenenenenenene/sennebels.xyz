@@ -1,6 +1,5 @@
 import React from "react";
 // import { SunIcon, MoonIcon } from '@chakra-ui/icons'
-import Link from 'next/link'
 
 export default function Footer() {
   return (
