@@ -53,11 +53,7 @@ export default function Home() {
           )}
         </Suspense>
         <ambientLight intensity={2} />
-        <House
-          scale={10}
-          position={[-30, -270, -400]}
-          rotation={[0, -Math.PI + mousePos.y / 5000, 0]}
-        />
+        <House scale={7} position={[0, -250, -400]} rotation={[0, 0, 0]} />
       </Canvas>
       <main className="sm:px-8 px-4 sm:pt-40 pt-20 flex w-full relative">
         <h1 className="z-10 font-display xl:text-[27.5rem] md:text-[15rem] xl:leading-[26rem] xs:leading-[9.5rem] leading-[6.7rem] md:leading-[14rem] xs:text-[10rem] text-[7rem]">

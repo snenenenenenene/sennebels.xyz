@@ -1,11 +1,21 @@
 import { useGLTF } from "@react-three/drei";
+import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
 
 export function House(props: any) {
-  const group = useRef();
+  const group: any = useRef();
   const { nodes, materials }: any = useGLTF("/assets/house.gltf");
+
+  useFrame(() => {
+    if (group.current) group.current.rotation.y += 0.001;
+  });
   return (
-    <group ref={group} {...props} dispose={null}>
+    <group
+      ref={group}
+      rotation={[0, -Math.PI + 0.01 / 5000, 0]}
+      {...props}
+      dispose={null}
+    >
       <group name="Scene">
         <group name="House" position={[0, 1.02, 2.59]}>
           <mesh
