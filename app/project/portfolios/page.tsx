@@ -14,10 +14,10 @@ export default function ThreePortfolio() {
 
   return (
     <div className="w-full min-h-screen h-full pt-20 flex-col">
-      <main className="px-24 my-32 flex h-full   relative">
-        <div className="w-1/2 pr-24 max-h-fit">
+      <main className="md:px-24 px-8 my-10 md:my-32 flex h-full flex-col md:flex-row relative">
+        <div className="w-full md:w-1/2 pr-24 max-h-fit">
           <h1 className="font-display text-8xl mb-8">PORTFOLIOS</h1>
-          <p>
+          <p className="mb-20">
             Hey there! I just wanted to share with you something I&apos;m really
             proud of - I created multiple portfolio websites throughout my time
             in university and work.
@@ -124,7 +124,7 @@ export default function ThreePortfolio() {
             and see what other projects I can tackle in the future!
           </p>
         </div>
-        <div className="w-1/2 h-full flex flex-col gap-y-20">
+        <div className="w-full md:w-1/2 h-full flex flex-col gap-y-20">
           <section className="relative object-cover w-full h-96">
             {theme === "dark" ? (
               <Image
