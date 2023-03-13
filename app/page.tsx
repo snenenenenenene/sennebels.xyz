@@ -68,7 +68,7 @@ export default function Home() {
           </div>
         </h1>
       </main>
-      <Marquee
+      {/* <Marquee
         wordList={[
           "Welcome",
           "🦝",
@@ -92,7 +92,7 @@ export default function Home() {
           "🐢",
         ]}
       />
-      <main className="w-full h-20 sm:h-96 sm:py-40"></main>
+      <main className="w-full h-20 sm:h-96 sm:py-40"></main> */}
       <Marquee
         wordList={[
           "WEB DEVELOPMENT",
