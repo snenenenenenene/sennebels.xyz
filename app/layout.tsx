@@ -1,5 +1,6 @@
 import Head from "next/head";
 import Script from "next/script";
+import { GoogleAnalytics } from "nextjs-google-analytics";
 import { ReactNode } from "react";
 import Analytics from "./components/common/Analytics";
 import { Navbar } from "./components/common/Navbar";
@@ -57,6 +58,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         />
       </Head>
       <body>
+        <GoogleAnalytics trackPageViews strategy={"afterInteractive"} />
+
         <Analytics />
         <Script
           src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
