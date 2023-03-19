@@ -8,7 +8,11 @@ export default function Fathom() {
   const searchParams = useSearchParams();
   useEffect(() => {
     load("HSHELJGH", {
-      includedDomains: ["sennebels.xyz"],
+      includedDomains: [
+        "https://sennebels.xyz/",
+        "sennebels.xyz/",
+        "sennebels.xyz",
+      ],
       spa: "auto",
     });
 
