@@ -56,7 +56,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       </Head>
       <body>
         <Script
-          src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"
+          src="https://www.googletagmanager.com/gtag/js?id=G-5ZN3KTKYRV"
           strategy="afterInteractive"
         />
         <Script id="google-analytics" strategy="afterInteractive">
@@ -68,6 +68,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           gtag('config', 'G-5ZN3KTKYRV');
         `}
         </Script>
+
         {/* <Analytics /> */}
         {/* <Script
           src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
