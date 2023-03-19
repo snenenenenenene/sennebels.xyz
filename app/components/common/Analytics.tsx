@@ -1,22 +1,45 @@
-// // I COULD END UP USING THIS IF I SWITCH TO FATHOM FOR ANALYTICS
-// import { useEffect } from "react";
 "use client";
 
-import { GoogleAnalytics } from "nextjs-google-analytics";
+import { load, trackPageview } from "fathom-client";
+import { usePathname, useSearchParams } from "next/navigation";
+import Script from "next/script";
+import { Suspense, useEffect } from "react";
 
-const Analytics = () => {
-  //   useEffect(() => {
-  //     Fathom.load("YOUR_FATHOM_TRACKING_CODE", {
-  //       includedDomains: ["yourdomain.com"],
-  //     });
+export function TrackPageView() {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  useEffect(() => {
+    load("MY_FATHOM_ID", {
+      includedDomains: ["sennebels.xyz"],
+    });
+  }, []);
 
-  //     const onRouteChange = () => Fathom.trackPageview();
+  // Record a pageview when route changes
+  useEffect(() => {
+    trackPageview();
+  }, [pathname, searchParams]);
 
-  //     window.addEventListener("routeChange", onRouteChange);
-  //     return () => window.removeEventListener("routeChange", onRouteChange);
-  //   }, []);
+  return null;
+}
 
-  return <GoogleAnalytics trackPageViews strategy={"afterInteractive"} />;
-};
+export default function Fathom() {
+  return (
+    <Suspense fallback={null}>
+      <Script
+        src="https://www.googletagmanager.com/gtag/js?id=G-5ZN3KTKYRV"
+        strategy="afterInteractive"
+      />
+      <Script id="google-analytics" strategy="afterInteractive">
+        {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){window.dataLayer.push(arguments);}
+          gtag('js', new Date());
 
-export default Analytics;
+          gtag('config', 'G-5ZN3KTKYRV');
+        `}
+      </Script>
+
+      {/* <TrackPageView /> */}
+    </Suspense>
+  );
+}

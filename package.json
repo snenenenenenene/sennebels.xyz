@@ -17,6 +17,7 @@
     "dotenv": "^16.0.3",
     "eslint": "8.35.0",
     "eslint-config-next": "13.2.3",
+    "fathom-client": "^3.5.0",
     "gsap": "^3.11.4",
     "next": "13.2.3",
     "next-seo": "^5.15.0",
