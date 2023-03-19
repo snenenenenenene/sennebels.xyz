@@ -14,7 +14,7 @@ export default function About() {
         <section className="flex gap-x-10 xs:gap-x-40">
           <p className="w-20">About</p>
           <span className="flex flex-col">
-            <p>Front-end developer from Belgium looking to move to Canada</p>
+            <p>Front-end developer from Belgium looking to move out</p>
           </span>
         </section>
         <section className="flex gap-x-10 xs:gap-x-40">
