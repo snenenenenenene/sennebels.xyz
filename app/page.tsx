@@ -1,5 +1,6 @@
 "use client";
 
+import { useProgress } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { Suspense, useRef, useState } from "react";
 import { TfiEmail, TfiGithub, TfiLinkedin } from "react-icons/tfi";
@@ -10,6 +11,7 @@ import { Project } from "./components/common/Project";
 import { ThreeDProjects } from "./components/common/ThreeDProjects";
 import { MotionHover } from "./components/three/3d";
 export default function Home() {
+  const { progress } = useProgress();
   const [mousePos, setMousePos] = useState<{ x: number; y: number }>({
     x: 0,
     y: 0,
@@ -28,22 +30,26 @@ export default function Home() {
       }}
       className="w-full h-full flex flex-col relative"
     >
+      {progress < 100 && (
+        <div className="fixed flex inset-0 w-full h-full z-50 justify-center items-center bg-light-primary dark:bg-dark-primary">
+          <p className="text-9xl">{progress}</p>
+        </div>
+      )}
       <Canvas style={{ height: "100%", position: "absolute" }}>
-        {/* <PerspectiveCamera makeDefault position={[10, 0, 40]} /> */}
-        <ambientLight intensity={1} />
-        <pointLight intensity={2} />
-        <Model
-          ref={modelRef}
-          scale={3}
-          position={[130, 260, -500]}
-          rotation={[
-            0 - mousePos.x / 5000,
-            -Math.PI / 3 + mousePos.y / 5000,
-            -Math.PI / 8,
-          ]}
-        />
-
         <Suspense fallback={null}>
+          <ambientLight intensity={1} />
+          <pointLight intensity={2} />
+          <Model
+            ref={modelRef}
+            scale={3}
+            position={[130, 260, -500]}
+            rotation={[
+              0 - mousePos.x / 5000,
+              -Math.PI / 3 + mousePos.y / 5000,
+              -Math.PI / 8,
+            ]}
+          />
+
           {ThreeDHoverPath !== "" && (
             <MotionHover
               scale={0.1}
@@ -51,15 +57,14 @@ export default function Home() {
               image={ThreeDHoverPath}
             />
           )}
+          <House scale={7} position={[0, -250, -400]} rotation={[0, 0, 0]} />
         </Suspense>
-        <ambientLight intensity={2} />
-        <House scale={7} position={[0, -250, -400]} rotation={[0, 0, 0]} />
       </Canvas>
       <main className="sm:px-8 px-4 sm:pt-40 pt-20 flex w-full relative">
-        <h1 className="z-10 font-display xl:text-[27.5rem] md:text-[15rem] xl:leading-[26rem] xs:leading-[9.5rem] leading-[6.7rem] md:leading-[14rem] xs:text-[10rem] text-[7rem]">
+        <h1 className="z-10 font-display lg:text-[27.5rem] xl:text-[27.5rem] md:text-[15rem] xl:leading-[26.2rem] lg:leading-[26rem] xs:leading-[9.5rem] leading-[6.7rem] md:leading-[14rem] xs:text-[10rem] text-[7rem]">
           <div>Senne Bels</div>
           <div className="flex">
-            <div className="font-body sm:text-2xl xs:text-lg  text-base xl:w-[24.4rem] xs:w-[8.9rem] w-[6.2rem] md:w-[13.3rem] xs:mt-[1.5rem]  flex flex-col justify-center">
+            <div className="font-body sm:text-2xl text-xs xl:w-[24.4rem] xs:w-[8.9rem] w-[6.2rem] md:w-[13.3rem] xs:mt-[1.5rem]  flex flex-col justify-center">
               <p>Hi 🦝</p>
               <p>I&apos;m a frontend developer</p>
               <p>from Belgium</p>
@@ -108,9 +113,9 @@ export default function Home() {
         ]}
       />
 
-      <main className="w-full h-full z-20 grid sm:grid-cols-2 grid-cols-1 dark:divide-dark-secondary divide-light-secondary">
+      <main className="w-full h-full z-20 grid grid-cols-2 dark:divide-dark-secondary divide-light-secondary">
         <Project
-          className="sm:border-r border-b "
+          className="border-r"
           link={"/project/flanders"}
           title="Flanders AAB"
           image="assets/images/web/lynx-logo.svg"
@@ -119,13 +124,12 @@ export default function Home() {
           title={"MUSICIANS"}
           link={"/project/musicians"}
           image={"assets/images/web/musicians.png"}
-          className="sm:border-r"
         />
         <Project
           title={"PORTFOLIOS"}
           link={"/project/portfolios"}
           image={"assets/images/web/20s-portfolio-dark.png"}
-          className="sm:border-r border-t"
+          className="border-r border-t"
         />
         <Project
           title={"DND APP"}

@@ -1,10 +1,10 @@
 "use client";
 
-import { useGLTF, useProgress } from "@react-three/drei";
+import { useGLTF } from "@react-three/drei";
 
 export function Model(props: any) {
   const { nodes, materials }: any = useGLTF("/assets/pangolin.gltf");
-  const { progress } = useProgress();
+
   return (
     <group {...props} dispose={null}>
       <group position={[0, 19.75, 0]} scale={6.68}>

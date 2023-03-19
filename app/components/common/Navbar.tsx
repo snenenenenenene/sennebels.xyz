@@ -3,12 +3,12 @@
 
 import Link from "next/link";
 import { useSelectedLayoutSegment } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { FaMoon, FaSun } from "react-icons/fa";
 export const Navbar = () => {
   const [theme, setTheme] = useState("");
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const theme = JSON.parse(localStorage.getItem("theme") as string);
     if (
       (!theme && window.matchMedia("(prefers-color-scheme: dark)").matches) ||

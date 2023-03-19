@@ -1,7 +1,6 @@
 import Head from "next/head";
 import Script from "next/script";
 import { ReactNode } from "react";
-import Analytics from "./components/common/Analytics";
 import { Navbar } from "./components/common/Navbar";
 import "./globals.css";
 
@@ -57,8 +56,21 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         />
       </Head>
       <body>
-        <Analytics />
         <Script
+          src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){window.dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', '${GA_MEASUREMENT_ID}');
+        `}
+        </Script>
+        {/* <Analytics /> */}
+        {/* <Script
           src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
         />
         <Script id="google-analytics">
@@ -68,7 +80,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     gtag('js', new Date());
     gtag('config', '${GA_MEASUREMENT_ID}');
   `}
-        </Script>
+        </Script> */}
         <div className="w-screen scroll-smooth overflow-x-hidden text-light-secondary dark:text-dark-secondary flex flex-col bg-light-primary dark:bg-dark-primary">
           <Navbar />
           {children}
