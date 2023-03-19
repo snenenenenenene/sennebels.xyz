@@ -2,7 +2,9 @@
 
 import { useProgress } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
-import { Suspense, useRef, useState } from "react";
+import { trackGoal } from "fathom-client";
+import GSAP from "gsap";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { TfiEmail, TfiGithub, TfiLinkedin } from "react-icons/tfi";
 import { House } from "./components/common/House";
 import { Marquee } from "./components/common/Marquee";
@@ -10,6 +12,7 @@ import { Model } from "./components/common/Model";
 import { Project } from "./components/common/Project";
 import { ThreeDProjects } from "./components/common/ThreeDProjects";
 import { MotionHover } from "./components/three/3d";
+
 export default function Home() {
   const { progress } = useProgress();
   const [mousePos, setMousePos] = useState<{ x: number; y: number }>({
@@ -18,7 +21,102 @@ export default function Home() {
   });
   const modelRef: any = useRef();
 
+  const timeline = GSAP.timeline();
+
   const [ThreeDHoverPath, setThreeDHoverPath] = useState<string>("");
+
+  useEffect(() => {
+    const lol = async () => {
+      await new Promise(() => {
+        // setTimeout(() => {}, 100);
+
+        // await new Promise(() => {
+        const letterYDuration: number = 0.2;
+        const letterScaleAmplifier: number = 2;
+        const letterY: number = 150;
+        timeline
+          .to(".L", {
+            scaleX: 1,
+            scaleY: letterScaleAmplifier,
+            yPercent: letterY,
+            duration: letterYDuration,
+            ease: "back.out(1.7)",
+          })
+          .to(".O", {
+            scaleX: 1,
+            scaleY: letterScaleAmplifier,
+            yPercent: letterY,
+            duration: letterYDuration,
+            ease: "back.out(1.7)",
+          })
+          .to(".A", {
+            scaleX: 1,
+            scaleY: letterScaleAmplifier,
+            yPercent: letterY,
+            duration: letterYDuration,
+            ease: "back.out(1.7)",
+          })
+          .to(".D", {
+            scaleX: 1,
+            scaleY: letterScaleAmplifier,
+            yPercent: letterY,
+            duration: letterYDuration,
+            ease: "back.out(1.7)",
+          })
+          .to(".I", {
+            scaleX: 1,
+            scaleY: letterScaleAmplifier,
+            yPercent: letterY,
+            duration: letterYDuration,
+            ease: "back.out(1.7)",
+          })
+          .to(".N", {
+            scaleX: 1,
+            scaleY: letterScaleAmplifier,
+            yPercent: letterY,
+            duration: letterYDuration,
+            ease: "back.out(1.7)",
+          })
+          .to(".G", {
+            scaleX: 1,
+            scaleY: letterScaleAmplifier,
+            yPercent: letterY,
+            duration: letterYDuration,
+            ease: "back.out(1.7)",
+          });
+        if (progress === 100) {
+          timeline.to(".loading", {
+            yPercent: 100,
+            delay: 0.2,
+            duration: 0.5,
+          });
+        }
+
+        // timeline
+        //   .to(".intro-text .animatedis", {
+        //     yPercent: 0,
+        //     stagger: 0.05,
+        //     ease: "back.out(1.7)",
+        //   })
+        //   .to(
+        //     ".arrow-svg-wrapper",
+        //     {
+        //       opacity: 1,
+        //     },
+        //     "same"
+        //   )
+        //   .to(
+        //     ".toggle-bar",
+        //     {
+        //       opacity: 1,
+        //       onComplete: resolve,
+        //     },
+        //     "same"
+        //   );
+      });
+    };
+    lol();
+  }, [progress]);
 
   return (
     <div
@@ -30,11 +128,33 @@ export default function Home() {
       }}
       className="w-full h-full flex flex-col relative"
     >
-      {progress < 100 && (
-        <div className="fixed flex inset-0 w-full h-full z-50 justify-center items-center bg-light-primary dark:bg-dark-primary">
-          <p className="text-9xl">{progress}</p>
-        </div>
-      )}
+      <div
+        id="loading"
+        className="loading fixed flex inset-0 w-full h-full z-50 justify-center items-center bg-light-primary dark:bg-dark-primary text-9xl font-bold"
+      >
+        <span className="L" id="L">
+          L
+        </span>
+        <span className="O" id="O">
+          O
+        </span>
+        <span className="A" id="A">
+          A
+        </span>
+        <span className="D" id="D">
+          D
+        </span>
+        <span className="I" id="I">
+          I
+        </span>
+        <span className="N" id="N">
+          N
+        </span>
+        <span className="G" id="G">
+          G
+        </span>
+      </div>
+
       <Canvas style={{ height: "100%", position: "absolute" }}>
         <Suspense fallback={null}>
           <ambientLight intensity={1} />
@@ -206,7 +326,12 @@ export default function Home() {
         </h2>
         <section className="text-7xl flex sm:px-40 px-10 justify-between gap-x-10 sm:mt-[37rem] mt-[32rem] pb-10 xs:pb-0">
           <div>
-            <a href="https://www.linkedin.com/in/sennebels/">
+            <a
+              onClick={() => {
+                trackGoal("WCZORUSQ", 1);
+              }}
+              href="https://www.linkedin.com/in/sennebels/"
+            >
               <TfiLinkedin />
             </a>
           </div>
@@ -214,6 +339,8 @@ export default function Home() {
             <p
               className="cursor-pointer"
               onClick={() => {
+                trackGoal("8NISL3IS", 1);
+
                 navigator.clipboard.writeText("sennebels@gmail.com");
               }}
             >
@@ -221,7 +348,12 @@ export default function Home() {
             </p>
           </div>
           <div>
-            <a href="https://github.com/snenenenenenene">
+            <a
+              onClick={() => {
+                trackGoal("GBJADGK1", 1);
+              }}
+              href="https://github.com/snenenenenenene"
+            >
               <TfiGithub />
             </a>
           </div>
