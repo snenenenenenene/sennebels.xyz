@@ -66,7 +66,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           function gtag(){window.dataLayer.push(arguments);}
           gtag('js', new Date());
 
-          gtag('config', '${GA_MEASUREMENT_ID}');
+          gtag('config', 'G-5ZN3KTKYRV');
         `}
         </Script>
         {/* <Analytics /> */}
