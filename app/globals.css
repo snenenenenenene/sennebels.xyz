@@ -46,3 +46,9 @@ html {
     -webkit-text-stroke: 4px #fff7f0;
   }
 }
+
+@layer base {
+  html {
+    @apply scroll-smooth;
+  }
+}

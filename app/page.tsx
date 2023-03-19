@@ -3,8 +3,7 @@
 import { useProgress } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { trackGoal } from "fathom-client";
-import GSAP from "gsap";
-import { Suspense, useEffect, useRef, useState } from "react";
+import { Suspense, useContext, useEffect, useRef, useState } from "react";
 import { TfiEmail, TfiGithub, TfiLinkedin } from "react-icons/tfi";
 import { House } from "./components/common/House";
 import { Marquee } from "./components/common/Marquee";
@@ -12,6 +11,7 @@ import { Model } from "./components/common/Model";
 import { Project } from "./components/common/Project";
 import { ThreeDProjects } from "./components/common/ThreeDProjects";
 import { MotionHover } from "./components/three/3d";
+import { AppLoader } from "./utils/AppLoader";
 
 export default function Home() {
   const { progress } = useProgress();
@@ -20,102 +20,14 @@ export default function Home() {
     y: 0,
   });
   const modelRef: any = useRef();
-
-  const timeline = GSAP.timeline();
-
   const [ThreeDHoverPath, setThreeDHoverPath] = useState<string>("");
+  const { isLoaded, firstTransition } = useContext(AppLoader);
 
   useEffect(() => {
-    const lol = async () => {
-      await new Promise(() => {
-        // setTimeout(() => {}, 100);
-
-        // await new Promise(() => {
-        const letterYDuration: number = 0.2;
-        const letterScaleAmplifier: number = 2;
-        const letterY: number = 150;
-        timeline
-          .to(".L", {
-            scaleX: 1,
-            scaleY: letterScaleAmplifier,
-            yPercent: letterY,
-            duration: letterYDuration,
-            ease: "back.out(1.7)",
-          })
-          .to(".O", {
-            scaleX: 1,
-            scaleY: letterScaleAmplifier,
-            yPercent: letterY,
-            duration: letterYDuration,
-            ease: "back.out(1.7)",
-          })
-          .to(".A", {
-            scaleX: 1,
-            scaleY: letterScaleAmplifier,
-            yPercent: letterY,
-            duration: letterYDuration,
-            ease: "back.out(1.7)",
-          })
-          .to(".D", {
-            scaleX: 1,
-            scaleY: letterScaleAmplifier,
-            yPercent: letterY,
-            duration: letterYDuration,
-            ease: "back.out(1.7)",
-          })
-          .to(".I", {
-            scaleX: 1,
-            scaleY: letterScaleAmplifier,
-            yPercent: letterY,
-            duration: letterYDuration,
-            ease: "back.out(1.7)",
-          })
-          .to(".N", {
-            scaleX: 1,
-            scaleY: letterScaleAmplifier,
-            yPercent: letterY,
-            duration: letterYDuration,
-            ease: "back.out(1.7)",
-          })
-          .to(".G", {
-            scaleX: 1,
-            scaleY: letterScaleAmplifier,
-            yPercent: letterY,
-            duration: letterYDuration,
-            ease: "back.out(1.7)",
-          });
-        if (progress === 100) {
-          timeline.to(".loading", {
-            yPercent: 100,
-            delay: 0.2,
-            duration: 0.5,
-          });
-        }
-
-        // timeline
-        //   .to(".intro-text .animatedis", {
-        //     yPercent: 0,
-        //     stagger: 0.05,
-        //     ease: "back.out(1.7)",
-        //   })
-        //   .to(
-        //     ".arrow-svg-wrapper",
-        //     {
-        //       opacity: 1,
-        //     },
-        //     "same"
-        //   )
-        //   .to(
-        //     ".toggle-bar",
-        //     {
-        //       opacity: 1,
-        //       onComplete: resolve,
-        //     },
-        //     "same"
-        //   );
-      });
-    };
-    lol();
+    console.log(progress);
+    if (progress === 100) {
+      firstTransition();
+    }
   }, [progress]);
 
   return (
@@ -128,32 +40,34 @@ export default function Home() {
       }}
       className="w-full h-full flex flex-col relative"
     >
-      <div
-        id="loading"
-        className="loading fixed flex inset-0 w-full h-full z-50 justify-center items-center bg-light-primary dark:bg-dark-primary text-9xl font-bold"
-      >
-        <span className="L" id="L">
-          L
-        </span>
-        <span className="O" id="O">
-          O
-        </span>
-        <span className="A" id="A">
-          A
-        </span>
-        <span className="D" id="D">
-          D
-        </span>
-        <span className="I" id="I">
-          I
-        </span>
-        <span className="N" id="N">
-          N
-        </span>
-        <span className="G" id="G">
-          G
-        </span>
-      </div>
+      {!isLoaded && (
+        <div
+          id="loading"
+          className="loading fixed flex inset-0 w-full h-full z-50 justify-center items-center bg-light-primary dark:bg-dark-primary text-9xl font-bold"
+        >
+          <span className="L" id="L">
+            L
+          </span>
+          <span className="O" id="O">
+            O
+          </span>
+          <span className="A" id="A">
+            A
+          </span>
+          <span className="D" id="D">
+            D
+          </span>
+          <span className="I" id="I">
+            I
+          </span>
+          <span className="N" id="N">
+            N
+          </span>
+          <span className="G" id="G">
+            G
+          </span>
+        </div>
+      )}
 
       <Canvas style={{ height: "100%", position: "absolute" }}>
         <Suspense fallback={null}>

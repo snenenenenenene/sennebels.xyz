@@ -1,39 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
+import { useTheme } from "next-themes";
 import Link from "next/link";
 import { useSelectedLayoutSegment } from "next/navigation";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FaMoon, FaSun } from "react-icons/fa";
 export const Navbar = () => {
-  const [theme, setTheme] = useState("");
+  const { theme, setTheme } = useTheme();
+  // const currentTheme = theme === 'system' ? systemTheme : theme;
 
-  useLayoutEffect(() => {
-    const theme = JSON.parse(localStorage.getItem("theme") as string);
-    if (
-      (!theme && window.matchMedia("(prefers-color-scheme: dark)").matches) ||
-      theme === "dark"
-    ) {
-      setTheme("dark");
-      document.documentElement.classList.add("dark");
-    } else {
-      setTheme("light");
-      document.documentElement.classList.remove("dark");
-    }
-  }, [theme]);
-
-  // toggle theme
-  function toggleTheme() {
-    if (theme === "light") {
-      localStorage.setItem("theme", JSON.stringify("dark"));
-      setTheme("dark");
-      document.documentElement.classList.add("dark");
-    } else {
-      localStorage.setItem("theme", JSON.stringify("light"));
-      setTheme("light");
-      document.documentElement.classList.remove("dark");
-    }
-  }
   const navbar = useRef<any>(null);
   const [show, setShow] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
@@ -104,7 +80,9 @@ export const Navbar = () => {
       >
         <button
           title="Toggle Theme"
-          onClick={() => toggleTheme()}
+          onClick={() =>
+            theme == "dark" ? setTheme("light") : setTheme("dark")
+          }
           className="
         w-10
         h-5

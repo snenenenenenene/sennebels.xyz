@@ -3,6 +3,7 @@ import { ReactNode } from "react";
 import Analytics from "./components/common/Analytics";
 import { Navbar } from "./components/common/Navbar";
 import "./globals.css";
+import { Providers } from "./Providers";
 
 export const metadata = {
   title: "Senne Bels",
@@ -56,21 +57,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       </Head>
       <body>
         <Analytics />
-        {/* <Script
-          src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
-        />
-        <Script id="google-analytics">
-          {`
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){window.dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', '${GA_MEASUREMENT_ID}');
-  `}
-        </Script> */}
-        <div className="w-screen scroll-smooth overflow-x-hidden text-light-secondary dark:text-dark-secondary flex flex-col bg-light-primary dark:bg-dark-primary">
-          <Navbar />
-          {children}
-        </div>
+        <Providers>
+          <div className="w-screen scroll-smooth overflow-x-hidden text-light-secondary dark:text-dark-secondary flex flex-col bg-light-primary dark:bg-dark-primary">
+            <Navbar />
+            {children}
+          </div>
+        </Providers>
       </body>
     </html>
   );
