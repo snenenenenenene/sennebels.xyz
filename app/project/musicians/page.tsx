@@ -48,7 +48,7 @@ export default function Musicians() {
               fill
               alt="image-1"
               src="/assets/images/web/musicians.png"
-              className="w-full"
+              className="w-full object-contain"
             />
           </section>
           <section className="relative object-cover w-full h-96">
@@ -56,7 +56,7 @@ export default function Musicians() {
               fill
               alt="image-1"
               src="/assets/images/web/swiping.png"
-              className="w-full"
+              className="w-full object-contain"
             />
           </section>
           <section className="relative object-cover w-full h-96">
@@ -64,7 +64,7 @@ export default function Musicians() {
               fill
               alt="image-1"
               src="/assets/images/web/artist.png"
-              className="w-full"
+              className="w-full object-contain"
             />
           </section>
         </div>

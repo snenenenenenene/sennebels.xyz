@@ -44,8 +44,16 @@ export default function Dnd() {
             <Image
               alt="image-1"
               src="/assets/images/web/dnd-app.png"
-              className="w-full"
+              className="w-full object-cover"
               fill
+            />
+          </section>
+          <section className="relative object-contain w-full h-96">
+            <Image
+              fill
+              alt="image-1"
+              src="/assets/images/web/dnd-app.png"
+              className="w-full object-contain"
             />
           </section>
           <section className="relative object-cover w-full h-96">
@@ -53,15 +61,7 @@ export default function Dnd() {
               fill
               alt="image-1"
               src="/assets/images/web/dnd-app.png"
-              className="w-full"
-            />
-          </section>
-          <section className="relative object-cover w-full h-96">
-            <Image
-              fill
-              alt="image-1"
-              src="/assets/images/web/dnd-app.png"
-              className="w-full"
+              className="w-full object-contain"
             />
           </section>
         </div>

@@ -127,14 +127,14 @@ export default function ThreePortfolio() {
                 fill
                 alt="image-1"
                 src={"/assets/images/web/current-portfolio-dark.png"}
-                className="w-full"
+                className="w-full object-contain"
               />
             ) : (
               <Image
                 fill
                 alt="image-1"
                 src={"/assets/images/web/current-portfolio.png"}
-                className="w-full"
+                className="w-full object-contain"
               />
             )}
           </section>
@@ -144,14 +144,14 @@ export default function ThreePortfolio() {
                 fill
                 alt="image-1"
                 src="/assets/images/web/20s-portfolio-dark.png"
-                className="w-full"
+                className="w-full object-contain"
               />
             ) : (
               <Image
                 fill
                 alt="image-1"
                 src="/assets/images/web/20s-portfolio.png"
-                className="w-full"
+                className="w-full object-contain"
               />
             )}
           </section>
@@ -161,14 +161,14 @@ export default function ThreePortfolio() {
                 fill
                 alt="image-1"
                 src="/assets/images/web/room-portfolio-dark.png"
-                className="w-full"
+                className="w-full object-contain"
               />
             ) : (
               <Image
                 fill
                 alt="image-1"
                 src="/assets/images/web/room-portfolio.png"
-                className="w-full"
+                className="w-full object-contain"
               />
             )}
           </section>
@@ -177,7 +177,7 @@ export default function ThreePortfolio() {
               fill
               alt="image-1"
               src="/assets/images/web/3d.png"
-              className="w-full"
+              className="w-full object-contain"
             />
           </section>
         </div>
