@@ -1,5 +1,5 @@
+import { Analytics } from "@vercel/analytics/react";
 import { ReactNode } from "react";
-import Analytics from "./components/common/Analytics";
 import { Navbar } from "./components/common/Navbar";
 import "./globals.css";
 import { Providers } from "./Providers";
