@@ -19,7 +19,7 @@ export const Marquee = ({
 
       <div className="absolute px-2 animate-marquee2 items-center whitespace-nowrap flex gap-x-4">
         {wordList.map((word: string, i: number) => (
-          <p key={word + i} className=" text-center">
+          <p key={word + i} className=" text-center translate-y-2">
             {word}
           </p>
         ))}

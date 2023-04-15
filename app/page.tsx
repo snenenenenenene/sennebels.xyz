@@ -8,8 +8,8 @@ import { Suspense, useContext, useEffect, useRef, useState } from "react";
 import { TfiEmail, TfiGithub, TfiLinkedin } from "react-icons/tfi";
 import { House } from "./components/common/House";
 import { Marquee } from "./components/common/Marquee";
-import { Model } from "./components/common/Model";
 import { Project } from "./components/common/Project";
+import Tanuki from "./components/common/Tanuki";
 import { ThreeDProjects } from "./components/common/ThreeDProjects";
 import { MotionHover } from "./components/three/3d";
 import { AppLoader } from "./utils/AppLoader";
@@ -72,9 +72,9 @@ export default function Home() {
 
       <Canvas style={{ height: "100%", position: "absolute" }}>
         <Suspense fallback={null}>
+          <pointLight position={[10, 10, 10]} color="#fff0f0" />
           <ambientLight intensity={1} />
-          <pointLight intensity={2} />
-          <Model
+          {/* <Model
             ref={modelRef}
             scale={3}
             position={[130, 260, -500]}
@@ -82,6 +82,16 @@ export default function Home() {
               0 - mousePos.x / 5000,
               -Math.PI / 3 + mousePos.y / 5000,
               -Math.PI / 8,
+            ]}
+          /> */}
+          <Tanuki
+            ref={modelRef}
+            scale={35}
+            position={[130, 220, -500]}
+            rotation={[
+              Math.PI / 6 - mousePos.x / 5000,
+              Math.PI / 1.3 + mousePos.y / 5000,
+              0,
             ]}
           />
 
@@ -92,7 +102,11 @@ export default function Home() {
               image={ThreeDHoverPath}
             />
           )}
-          <House scale={3} position={[0, -180, -400]} rotation={[0, 0, 0]} />
+          <House
+            scale={3}
+            position={[0, -210, -400]}
+            rotation={[0, 0, Math.PI / -10]}
+          />
         </Suspense>
       </Canvas>
       <main className="sm:px-8 px-4 sm:pt-40 pt-20 flex w-full relative">
@@ -223,15 +237,15 @@ export default function Home() {
         <h2 className="font-Cube leading-[10rem] sm:text-[4rem] text-[6rem] text-center absolute left-1/2 top-1/2 -translate-y-1/2  -translate-x-1/2 dark:font-outline-dark-4 font-outline-4 ">
           Reach out
         </h2>
-        <section className="text-7xl flex sm:px-40 px-10 justify-between gap-x-10 sm:mt-[37rem] mt-[32rem] pb-10 xs:pb-0">
-          <div>
+        <section className="text-7xl flex sm:px-40 px-10 2xl:px-[42rem] justify-between gap-x-10 sm:mt-[37rem] mt-[32rem] pb-10 xs:pb-0">
+          <div className="cursor-pointer hover:scale-110">
             <a href="https://www.linkedin.com/in/sennebels/">
               <TfiLinkedin />
             </a>
           </div>
           <div>
             <p
-              className="cursor-pointer"
+              className="cursor-pointer hover:scale-110"
               onClick={() => {
                 navigator.clipboard.writeText("sennebels@gmail.com");
               }}
@@ -239,7 +253,7 @@ export default function Home() {
               <TfiEmail />
             </p>
           </div>
-          <div>
+          <div className="cursor-pointer hover:scale-110">
             <a href="https://github.com/snenenenenenene">
               <TfiGithub />
             </a>
