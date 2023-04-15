@@ -2,13 +2,40 @@
 @tailwind components;
 @tailwind utilities;
 
-::-webkit-scrollbar {
+/* ::-webkit-scrollbar {
   width: 0;
-}
+} */
 
 @font-face {
   font-family: DugasPro;
   src: url("../public/assets/dugas-pro-ultra.woff");
+}
+
+@font-face {
+  font-family: Capuche;
+  src: url("../public/assets/capuche.otf");
+}
+
+@font-face {
+  font-family: Codigra;
+  src: url("../public/assets/Codigra.ttf");
+}
+@font-face {
+  font-family: MarioKart;
+  src: url("../public/assets/Mario-Kart-DS.ttf");
+}
+@font-face {
+  font-family: SuperMario;
+  src: url("../public/assets/SuperMario256.ttf");
+}
+@font-face {
+  font-family: Chlorine;
+  src: url("../public/assets/CHLORINP.TTF");
+}
+
+@font-face {
+  font-family: Minecraft;
+  src: url("../public/assets/Minecrafter.ttf");
 }
 
 @font-face {
@@ -19,6 +46,51 @@
 @font-face {
   font-family: HelveticaNeue;
   src: url("../public/assets/Helvetica\ Neue\ Regular.otf");
+}
+
+@font-face {
+  font-family: AbstractGroovy;
+  src: url("../public/assets/aAbstractGroovy.otf");
+}
+
+@font-face {
+  font-family: BlueOcean;
+  src: url("../public/assets/BLUE\ OCEAN.ttf");
+}
+
+@font-face {
+  font-family: Qbicle;
+  src: url("../public/assets/Qbicle1BRKMKinv.ttf");
+}
+
+@font-face {
+  font-family: MinecraftPE;
+  src: url("../public/assets/MINECRAFT\ PE.ttf");
+}
+
+@font-face {
+  font-family: Retrotype;
+  src: url("../public/assets/Retrotype.ttf");
+}
+
+@font-face {
+  font-family: Truckin;
+  src: url("../public/assets/KeeponTruckin.ttf");
+}
+
+@font-face {
+  font-family: Herkules;
+  src: url("../public/assets/Herkules.otf");
+}
+
+@font-face {
+  font-family: Cube;
+  src: url("../public/assets/Cube.ttf");
+}
+
+@font-face {
+  font-family: Euphoria;
+  src: url("../public/assets/EuphoriaParty.ttf");
 }
 
 html {
