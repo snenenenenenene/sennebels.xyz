@@ -2,7 +2,8 @@
 
 import { useProgress } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
-import { trackGoal } from "fathom-client";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Suspense, useContext, useEffect, useRef, useState } from "react";
 import { TfiEmail, TfiGithub, TfiLinkedin } from "react-icons/tfi";
 import { House } from "./components/common/House";
@@ -14,6 +15,7 @@ import { MotionHover } from "./components/three/3d";
 import { AppLoader } from "./utils/AppLoader";
 
 export default function Home() {
+  gsap.registerPlugin(ScrollTrigger);
   const { progress } = useProgress();
   const [mousePos, setMousePos] = useState<{ x: number; y: number }>({
     x: 0,
@@ -24,7 +26,6 @@ export default function Home() {
   const { isLoaded, firstTransition } = useContext(AppLoader);
 
   useEffect(() => {
-    console.log(progress);
     if (progress === 100) {
       firstTransition();
     }
@@ -38,7 +39,7 @@ export default function Home() {
         setMousePos({ x: x, y: y });
         // setMousePos({ x: e.clientX, y: e.clientY });
       }}
-      className="w-full h-full flex flex-col relative"
+      className="flex flex-col relative"
     >
       {!isLoaded && (
         <div
@@ -91,7 +92,7 @@ export default function Home() {
               image={ThreeDHoverPath}
             />
           )}
-          <House scale={7} position={[0, -250, -400]} rotation={[0, 0, 0]} />
+          <House scale={3} position={[0, -180, -400]} rotation={[0, 0, 0]} />
         </Suspense>
       </Canvas>
       <main className="sm:px-8 px-4 sm:pt-40 pt-20 flex w-full relative">
@@ -142,8 +143,6 @@ export default function Home() {
           "🐢",
           "WEB DEVELOPMENT",
           "🦥",
-          "WEB DEVELOPMENT",
-          "🦦",
         ]}
       />
 
@@ -185,20 +184,6 @@ export default function Home() {
           "🦥",
           "3D MODELS",
           "🦦",
-          "3D MODELS",
-          "🦥",
-          "3D MODELS",
-          "🦦",
-          "3D MODELS",
-          "🦥",
-          "3D MODELS",
-          "🦦",
-          "3D MODELS",
-          "🦥",
-          "3D MODELS",
-          "🦦",
-          "3D MODELS",
-          "🦥",
         ]}
       />
       <main className="w-full h-[20rem] flex flex-col relative">
@@ -235,17 +220,12 @@ export default function Home() {
         </section>
       </main>
       <main className="w-full h-[35rem] xs:h-[40rem] md:h-[55rem] sm:py-40 border-t dark:border-dark-secondary border-light-secondary relative">
-        <h2 className="font-bold sm:text-[13rem] text-[6rem] text-center absolute left-1/2 top-1/2 -translate-y-1/2  -translate-x-1/2 dark:font-outline-4 font-outline-dark-4 ">
+        <h2 className="font-Cube leading-[10rem] sm:text-[4rem] text-[6rem] text-center absolute left-1/2 top-1/2 -translate-y-1/2  -translate-x-1/2 dark:font-outline-dark-4 font-outline-4 ">
           Reach out
         </h2>
         <section className="text-7xl flex sm:px-40 px-10 justify-between gap-x-10 sm:mt-[37rem] mt-[32rem] pb-10 xs:pb-0">
           <div>
-            <a
-              onClick={() => {
-                trackGoal("WCZORUSQ", 1);
-              }}
-              href="https://www.linkedin.com/in/sennebels/"
-            >
+            <a href="https://www.linkedin.com/in/sennebels/">
               <TfiLinkedin />
             </a>
           </div>
@@ -253,8 +233,6 @@ export default function Home() {
             <p
               className="cursor-pointer"
               onClick={() => {
-                trackGoal("8NISL3IS", 1);
-
                 navigator.clipboard.writeText("sennebels@gmail.com");
               }}
             >
@@ -262,12 +240,7 @@ export default function Home() {
             </p>
           </div>
           <div>
-            <a
-              onClick={() => {
-                trackGoal("GBJADGK1", 1);
-              }}
-              href="https://github.com/snenenenenenene"
-            >
+            <a href="https://github.com/snenenenenenene">
               <TfiGithub />
             </a>
           </div>
