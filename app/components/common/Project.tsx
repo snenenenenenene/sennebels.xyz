@@ -14,7 +14,7 @@ export const Project = ({
 }) => {
   return (
     <section
-      className={` ${className} w-full xl:h-[30rem] lg:h-[20rem] md:h-[20rem] xs:h-[30rem] h-[10rem] dark:border-dark-secondary border-light-secondary`}
+      className={` ${className} w-full 2xl:h-[45rem] xl:h-[30rem] lg:h-[30rem] md:h-[30rem] xs:h-[30rem] h-[10rem] dark:border-dark-secondary border-light-secondary`}
     >
       <Link
         href={link}
