@@ -2,9 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ::-webkit-scrollbar {
+::-webkit-scrollbar {
   width: 0;
-} */
+}
 
 @font-face {
   font-family: DugasPro;
@@ -116,6 +116,22 @@ html {
   }
   .font-outline-dark-4 {
     -webkit-text-stroke: 4px #fff7f0;
+  }
+
+  @keyframes pulse {
+    from,
+    to {
+      scale: 1;
+    }
+
+    50% {
+      scale: 1.08;
+    }
+  }
+
+  .noise {
+    animation: pulse 800ms ease-in-out;
+    filter: url(#noise);
   }
 }
 

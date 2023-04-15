@@ -1,6 +1,6 @@
 export const Marquee = ({
   wordList,
-  className,
+  className = "",
 }: {
   wordList: string[];
   className?: string;

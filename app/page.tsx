@@ -6,7 +6,6 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Suspense, useContext, useEffect, useRef, useState } from "react";
 import { TfiEmail, TfiGithub, TfiLinkedin } from "react-icons/tfi";
-import { House } from "./components/common/House";
 import { Marquee } from "./components/common/Marquee";
 import { Project } from "./components/common/Project";
 import Tanuki from "./components/common/Tanuki";
@@ -76,13 +75,9 @@ export default function Home() {
           <ambientLight intensity={1} />
           {/* <Model
             ref={modelRef}
-            scale={3}
-            position={[130, 260, -500]}
-            rotation={[
-              0 - mousePos.x / 5000,
-              -Math.PI / 3 + mousePos.y / 5000,
-              -Math.PI / 8,
-            ]}
+            scale={2}
+            rotation={[Math.PI / 2, -Math.PI / 4, Math.PI / 4]}
+            position={[0, -210, -400]}
           /> */}
           <Tanuki
             ref={modelRef}
@@ -98,22 +93,17 @@ export default function Home() {
           {ThreeDHoverPath !== "" && (
             <MotionHover
               scale={0.1}
-              position={[mousePos.x / 1000 - 0.3, -mousePos.y / 1000 + 1, 0]}
               image={ThreeDHoverPath}
+              position={undefined}
             />
           )}
-          <House
-            scale={3}
-            position={[0, -210, -400]}
-            rotation={[0, 0, Math.PI / -10]}
-          />
         </Suspense>
       </Canvas>
-      <main className="sm:px-8 px-4 sm:pt-40 pt-20 flex w-full relative">
-        <h1 className="z-10 font-display lg:text-[27.5rem] xl:text-[27.5rem] md:text-[15rem] xl:leading-[26.2rem] lg:leading-[26rem] xs:leading-[9.5rem] leading-[6.7rem] md:leading-[14rem] xs:text-[10rem] text-[7rem]">
-          <div>Senne Bels</div>
+      <main className="sm:px-8 px-4 sm:pt-40 pt-20 flex h-full w-full relative">
+        <h1 className="z-10 font-display 2xl:text-[44.2rem] 2xl:leading-[42rem] lg:text-[27.5rem] xl:text-[27.5rem] md:text-[15rem] xl:leading-[26.2rem] lg:leading-[26rem] xs:leading-[9.5rem] leading-[6.7rem] md:leading-[14rem] xs:text-[10rem] text-[7rem]">
+          <div className="tracking-wide">Senne Bels</div>
           <div className="flex">
-            <div className="font-body sm:text-2xl text-xs xl:w-[24.4rem] xs:w-[8.9rem] w-[6.2rem] md:w-[13.3rem] xs:mt-[1.5rem]  flex flex-col justify-center">
+            <div className="font-body 2xl:text-[4rem] 2xl:leading-[4rem] sm:text-2xl text-xs 2xl:w-[39.2rem] xl:w-[24.4rem] xs:w-[8.9rem] w-[6.2rem] md:w-[13.3rem] xs:mt-[1.5rem]  flex flex-col justify-center">
               <p>Hi 🦝</p>
               <p>I&apos;m a frontend developer</p>
               <p>from Belgium</p>
@@ -122,31 +112,6 @@ export default function Home() {
           </div>
         </h1>
       </main>
-      {/* <Marquee
-        wordList={[
-          "Welcome",
-          "🦝",
-          "欢迎",
-          "🦥",
-          "Bienvenue",
-          "🦦",
-          "いらっしゃいませ",
-          "🦨",
-          "Willkommen",
-          "🐉",
-          "مرحباً",
-          "🦕",
-          "Bienvenido",
-          "🍄",
-          "добро пожаловать",
-          "🍁",
-          "Benvenuto",
-          "🐌",
-          "स्वागत",
-          "🐢",
-        ]}
-      />
-      <main className="w-full h-20 sm:h-96 sm:py-40"></main> */}
       <Marquee
         wordList={[
           "WEB DEVELOPMENT",
@@ -234,7 +199,7 @@ export default function Home() {
         </section>
       </main>
       <main className="w-full h-[35rem] xs:h-[40rem] md:h-[55rem] sm:py-40 border-t dark:border-dark-secondary border-light-secondary relative">
-        <h2 className="font-Cube leading-[10rem] sm:text-[4rem] text-[6rem] text-center absolute left-1/2 top-1/2 -translate-y-1/2  -translate-x-1/2 dark:font-outline-dark-4 font-outline-4 ">
+        <h2 className="font-display leading-[7rem] sm:text-[10rem] 2xl:text-[30rem] text-[6rem] text-center absolute left-1/2 top-1/2 -translate-y-1/2  -translate-x-1/2 ">
           Reach out
         </h2>
         <section className="text-7xl flex sm:px-40 px-10 2xl:px-[42rem] justify-between gap-x-10 sm:mt-[37rem] mt-[32rem] pb-10 xs:pb-0">
