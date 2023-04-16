@@ -6,7 +6,7 @@ export default function Flanders() {
   return (
     <div className="w-full min-h-screen h-full pt-20 flex-col">
       <main className="md:px-24 px-8 my-10 md:my-32 flex h-full flex-col md:flex-row relative">
-        <div className="w-full md:w-1/2 pr-24 max-h-fit">
+        <div className="w-full md:w-1/2 md:pr-24 max-h-fit">
           <h1 className="font-display text-8xl mb-8">AGENCY OF HOME AFFAIRS</h1>
           <p>
             After my last year of university, I was eager to gain more
@@ -61,7 +61,7 @@ export default function Flanders() {
             continue to use my skills to make a difference.
           </p>
 
-          <section className="flex font-body my-20 xs:mt-40">
+          <section className="flex font-body my-4 md:my-20 xs:mt-40">
             <span className="flex flex-col">
               <p>YEAR</p>
               <p> 2023</p>
@@ -86,8 +86,8 @@ export default function Flanders() {
             </span>
           </section>
         </div>
-        <div className="w-full md:w-1/2 h-full flex flex-col gap-y-20">
-          <section className="relative object-cover w-full h-96">
+        <div className="w-full md:w-1/2 h-full flex flex-col gap-y-4 md:gap-y-20">
+          <section className="relative object-cover w-full h-[20rem]">
             <Image
               fill
               alt="image-1"
@@ -95,7 +95,7 @@ export default function Flanders() {
               className="w-full object-contain"
             />
           </section>
-          <section className="relative object-cover w-full h-96">
+          <section className="relative object-cover w-full h-[20rem]">
             <Image
               fill
               alt="image-1"
@@ -103,7 +103,7 @@ export default function Flanders() {
               className="w-full object-contain"
             />
           </section>
-          <section className="relative object-cover w-full h-96">
+          <section className="relative object-cover w-full h-[20rem]">
             <Image
               fill
               alt="image-1"

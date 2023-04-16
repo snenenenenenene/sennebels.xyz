@@ -100,28 +100,24 @@ export default function Home() {
         </Suspense>
       </Canvas>
       <main className="sm:px-8 px-4 sm:pt-40 pt-20 flex h-full w-full relative">
-        <h1 className="z-10 font-display 2xl:text-[44.2rem] 2xl:leading-[42rem] lg:text-[27.5rem] xl:text-[27.5rem] md:text-[15rem] xl:leading-[26.2rem] lg:leading-[26rem] xs:leading-[9.5rem] leading-[6.7rem] md:leading-[14rem] xs:text-[10rem] text-[7rem]">
+        <h1 className="z-10 font-display 2xl:text-[44.2rem] 2xl:leading-[42rem] lg:text-[27.5rem] xl:text-[25.8rem] md:text-[15rem] xl:leading-[24.5rem] lg:leading-[26rem] xs:leading-[9.5rem] leading-[6.7rem] md:leading-[14rem] xs:text-[10rem] text-[7rem]">
           <div className="tracking-wide">Senne Bels</div>
           <div className="flex">
-            <div className="font-body 2xl:text-[4rem] 2xl:leading-[4rem] sm:text-2xl text-xs 2xl:w-[39.2rem] xl:w-[24.4rem] xs:w-[8.9rem] w-[6.2rem] md:w-[13.3rem] xs:mt-[1.5rem]  flex flex-col justify-center">
+            <div className="font-body 2xl:text-[4rem] 2xl:leading-[4rem] sm:text-2xl text-xs 2xl:w-[39.2rem] xl:w-[24.8rem] xs:w-[8.9rem] w-[6.2rem] md:w-[13.3rem] xs:mt-[1.5rem]  flex flex-col justify-center">
               <p>Hi 🦝</p>
               <p>I&apos;m a frontend developer</p>
               <p>from Belgium</p>
             </div>
-            <div>Portfolio</div>
+            <div className="tracking-wide">Portfolio</div>
           </div>
         </h1>
       </main>
       <Marquee
         wordList={[
           "WEB DEVELOPMENT",
-          "🍁",
           "WEB DEVELOPMENT",
-          "🐌",
           "WEB DEVELOPMENT",
-          "🐢",
           "WEB DEVELOPMENT",
-          "🦥",
         ]}
       />
 
@@ -140,7 +136,7 @@ export default function Home() {
         <Project
           title={"PORTFOLIOS"}
           link={"/project/portfolios"}
-          image={"assets/images/web/20s-portfolio-dark.png"}
+          image={"assets/images/web/3d.png"}
           className="border-r border-t"
         />
         <Project
@@ -154,15 +150,10 @@ export default function Home() {
       <Marquee
         wordList={[
           "3D MODELS",
-          "🍁",
           "3D MODELS",
-          "🐌",
           "3D MODELS",
-          "🐢",
           "3D MODELS",
-          "🦥",
           "3D MODELS",
-          "🦦",
         ]}
       />
       <main className="w-full h-[20rem] flex flex-col relative">
