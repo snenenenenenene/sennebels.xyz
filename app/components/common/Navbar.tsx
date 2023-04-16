@@ -57,7 +57,7 @@ export const Navbar = () => {
       <section className="flex items-center ml-auto gap-8 px-8">
         <Link
           href={"/"}
-          className={`${
+          className={`nav-item ${
             activeSegment === "" || activeSegment === null
               ? "underline underline-offset-4"
               : ""
@@ -67,7 +67,7 @@ export const Navbar = () => {
         </Link>
         <Link
           href={"/about"}
-          className={`${
+          className={`nav-item ${
             activeSegment === "about" ? "underline underline-offset-4" : ""
           }`}
         >
@@ -84,7 +84,7 @@ export const Navbar = () => {
             theme == "dark" ? setTheme("light") : setTheme("dark")
           }
           className="
-        w-10
+        w-12
         h-5
         rounded-full
         p-1
@@ -97,20 +97,19 @@ export const Navbar = () => {
         outline-none
         flex
         items-center
-        ring-2
-
+        ring-1
       "
         >
           <div
             id="toggle"
             className="
             rounded-full
-            w-[0.8rem]
-            h-[0.8rem]
+            w-[0.9rem]
+            h-[0.9rem]
             bg-light-secondary
             dark:bg-dark-secondary
             relative
-            ml-[1.2rem]
+            ml-[1.7rem]
             dark:ml-0
             pointer-events-none
             transition-all

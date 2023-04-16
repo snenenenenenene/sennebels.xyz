@@ -93,6 +93,28 @@
   src: url("../public/assets/EuphoriaParty.ttf");
 }
 
+@font-face {
+  font-family: Pragmatica;
+  src: url("../public/assets/PragmaticaMedium.otf");
+}
+.nav-item {
+  position: relative;
+}
+
+.nav-item:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 1.5px;
+  height: 1.5px;
+  width: 0%;
+  background-color: #000;
+  transition: width 0.3s ease-in-out;
+}
+
+.nav-item:hover:before {
+  width: 100%;
+}
 html {
   scroll-behavior: smooth;
 }
@@ -155,18 +177,18 @@ html {
 
 @keyframes fade-in {
   from {
-    opacity: 0;
+    scale: 0;
   }
   to {
-    opacity: 1;
+    scale: 1;
   }
 }
 @keyframes fade-out {
   from {
-    opacity: 1;
+    scale: 1;
   }
   to {
-    opacity: 0;
+    scale: 0;
   }
 }
 

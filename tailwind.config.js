@@ -30,7 +30,7 @@ module.exports = {
         capuche: ["Capuche"],
         gazebo: ["Gazebo"],
         bold: ["DugasProBold"],
-        body: ["HelveticaNeue"],
+        body: ["Pragmatica"],
         marioKart: ["MarioKart"],
         superMario: ["SuperMario"],
         chlorine: ["Chlorine"],
