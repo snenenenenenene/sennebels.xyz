@@ -1,5 +1,6 @@
 import { Analytics } from "@vercel/analytics/react";
 import { ReactNode } from "react";
+import Footer from "./components/common/Footer";
 import { Navbar } from "./components/common/Navbar";
 import "./globals.css";
 import { Providers } from "./Providers";
@@ -55,13 +56,14 @@ export const metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <body>
+      <body className="text-light-secondary dark:text-dark-secondary flex flex-col bg-light-primary dark:bg-dark-primary">
         <Analytics />
         <Providers>
-          <div className="w-screen scroll-smooth overflow-x-hidden text-light-secondary dark:text-dark-secondary flex flex-col bg-light-primary dark:bg-dark-primary">
+          <div className="w-screen scroll-smooth overflow-x-hidden ">
             <Navbar />
             {children}
           </div>
+          <Footer />
         </Providers>
       </body>
     </html>

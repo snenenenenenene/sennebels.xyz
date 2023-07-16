@@ -1,5 +1,5 @@
 import { useLoader } from "@react-three/fiber";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import * as THREE from "three";
 export const MotionHover = ({
   image,
@@ -28,10 +28,6 @@ export const MotionHover = ({
     // );
   }
   const PLANE_SIZE = 4.0;
-
-  useEffect(() => {
-    console.log(image);
-  }, [image]);
 
   return (
     <mesh scale={scale} ref={ref} position={position}>
