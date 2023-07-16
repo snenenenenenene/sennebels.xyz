@@ -6,9 +6,10 @@ import Link from "next/link";
 import { useSelectedLayoutSegment } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { FaMoon, FaSun } from "react-icons/fa";
+import Logo from "./Logo";
+
 export const Navbar = () => {
   const { theme, setTheme } = useTheme();
-  // const currentTheme = theme === 'system' ? systemTheme : theme;
 
   const navbar = useRef<any>(null);
   const [show, setShow] = useState(true);
@@ -45,13 +46,14 @@ export const Navbar = () => {
       ref={navbar}
       className={`${
         show
-          ? "h-14 border-b dark:border-dark-secondary border-light-secondary"
+          ? "h-20 border-b dark:border-dark-primary border-light-primary"
           : "h-0"
-      } fixed z-50 transition-all duration-500 dark:bg-dark-primary bg-light-primary overflow-hidden font-body w-full  flex`}
+      } fixed bg-light-secondary text-light-primary dark:text-light-secondary dark:bg-dark-secondary z-50 transition-all duration-500 overflow-hidden font-body w-full  flex`}
     >
-      <section className="border-r text-5xl dark:border-dark-secondary border-light-secondary flex justify-center items-center sm:w-40 w-80 h-full">
-        <Link href={"/"}>
-          <h2 className="font-display tracking-wide">Senne Bels</h2>
+      <section className="border-r text-5xl dark:border-dark-primary border-light-primary flex justify-center items-center w-20 h-full">
+        <Link className="w-full p-2" href={"/"}>
+          {/* <h2 className="font-display tracking-wide">Senne Bels</h2> */}
+          <Logo />
         </Link>
       </section>
       <section className="flex items-center ml-auto gap-8 px-8">
@@ -76,7 +78,7 @@ export const Navbar = () => {
       </section>
       <div
         // onClick={() => toggleTheme()}
-        className="w-40 border-l dark:border-dark-secondary border-light-secondary flex justify-center items-center"
+        className="w-40 border-l dark:border-dark-primary border-light-primary flex justify-center items-center"
       >
         <button
           title="Toggle Theme"
@@ -88,8 +90,8 @@ export const Navbar = () => {
         h-5
         rounded-full
         p-1
-        ring-light-secondary
-        dark:ring-dark-secondary
+        ring-light-primary
+        dark:ring-dark-primary
         relative
         transition-colors
         duration-500
@@ -106,8 +108,8 @@ export const Navbar = () => {
             rounded-full
             w-[0.9rem]
             h-[0.9rem]
-            bg-light-secondary
-            dark:bg-dark-secondary
+            bg-light-primary
+            dark:bg-dark-primary
             relative
             ml-[1.7rem]
             dark:ml-0
@@ -118,10 +120,10 @@ export const Navbar = () => {
             z-50
         "
           />
-          <div className="text-light-secondary absolute top-o left-0 m-1">
+          <div className="dark:text-dark-primary text-light-primary absolute top-o left-0 m-1">
             <FaSun className="w-3 h-3" />
           </div>
-          <div className=" absolute top-o right-0 m-1 dark:text-dark-secondary">
+          <div className=" absolute top-o right-0 m-1 text-light-primary dark:text-dark-primary">
             <FaMoon className="w-3 h-3" />
           </div>
         </button>
