@@ -59,7 +59,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body className="text-light-secondary dark:text-dark-secondary flex flex-col bg-light-primary dark:bg-dark-primary">
         <Analytics />
         <Providers>
-          <div className="w-screen scroll-smooth overflow-x-hidden ">
+          <div className="w-screen selection:bg-light-accent selection:text-light-primary scroll-smooth overflow-x-hidden ">
             <Navbar />
             {children}
           </div>

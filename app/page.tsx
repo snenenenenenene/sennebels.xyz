@@ -227,7 +227,7 @@ export default function Home() {
             title={"PANGOLIN"}
           />
         </section>
-        <section className="w-full border-l border-dark-primary">
+        <section className="w-full border-l border-light-secondary dark:border-dark-secondary">
           <Canvas>
             <ambientLight intensity={0.5} />
             <Suspense fallback={null}>
