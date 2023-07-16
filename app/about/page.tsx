@@ -68,7 +68,7 @@ export default function About() {
           </section>
         </div>
       </main>
-      <section className="w-1/2 flex flex-col justify-between pb-10">
+      <section className="w-1/2 flex flex-col justify-between pb-10 mt-4">
         <iframe
           style={{ borderRadius: "12px" }}
           src="https://open.spotify.com/embed/playlist/75ZUUVuMJlMqjZh4EkO8TQ?utm_source=generator"
