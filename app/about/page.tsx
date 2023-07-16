@@ -4,9 +4,9 @@ export default function About() {
   return (
     <div className="h-screen pt-20 xs:pt-32 px-8 xs:px-24 flex">
       <main className="w-1/2 flex flex-col">
-        <h1 className="font-display text-8xl flex flex-col">
-          <span>Hey!</span>
-          <span> I&apos;m Senne</span>
+        <h1 className="font-bold text-8xl flex flex-col">
+          <span>Hey</span>
+          <span> Im Senne</span>
         </h1>
 
         <section className=" my-8 xs:my-20 text-body">
@@ -68,12 +68,23 @@ export default function About() {
           </section>
         </div>
       </main>
-      <section className="w-1/2 flex flex-col relative pb-10">
-        <picture className="relative w-full h-full rounded-lg overflow-hidden">
+      <section className="w-1/2 flex flex-col justify-between pb-10">
+        <iframe
+          style={{ borderRadius: "12px" }}
+          src="https://open.spotify.com/embed/playlist/75ZUUVuMJlMqjZh4EkO8TQ?utm_source=generator"
+          width="100%"
+          height="15.7%"
+          allowFullScreen
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+          loading="lazy"
+        />
+
+        <picture className="relative w-full h-5/6 rounded-lg overflow-hidden">
           <Image
             alt="me"
-            src="/assets/images/web/me.jpg"
-            className="object-cover"
+            priority
+            src="/assets/images/pictures/ikke_sepia.jpg"
+            style={{ objectFit: "cover" }}
             fill
           />
         </picture>
