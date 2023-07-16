@@ -7,7 +7,7 @@ export default function Musicians() {
     <div className="w-full min-h-screen h-full pt-20 flex-col">
       <main className="md:px-24 px-8 my-10 md:my-32 flex h-full flex-col md:flex-row relative">
         <div className="w-full md:w-1/2 pr-24 max-h-fit">
-          <h1 className="font-display text-8xl mb-8">MUSICIANS</h1>
+          <h1 className="font-bold text-8xl mb-8">MUSICIANS</h1>
           <p>
             Musicians is the brainchild of Jstack and me. This project was
             intended to create an intuitive and pragmatic way for young artists
