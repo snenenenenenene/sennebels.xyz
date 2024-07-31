@@ -24,6 +24,7 @@ export default function Navbar() {
 				<Link
 					key={href}
 					href={href}
+					target={href.startsWith("http") ? "_blank" : "_self"}
 					className={` ${pathname === href ? 'bg-light-quaternary dark:bg-dark-accent' : ''} flex items-center justify-center h-12 w-12 aspect-square rounded-full bg-gray-200 dark:bg-slate-500 dark:text-white`}
 				>
 					{icon}
