@@ -8,13 +8,28 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+      fontFamily: {
+        anton: ["Anton", "sans-serif"],
+        nunito: ["Nunito", "serif"],
       },
+      colors: {
+        light: {
+          primary: "#ccd5ae",
+          secondary: "#e9edc9",
+          tertiary: "#fefae0",
+          quaternary: "#faedcd",
+          accent: "#d4a373"
+        },
+          dark: {
+            primary: "#606c38",
+            secondary: "#283618",
+            tertiary: "#fefae0",
+            quaternary: "#dda15e",
+            accent: "#bc6c25"
+          },
     },
-  },
+    },
+},
   plugins: [],
 };
 export default config;
