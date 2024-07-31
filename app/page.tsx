@@ -5,10 +5,10 @@ import { motion } from "framer-motion";
 export default function Home() {
   return (
     <main className="">
-      <span className="absolute top-[5rem] left-1/2 -translate-x-1/2 uppercase text-[5rem] leading-[5rem]  md:text-[8rem] md:leading-[8rem] text-center font-anton text-dark-quaternary">
+      <span className="absolute top-[5rem] left-1/2 -translate-x-1/2 uppercase text-[5rem] leading-[5rem]  md:text-[8rem] md:leading-[8rem] text-center font-anton text-dark-quaternary dark:text-dark-accent">
         <h1>Creative<br /> Developer</h1>
       </span>
-      <div className="bg-dark-quaternary h-80 w-80 aspect-square absolute top-[45%] rounded-full left-1/2 -translate-x-1/2">
+      <div className="bg-dark-quaternary dark:bg-dark-accent h-80 w-80 aspect-square absolute top-[45%] rounded-full left-1/2 -translate-x-1/2">
         <Image
           src="/images/okapi.png"
           alt="Picture of the author"

@@ -18,7 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="bg-light-quaternary w-screen h-screen overflow-hidden ">
+      <body className="bg-light-quaternary dark:bg-dark-quaternary text-black w-screen h-screen overflow-hidden ">
         <Providers>
           {children}
           <Navbar />

@@ -17,14 +17,14 @@ const links = [
 export default function Navbar() {
 	const pathname = usePathname()
 
-	return (<aside className="fixed rounded-full bottom-6 left-1/2 flex gap-[7px] h-fit p-1 w-fit bg-white -translate-x-1/2">
+	return (<aside className="fixed rounded-full bottom-6 left-1/2 flex gap-[7px] h-fit p-1 w-fit bg-white dark:bg-dark-secondary -translate-x-1/2">
 		{links.map(({ href, label, icon }) => (
 			<>
 				{label === "Resume" && <div className="h-8 my-2 w-[2px] mx-1 rounded-xl bg-gray-200" />}
 				<Link
 					key={href}
 					href={href}
-					className={` ${pathname === href ? 'bg-light-quaternary' : ''} flex items-center justify-center h-12 w-12 aspect-square rounded-full bg-gray-200`}
+					className={` ${pathname === href ? 'bg-light-quaternary dark:bg-dark-accent' : ''} flex items-center justify-center h-12 w-12 aspect-square rounded-full bg-gray-200 dark:bg-slate-500 dark:text-white`}
 				>
 					{icon}
 				</Link>
