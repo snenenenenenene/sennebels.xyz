@@ -11,3 +11,14 @@
   font-family: 'Nunito';
   src: url("/fonts/Nunito/Nunito-VariableFont_wght.ttf");
 }
+
+@keyframes growCircle {
+	0% {
+		-webkit-mask-image: radial-gradient(circle, transparent 0%, black 0%);
+		mask-image: radial-gradient(circle, transparent 0%, black 0%);
+	}
+	100% {
+		-webkit-mask-image: radial-gradient(circle, transparent 100%, black 100%);
+		mask-image: radial-gradient(circle, transparent 100%, black 100%);
+	}
+}

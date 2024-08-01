@@ -11,7 +11,8 @@ const projects = [
 
 const Project = (project: any) => {
 	return (
-		<Link href={project.redirect} className="flex hover:scale-105 duration-200 transition-all ease-in-out relative w-full rounded-xl overflow-hidden bg-light-accent h-full md:h-80">
+		<Link target={project.redirect.startsWith("http") ? "_blank" : "_self"}
+			href={project.redirect} className="flex hover:scale-105 duration-200 transition-all ease-in-out relative w-full rounded-xl overflow-hidden bg-light-accent h-full md:h-80">
 			<Image className="w-full object-cover left-0 top-0 h-full absolute" src={project.thumbnail} alt={project.title} width={1000} height={1000} />
 			<span className="absolute text-white flex justify-between p-4 h-32 items-end bottom-0 left-0 w-full bg-gradient-to-t pointer-events-none from-[#00000090] to-transparent">
 				<h1>{project.title}</h1>
@@ -23,7 +24,7 @@ const Project = (project: any) => {
 
 export default function Work() {
 	return (
-		<main className="grid bg-black gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-center h-full p-6">
+		<main className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-center h-full p-6">
 			{projects.map((project) => (
 				<Project key={project.title} {...project
 				} />
