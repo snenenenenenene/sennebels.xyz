@@ -9,13 +9,22 @@ const projects = [
 		{ title: "Lokaal Beslist", projectType: "Website", redirect: "https://lokaalbeslist.lblod.info/", thumbnail: "/images/work/lokaalbeslist.png", year: 2023, description: "A platform for local governments to make decisions together with their citizens" },
 		{
 			title: "Waddist", projectType: "Mobile App", redirect: "https://apps.apple.com/be/app/waddist/id1548427323", thumbnail: "/images/work/waddist.webp", year: 2023, description: "A platform for local governments to make decisions together with their citizens"
+		},
+		{
+			title: "Skinhouse", projectType: "Website", redirect: "https://skinhouse.vercel.app/", thumbnail: "/images/work/skinhouse.png", year: 2024, description: "A platform for local governments to make decisions together with their citizens"
 		}
 	],
 	[
-		{ title: "Aroy", projectType: "Website", redirect: "https://aroy.vercel.app/", thumbnail: "/images/work/aroy.png", year: 2024, description: "A platform for local governments to make decisions together with their citizens" }
+		{ title: "Aroy", projectType: "Website", redirect: "https://aroy.vercel.app/", thumbnail: "/images/work/aroy.png", year: 2024, description: "A platform for local governments to make decisions together with their citizens" },
+		{ title: "DND Character Creator", projectType: "Side Project", redirect: "https://dnd-character-tool.vercel.app/", thumbnail: "/images/work/dnd.png", year: 2022, description: "A platform for local governments to make decisions together with their citizens" },
+		{
+			title: "Osoc", projectType: "Website", redirect: "https://osoc.be/", thumbnail: "/images/work/osoc.png", year: 2023, description: "A platform for local governments to make decisions together with their citizens"
+		}
 	],
 	[
-		{ title: "Musicians", projectType: "Prototype", redirect: "https://musicians-blond.vercel.app/", thumbnail: "/images/work/musicians.png", year: 2022, description: "A platform for local governments to make decisions together with their citizens" }
+		{ title: "Musicians", projectType: "Prototype", redirect: "https://musicians-blond.vercel.app/", thumbnail: "/images/work/musicians.png", year: 2022, description: "A platform for local governments to make decisions together with their citizens" },
+		{ title: "Private Swimming", projectType: "Website", redirect: "https://privateswimming-com.vercel.app/", thumbnail: "/images/work/privateswimming.png", year: 2023, description: "A platform for local governments to make decisions together with their citizens" },
+		{ title: "Validation Tool", projectType: "Website", redirect: "https://validatietool.lblod.info/", thumbnail: "/images/work/validationtool.png", year: 2023, description: "A platform for local governments to make decisions together with their citizens" }
 	]
 ]
 
@@ -41,7 +50,7 @@ const Project = (project: any) => {
 export default function Work() {
 	return (
 		<motion.main
-			initial={{ opacity: 0, y: 100 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, ease: "easeInOut", staggerChildren: 0.5 }} className="grid grid-cols-1 md:grid-cols-2 overflow-y-scroll lg:grid-cols-3 gap-6 h-full md:pb-0 pb-40 min-h-screen p-6 auto-rows-min group">
+			initial={{ opacity: 0, y: 100 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, ease: "easeInOut", staggerChildren: 0.5 }} className="grid grid-cols-1 md:grid-cols-2 overflow-y-scroll lg:grid-cols-3 gap-6 md:gap-4 h-full pb-40 min-h-screen p-6 md:p-10 auto-rows-min group">
 			{projects.map((gridNumber: any, i: number) => (
 				<div key={i} className="grid grid-cols-1 gap-6">
 					{gridNumber.map((project: any) => (

@@ -1,11 +1,20 @@
 "use client"
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 export default function About() {
 	return (
 		<main className="flex text-lg flex-col font-nunito items-center px-8 pb-40 h-full overflow-y-scroll">
 			<section className="flex flex-col md:flex-row md:gap-x-6 mt-16 w-full">
-				<div className="h-60 w-60 bg-dark-accent rounded-full" />
+				<div className="h-60 w-60 bg-dark-accent rounded-full" >
+					<Image
+						src="/images/okapi.png"
+						alt="Picture of the author"
+						width={320}
+						height={320}
+						className="rounded-full p-10"
+					/>
+				</div>
 				<motion.span initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, ease: "easeInOut" }} className="mt-8">
 					<h1 className="text-4xl" style={{ fontWeight: "900" }}>snenenenene</h1>
 					<p className="text-xl text-dark-accent" style={{ fontWeight: "700" }}>Senne Bels</p>
