@@ -1,15 +1,18 @@
+"use client"
+import { motion } from "framer-motion";
+
 export default function About() {
 	return (
 		<main className="flex text-lg flex-col font-nunito items-center px-8 pb-40 h-full overflow-y-scroll">
 			<section className="flex flex-col md:flex-row md:gap-x-6 mt-16 w-full">
 				<div className="h-60 w-60 bg-dark-accent rounded-full" />
-				<span className="mt-8">
+				<motion.span initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, ease: "easeInOut" }} className="mt-8">
 					<h1 className="text-4xl" style={{ fontWeight: "900" }}>snenenenene</h1>
 					<p className="text-xl text-dark-accent" style={{ fontWeight: "700" }}>Senne Bels</p>
 					<p className="mt-4 text-xl">Creative Developer</p>
-				</span>
+				</motion.span>
 			</section>
-			<span className="mt-8 w-full">
+			<motion.span initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, ease: "easeInOut" }} className="mt-8 w-full">
 				I&apos;m&nbsp;
 				<b className="text-light-desktop font-bold">Senne Bels</b>, a&nbsp;
 				{new Date().getFullYear() -
@@ -43,7 +46,7 @@ export default function About() {
 				<br />
 				<b className="font-bold">Fun fact</b>: I love Okapi&apos;s and visit
 				them in my local zoo whenever I can. This is what inspired my logo.
-			</span>
+			</motion.span>
 		</main>
 	);
 }

@@ -10,7 +10,7 @@ const CircularClipPath: React.FC = () => {
 			duration: 1,
 			onUpdate: () => {
 				setGradientValue((prevValue) => {
-					const newValue = prevValue + 3;
+					const newValue = prevValue + .3;
 					if (newValue <= 100) {
 						return newValue;
 					} else {
@@ -31,7 +31,7 @@ const CircularClipPath: React.FC = () => {
 				WebkitMaskImage: `radial-gradient(circle, transparent ${gradientValue}%, black ${gradientValue}%)`,
 				pointerEvents: isAnimationDone ? 'none' : 'auto'
 			}}
-			className="fixed top-1/2 left-1/2 w-full h-full -translate-x-1/2 -translate-y-1/2 z-50 bg-dark-accent transition-all duration-500 ease-in-out"
+			className="fixed top-1/2 left-1/2 w-full h-full -translate-x-1/2 -translate-y-[10%] scale-[500%] z-40 bg-dark-accent transition-all duration-500 ease-in-out"
 		/>
 	);
 };
