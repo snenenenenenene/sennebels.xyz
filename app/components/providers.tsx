@@ -1,4 +1,5 @@
 "use client"
+import { GoogleTagManager } from "@next/third-parties/google";
 import { AnimatePresence } from "framer-motion";
 import { ThemeProvider, useTheme } from "next-themes";
 
