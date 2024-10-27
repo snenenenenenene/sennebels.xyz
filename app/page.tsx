@@ -43,29 +43,35 @@ const ProjectCard = ({ title, description, image, year, link }: ProjectCardProps
   <Link
     href={link}
     target="_blank"
-    className="group block relative w-full h-[320px] sm:h-[400px] md:h-[450px] rounded-3xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+    className="block w-full  relative overflow-hidden h-[450px] rounded-[24px] hover:-translate-y-1 transition-transform duration-300 bg-[#F7F5F3]"
   >
     <Image
       src={image}
       alt={title}
-      fill
-      className="object-cover"
+      width={668}
+      height={500}
+      className="w-full absolute inset-0 -translate-y-1/3 translate-x-1/3 right-10 top-0 h-full aspect-[668/500] object-cover rounded-2xl"
     />
-    <div className="absolute bottom-0 left-0 w-full p-4 sm:p-5 bg-gradient-to-t from-black/70 via-black/40 to-transparent">
-      <div className="mb-2">
-        <span className="bg-gray-800/70 text-white text-[0.875rem] px-2.5 py-1 rounded-full">
-          {year}
-        </span>
+    <div className="absolute bottom-0 left-0 w-full p-6 rounded-b-2xl">
+      <div className="mb-3">
+        <div className="inline-block">
+          <div className="bg-[#F7F7F7] px-3 py-1 rounded-full text-sm">
+            {year}
+          </div>
+        </div>
       </div>
-      <h3 className="text-base sm:text-lg font-semibold text-white mb-2">{title}</h3>
-      <div className="flex items-center text-white">
-        <span className="mr-2 text-sm sm:text-base">View Project</span>
-        <MoveUpRight size={16} className="transition-transform group-hover:translate-x-1" />
+      <div className="text-lg font-semibold mb-2">
+        {title}
+      </div>
+      <div className="flex items-center text-[#6b6b6b] group">
+        <div className="mr-2 group-hover:text-black transition-colors">
+          View Project
+        </div>
+        <MoveUpRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
       </div>
     </div>
   </Link>
 );
-
 const ServiceCard = ({ title, description, link }: {
   title: string;
   description: string;
@@ -175,75 +181,48 @@ export default function Home() {
               style={{ color: roleColor }}
               className="text-[2.1rem] sm:text-[3.1rem] md:text-[4.2rem] lg:text-[5rem] leading-[150%]"
             >
-              Developer,
-            </motion.span>
-            <motion.span
-              style={{ color: roleColor }}
-              className="text-[2.1rem] sm:text-[3.1rem] md:text-[4.2rem] lg:text-[5rem] leading-[150%]"
-            >
               Full&nbsp;Stack
             </motion.span>
             <motion.span
               style={{ color: roleColor }}
               className="text-[2.1rem] sm:text-[3.1rem] md:text-[4.2rem] lg:text-[5rem] leading-[150%]"
             >
-              &amp;
+              Developer
             </motion.span>
-            <motion.span
-              style={{ color: roleColor }}
-              className="text-[2.1rem] sm:text-[3.1rem] md:text-[4.2rem] lg:text-[5rem] leading-[150%]"
-            >
-              Gamer
-            </motion.span>
-            <span className="text-[2.6rem] sm:text-[3.5rem] md:text-[5rem] lg:text-[7rem] leading-none">🎮</span>
-
-            {/* Crafting sentence */}
-            <span className="text-[2.6rem] sm:text-[3.5rem] md:text-[5rem] lg:text-[7rem] leading-none">⚡</span>
-            <motion.span
-              style={{ color: craftingColor }}
-              className="text-[2.1rem] sm:text-[3.1rem] md:text-[4.2rem] lg:text-[5rem] leading-[150%]"
-            >
-              Crafting
-            </motion.span>
-            <motion.span
-              style={{ color: craftingColor }}
-              className="text-[2.1rem] sm:text-[3.1rem] md:text-[4.2rem] lg:text-[5rem] leading-[150%]"
-            >
-              interactive,
-            </motion.span>
-            <motion.span
-              style={{ color: craftingColor }}
-              className="text-[2.1rem] sm:text-[3.1rem] md:text-[4.2rem] lg:text-[5rem] leading-[150%]"
-            >
-              game-like
-            </motion.span>
-            <motion.span
-              style={{ color: craftingColor }}
-              className="text-[2.1rem] sm:text-[3.1rem] md:text-[4.2rem] lg:text-[5rem] leading-[150%]"
-            >
-              websites,
-            </motion.span>
-
             {/* Creating sentence */}
             <span className="text-[2.6rem] sm:text-[3.5rem] md:text-[5rem] lg:text-[7rem] leading-none">🚀</span>
             <motion.span
               style={{ color: creatingColor }}
               className="text-[2.1rem] sm:text-[3.1rem] md:text-[4.2rem] lg:text-[5rem] leading-[150%]"
             >
-              Creating
+              Building
             </motion.span>
             <motion.span
               style={{ color: creatingColor }}
               className="text-[2.1rem] sm:text-[3.1rem] md:text-[4.2rem] lg:text-[5rem] leading-[150%]"
             >
-              unique
+              Impactful
             </motion.span>
             <motion.span
               style={{ color: creatingColor }}
               className="text-[2.1rem] sm:text-[3.1rem] md:text-[4.2rem] lg:text-[5rem] leading-[150%]"
             >
-              experiences
+              &amp;
             </motion.span>
+            <motion.span
+              style={{ color: creatingColor }}
+              className="text-[2.1rem] sm:text-[3.1rem] md:text-[4.2rem] lg:text-[5rem] leading-[150%]"
+            >
+              Sustainable
+            </motion.span>
+            <motion.span
+              style={{ color: creatingColor }}
+              className="text-[2.1rem] sm:text-[3.1rem] md:text-[4.2rem] lg:text-[5rem] leading-[150%]"
+            >
+              Experiences
+            </motion.span>
+            <span className="text-[2.6rem] sm:text-[3.5rem] md:text-[5rem] lg:text-[7rem] leading-none">🌳</span>
+
           </div>
         </div>
       </header>
@@ -269,11 +248,11 @@ export default function Home() {
       </div>
 
       {/* Featured Work Section */}
-      <section className="py-[60px] sm:py-[72px] px-4 sm:px-6 md:px-8">
-        <div className="container mx-auto max-w-[728px] lg:max-w-full xl:max-w-[1140px]">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 mb-8">
-            <h2 className="text-[1.8rem] sm:text-[2rem] md:text-[2.2rem] font-semibold">Featured</h2>
-            <div className="relative w-full sm:w-[300px] h-[88px] ml-0">
+      <section className="section">
+        <div className="container justify-center w-container">
+          <div className="resources-section-heading flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-8">
+            <h2 className="section-heading text-[1.8rem] sm:text-[2rem] md:text-[2.2rem] font-semibold">Featured</h2>
+            <div className="textswitcher-overflow relative w-full sm:w-[300px] h-[88px]">
               <div className="absolute inset-0 flex items-center">
                 <AnimatePresence mode="wait">
                   <motion.h2
@@ -282,7 +261,7 @@ export default function Home() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
                     transition={{ duration: 0.5 }}
-                    className="text-[1.8rem] sm:text-[2rem] md:text-[2.2rem] font-semibold absolute"
+                    className="section-heading text-[1.8rem] sm:text-[2rem] md:text-[2.2rem] font-semibold absolute"
                   >
                     {TYPING_TEXTS[textIndex]}
                   </motion.h2>
@@ -291,10 +270,23 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div id="w-node-_11f600ed-5ac9-d115-fdd4-b4825d287daf-edfc6c6c"
+            className="w-layout-layout grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-[1140px]">
             {projects.map((project) => (
-              <ProjectCard key={project.title} {...project} />
+              <div key={project.title} className="w-layout-cell">
+                <ProjectCard {...project} />
+              </div>
             ))}
+
+            {/* Optional: Add a "View All Projects" button at the bottom */}
+            <div className="h-20 col-span-full text-center">
+              <Link
+                href="/work"
+                className="button center mt-10 inline-flex items-center justify-center px-6 py-3 rounded-full bg-black text-white hover:bg-gray-800 transition-colors"
+              >
+                View all projects →
+              </Link>
+            </div>
           </div>
         </div>
       </section>
