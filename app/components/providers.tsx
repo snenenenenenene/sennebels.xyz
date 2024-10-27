@@ -9,7 +9,7 @@ export default function Providers({ children }: {
 	return (
 		<AnimatePresence>
 			<ThemeProvider>
-				<GoogleTagManager gtmId="G-RR5BLHV4FD" />
+				<GoogleTagManager gtmId="GTM-TDQ9KLMR" />
 				{children}
 			</ThemeProvider>
 		</AnimatePresence>
