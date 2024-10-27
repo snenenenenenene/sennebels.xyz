@@ -1,61 +1,229 @@
 "use client"
-import { motion } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
+import { MoveUpRight } from "lucide-react";
+import { useEffect, useState } from "react";
+
+const TIMELINE_ITEMS = [
+	{
+		year: "2024",
+		description: "Started at Specular Consulting, building sustainable tech solutions"
+	},
+	{
+		year: "2022 - 2024",
+		description: "Software Engineer at Flanders Agency of Home Affairs, leading development of Lokaal Beslist"
+	},
+	{
+		year: "2022",
+		description: "Graduated Cum Laude in Computer Science & Started Creative Technologies"
+	},
+	{
+		year: "2021",
+		description: "First role as Software Engineer at Inuits, building surveying applications"
+	},
+	{
+		year: "2019",
+		description: "Started Computer Science journey at AP College University"
+	}
+];
+
+const NOW_ITEMS = [
+	{
+		title: "Full Stack Developer at Specular",
+		description: "Building a sustainability assessment platform using React Flow and TypeScript.",
+		link: "#"
+	},
+	{
+		title: "The Okapi Shop",
+		description: "Creating an e-commerce platform to support Okapi preservation.",
+		link: "#"
+	},
+	{
+		title: "Studying Creative Technologies",
+		description: "Expanding knowledge in 3D Development, VFX, and Creative Coding.",
+		link: "#"
+	}
+];
+
+const ACHIEVEMENTS = [
+	"Graduated Cum Laude, AP University College Antwerp (2022)",
+	"IELTS Overall Score 8.0, British Consulate Brussels (2021)",
+	"Chinese A1 Certification, Linguapolis Antwerp (2020)"
+];
 
 export default function About() {
+	const [activeSection, setActiveSection] = useState('about');
+
+	useEffect(() => {
+		const observerCallback = (entries: IntersectionObserverEntry[]) => {
+			entries.forEach((entry) => {
+				if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+					setActiveSection(entry.target.id);
+				}
+			});
+		};
+
+		const observer = new IntersectionObserver(observerCallback, {
+			threshold: 0.5,
+			rootMargin: '-10% 0px -45% 0px'
+		});
+
+		document.querySelectorAll('section[id]').forEach((section) => {
+			observer.observe(section);
+		});
+
+		return () => observer.disconnect();
+	}, []);
+
+	const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, sectionId: string) => {
+		e.preventDefault();
+		const element = document.getElementById(sectionId);
+		if (element) {
+			const yOffset = -100;
+			const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+			window.scrollTo({ top: y, behavior: 'smooth' });
+		}
+	};
+
+	const sidebarLinks = [
+		{ id: 'about', label: 'About me in 10 seconds' },
+		{ id: 'now', label: 'Now' },
+		{ id: 'features', label: 'Features & Awards' },
+		{ id: 'timeline', label: 'Timeline' },
+		{ id: 'find', label: 'Find me online' },
+	];
+
 	return (
-		<main className="flex text-lg flex-col font-nunito items-center px-8 pb-40 h-full overflow-y-scroll">
-			<section className="flex flex-col md:flex-row md:gap-x-6 mt-16 w-full">
-				<div className="h-60 w-60 bg-dark-accent rounded-full" >
-					<Image
-						src="/images/okapi.png"
-						alt="Picture of the author"
-						width={320}
-						height={320}
-						className="rounded-full p-10"
-					/>
+		<div
+			className="min-h-screen bg-[#fdfcf9] font-satoshi text-[#222227] text-base font-normal leading-[155%] pt-[160px] sm:pt-[120px] md:pt-[100px] lg:pt-[80px] px-4 sm:px-6 md:px-8"
+			style={{
+				backgroundImage: "url('/images/Noise Background.webp')",
+				backgroundPosition: "0 0",
+				backgroundSize: "contain",
+			}}
+		>
+			<div className="max-w-[1200px] mx-auto">
+				<div className="grid grid-cols-1 md:grid-cols-[185px,1fr] gap-8">
+					{/* Left Sidebar */}
+					<div className="hidden md:block self-start sticky top-[100px]">
+						<div className="flex flex-col">
+							{sidebarLinks.map((link) => (
+								<Link
+									key={link.id}
+									href={`#${link.id}`}
+									onClick={(e) => scrollToSection(e, link.id)}
+									className={`
+                    block py-1 px-0 text-sm font-medium transition-all duration-200
+                    ${activeSection === link.id
+											? 'text-[#222227] font-bold'
+											: 'text-[#6b6b6b] hover:text-[#222227]'
+										}
+                  `}
+								>
+									{link.label}
+								</Link>
+							))}
+						</div>
+					</div>
+					{/* Main Content */}
+					<div className="w-full max-w-[650px]">
+						<div className="rounded-[36px] sm:rounded-[40px] md:rounded-[80px] h-[360px] sm:h-[320px] md:h-[500px] overflow-hidden mb-12">
+							<Image
+								src="/images/me.jpg"
+								alt="Senne Bels"
+								width={2048}
+								height={1365}
+								className="object-cover w-full h-full"
+								priority
+							/>
+						</div>
+
+						<section id="about" className="scroll-mt-24">
+							<h1 className="text-[1.8rem] sm:text-[2rem] md:text-[2.5rem] font-semibold leading-[140%] mb-2">
+								About me in 10 seconds
+							</h1>
+							<p className="text-[#494949] mt-0 mb-10">
+								Hey! I'm Senne, a Creative Full Stack Developer.<br /><br />
+
+								I create interactive web experiences focused on innovation and user experience.
+								My unique background in Big Data & AI, combined with my ongoing studies in
+								Multimedia and Creative Technologies, allows me to approach problems from multiple angles.<br /><br />
+
+								As an INTJ-T individual, I strive to build meaningful applications that make a difference.
+								My current focus? Creating sustainable tech solutions, supporting Okapi conservation,
+								and pushing the boundaries of web development.<br /><br />
+
+								<strong>Think Different, Code Better.</strong>
+							</p>
+						</section>
+
+						<section id="now" className="scroll-mt-24 pt-10">
+							<h2 className="text-[1.8rem] sm:text-[2rem] md:text-[2.5rem] font-semibold leading-[140%] mb-2">
+								Now
+							</h2>
+							{NOW_ITEMS.map((item, index) => (
+								<div key={index} className="py-1">
+									<Link href={item.link} className="flex items-center group">
+										<div className="text-base font-semibold inline">{item.title}</div>
+										<MoveUpRight className="ml-2 h-4 w-4 text-current transition-transform group-hover:translate-x-1" />
+									</Link>
+									<p className="text-[#494949] mt-0 mb-10">{item.description}</p>
+								</div>
+							))}
+						</section>
+
+						<section id="features" className="scroll-mt-24 pt-10">
+							<h2 className="text-[1.8rem] sm:text-[2rem] md:text-[2.5rem] font-semibold leading-[140%] mb-2">
+								Features & Awards
+							</h2>
+							<div className="py-3">
+								{ACHIEVEMENTS.map((achievement, index) => (
+									<p key={index} className="text-[#494949] mb-4">{achievement}</p>
+								))}
+							</div>
+						</section>
+
+						<section id="timeline" className="scroll-mt-24 pt-10">
+							<h2 className="text-[1.8rem] sm:text-[2rem] md:text-[2.5rem] font-semibold leading-[140%] mb-2">
+								Timeline
+							</h2>
+							{TIMELINE_ITEMS.map((item, index, array) => (
+								<div key={index} className="flex">
+									<div className="flex flex-col items-center">
+										<div className="w-2 h-2 rounded-full bg-[#ff8564] flex-none mt-1.5 mb-0.5"></div>
+										<div className={`w-0.5 flex-1 bg-[#f0dbd6] ${index === array.length - 1 ? 'opacity-0' : ''}`}></div>
+									</div>
+									<div className="ml-5">
+										<div className="mb-1 font-semibold">{item.year}</div>
+										<p className="mb-6 text-[#494949]">{item.description}</p>
+									</div>
+								</div>
+							))}
+						</section>
+
+						<section id="find" className="scroll-mt-24 pt-10 pb-20">
+							<h2 className="text-[1.8rem] sm:text-[2rem] md:text-[2.5rem] font-semibold leading-[140%] mb-2">
+								Find me online
+							</h2>
+							<p className="text-[#494949] mt-0">
+								You can find me on{" "}
+								<Link href="https://github.com/snenenenenenene" target="_blank" className="font-medium hover:opacity-80 transition-opacity">
+									GitHub
+								</Link>
+								,{" "}
+								<Link href="https://linkedin.com/in/sennebels" target="_blank" className="font-medium hover:opacity-80 transition-opacity">
+									LinkedIn
+								</Link>
+								, or{" "}
+								<Link href="mailto:sennebels@gmail.com" className="font-medium hover:opacity-80 transition-opacity">
+									Email
+								</Link>
+								.
+							</p>
+						</section>
+					</div>
 				</div>
-				<motion.span initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, ease: "easeInOut" }} className="mt-8">
-					<h1 className="text-4xl" style={{ fontWeight: "900" }}>snenenenene</h1>
-					<p className="text-xl text-dark-accent" style={{ fontWeight: "700" }}>Senne Bels</p>
-					<p className="mt-4 text-xl">Creative Developer</p>
-				</motion.span>
-			</section>
-			<motion.span initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, ease: "easeInOut" }} className="mt-8 w-full">
-				I&apos;m&nbsp;
-				<b className="text-light-desktop font-bold">Senne Bels</b>, a&nbsp;
-				{new Date().getFullYear() -
-					2000 -
-					(new Date().getMonth() < 10 ? 1 : 0)}
-				-year-old IT-graduate - and human.
-				<br />
-				<br />
-				After having graduated in 2022, I started working as a frontend
-				developer at the Agency of Home Affairs of Flanders, Belgium. However,
-				my hunger for knowledge and my passion for technology led me to
-				combine my job with another degree in Multimedia and Creative
-				Technologies.
-				<br />
-				<br />
-				It&apos;s always been my main ambition & dream to move abroad! -- and
-				I&apos;m hoping to find a job that will allow me to do so.
-				<br />
-				<br />
-				I&apos;m specialised as a web developer, but I majored in Big Data
-				&amp; Artificial Intelligence. This, as well as the myriad business
-				&amp; management courses I took, has blessed me with a very broad view
-				on the world of IT.
-				<br />
-				<br />
-				Outside of IT, I&apos;m a passionate gamer, and I love to create.
-				Whether it&apos;s 3D, 2D, or even music, I&apos;m always looking for
-				new ways to express myself. I&apos;m also a huge fan of the outdoors,
-				and I am a huge zoology and history nerd.
-				<br />
-				<br />
-				<b className="font-bold">Fun fact</b>: I love Okapi&apos;s and visit
-				them in my local zoo whenever I can. This is what inspired my logo.
-			</motion.span>
-		</main>
+			</div>
+		</div>
 	);
 }

@@ -1,15 +1,15 @@
+// app/layout.tsx
 import type { Metadata } from "next";
 import "./globals.css";
-import Link from "next/link";
 import Navbar from "./components/navbar";
 import Providers from "./components/providers";
+import Footer from "./components/footer";
+import SmoothScrolling from "./components/smoothScrolling";
 
 export const metadata: Metadata = {
-  title: "snenenenene - Creative Developer",
+  title: "Senne Bels - Creative Developer",
   description: "Creative developer who focuses on creating interactive, game-like websites",
 };
-
-
 
 export default function RootLayout({
   children,
@@ -17,13 +17,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className="bg-light-quaternary dark:bg-dark-quaternary text-black w-screen h-screen overflow-hidden ">
-        <Providers>
-          {children}
-          <Navbar />
-        </Providers>
-      </body>
+    <html lang="en" className="h-full">
+      <head>
+        <script src="https://cdn.jsdelivr.net/npm/circletype@2.3.0/dist/circletype.min.js" defer />
+      </head>
+      <SmoothScrolling>
+        <body className="min-h-full">
+          <Providers>
+            {children}
+            <Navbar />
+          </Providers>
+          <Footer />
+        </body>
+      </SmoothScrolling>
     </html>
   );
 }

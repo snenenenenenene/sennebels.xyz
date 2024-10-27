@@ -1,65 +1,118 @@
 "use client"
 import { motion } from "framer-motion";
-import { MoveUpRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-const projects = [
-	[
-		{ title: "Lokaal Beslist", projectType: "Website", redirect: "https://lokaalbeslist.lblod.info/", thumbnail: "/images/work/lokaalbeslist.png", year: 2023, description: "A platform for local governments to make decisions together with their citizens" },
-		{
-			title: "Waddist", projectType: "Mobile App", redirect: "https://apps.apple.com/be/app/waddist/id1548427323", thumbnail: "/images/work/waddist.webp", year: 2023, description: "A platform for local governments to make decisions together with their citizens"
-		},
-		{
-			title: "Skinhouse", projectType: "Website", redirect: "https://skinhouse.vercel.app/", thumbnail: "/images/work/skinhouse.png", year: 2024, description: "A platform for local governments to make decisions together with their citizens"
-		}
-	],
-	[
-		{ title: "Aroy", projectType: "Website", redirect: "https://aroy.vercel.app/", thumbnail: "/images/work/aroy.png", year: 2024, description: "A platform for local governments to make decisions together with their citizens" },
-		{ title: "DND Character Creator", projectType: "Side Project", redirect: "https://dnd-character-tool.vercel.app/", thumbnail: "/images/work/dnd.png", year: 2022, description: "A platform for local governments to make decisions together with their citizens" },
-		{
-			title: "Osoc", projectType: "Website", redirect: "https://osoc.be/", thumbnail: "/images/work/osoc.png", year: 2023, description: "A platform for local governments to make decisions together with their citizens"
-		}
-	],
-	[
-		{ title: "Musicians", projectType: "Prototype", redirect: "https://musicians-blond.vercel.app/", thumbnail: "/images/work/musicians.png", year: 2022, description: "A platform for local governments to make decisions together with their citizens" },
-		{ title: "Private Swimming", projectType: "Website", redirect: "https://privateswimming-com.vercel.app/", thumbnail: "/images/work/privateswimming.png", year: 2023, description: "A platform for local governments to make decisions together with their citizens" },
-		{ title: "Validation Tool", projectType: "Website", redirect: "https://validatietool.lblod.info/", thumbnail: "/images/work/validationtool.png", year: 2023, description: "A platform for local governments to make decisions together with their citizens" }
-	]
-]
-
-const Project = (project: any) => {
-	return (
-		<Link target={project.redirect.startsWith("http") ? "_blank" : "_self"}
-			href={project.redirect} className="group flex duration-200 transition-all ease-in-out relative w-full rounded-xl overflow-hidden bg-light-accent md:h-80 aspect-video hover:!brightness-100">
-			<Image className="w-full object-cover left-0 top-0 h-full absolute" src={project.thumbnail} alt={project.title} width={1000} height={1000} />
-			<section className="absolute text-md text-white flex p-4 h-32 bottom-0 justify-end left-0 w-full flex-col bg-gradient-to-t pointer-events-none from-[#00000090] via-[#00000060] to-transparent">
-				<motion.span className="flex gap-2 opacity-0 group-hover:opacity-100 transform transition-all duration-300 ease-in-out" initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
-					<div className="bg-dark-secondary px-2 py-1 rounded-full text-xs">{project.projectType}</div>
-					<button className="bg-white text-black rounded-full h-full aspect-square flex justify-center items-center"> <MoveUpRight size={14} /> </button>
-				</motion.span>
-				<span className="flex justify-between w-full">
-					<h1>{project.title}</h1>
-					<p>{project.year}</p>
-				</span>
-			</section>
-		</Link>
-	);
-}
+const PROJECTS = [
+	{
+		title: "Lokaal Beslist",
+		image: "/images/work/lokaalbeslist.png",
+		description: "Full Stack Development of a citizen participation platform, built with React and Node.js, focusing on government transparency and civic engagement.",
+		redirect: "https://lokaalbeslist.lblod.info/"
+	},
+	{
+		title: "Waddist",
+		image: "/images/work/waddist.webp",
+		description: "Mobile application development focusing on community engagement and social interaction, built with React Native and Firebase.",
+		redirect: "https://apps.apple.com/be/app/waddist/id1548427323"
+	},
+	{
+		title: "Skinhouse",
+		image: "/images/work/skinhouse.png",
+		description: "E-commerce platform development with Next.js and Stripe integration, featuring a custom CMS for product management.",
+		redirect: "https://skinhouse.vercel.app/"
+	},
+	{
+		title: "Aroy",
+		image: "/images/work/aroy.png",
+		description: "Restaurant website with online ordering system, built with Next.js and Tailwind CSS, featuring real-time order tracking.",
+		redirect: "https://aroy.vercel.app/"
+	},
+	{
+		title: "DND Character Creator",
+		image: "/images/work/dnd.png",
+		description: "Interactive D&D character creation tool with drag-and-drop functionality, built using React and TypeScript.",
+		redirect: "https://dnd-character-tool.vercel.app/"
+	},
+	{
+		title: "Open Summer of Code",
+		image: "/images/work/osoc.png",
+		description: "Website development for the Belgian open-source initiative, featuring project showcases and participant information, built with Next.js.",
+		redirect: "https://osoc.be/"
+	}
+];
 
 export default function Work() {
 	return (
-		<motion.main
-			initial={{ opacity: 0, y: 100 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, ease: "easeInOut", staggerChildren: 0.5 }} className="grid grid-cols-1 md:grid-cols-2 overflow-y-scroll lg:grid-cols-3 gap-6 md:gap-4 h-full pb-40 min-h-screen p-6 md:p-10 auto-rows-min group">
-			{projects.map((gridNumber: any, i: number) => (
-				<div key={i} className="grid grid-cols-1 gap-6">
-					{gridNumber.map((project: any) => (
-						<div key={project.title} className="group/item">
-							<Project {...project} />
-						</div>
-					))}
+		<>
+			<header className="section">
+				<div className="container w-container px-6">
+					<div className="mt-[113px] mb-14">
+						<h1 className="text-[2rem] font-semibold leading-[44px] font-inter mb-4" style={{
+							fontWeight: 600
+						}}>
+							I build interactive experiences that make an impact.
+						</h1>
+						<p className="w-[50%] mb-4 text-[#494949]">
+							Here&#x27;s a portfolio of my development work.<br />
+						</p>
+						<p className="w-[80%] text-[#6b6b6b]">
+							As a creative developer who specializes in interactive experiences,
+							I build web applications that are not only functional but also engaging.
+							From government platforms to creative side projects, each piece is crafted
+							with attention to both user experience and code quality.
+						</p>
+					</div>
+
+					<div className="w-layout-grid design-work-grid grid grid-cols-1 md:grid-cols-2 gap-6">
+						{PROJECTS.map((project, index) => (
+							<div key={index} className="card---design-work relative">
+								<Link
+									href={project.redirect}
+									target="_blank"
+									className="block"
+								>
+									<Image
+										src={project.image}
+										alt={project.title}
+										width={1368}
+										height={800}
+										className="designprojectthumbnail w-full aspect-video object-cover rounded-xl mb-4"
+									/>
+									<h2 className="project-title text-lg font-semibold mb-2">{project.title}</h2>
+									<div className="caption text-[#494949] text-sm">{project.description}</div>
+								</Link>
+							</div>
+						))}
+					</div>
 				</div>
-			))}
-		</motion.main>
+			</header>
+
+			<div className="section">
+				<div className="container">
+					<div className="work-contact-cta-section flex flex-col items-center pt-20">
+						<Image
+							src="/images/squigle.svg"
+							alt="Squigle"
+							width={100}
+							height={100}
+							className="mb-8"
+						/>
+						<h4 className="cs-title text-[3.9rem] leading-[120%] font-inter font-semibold mb-4">
+							Got a project?
+						</h4>
+						<p className="light text-center mb-20 text-[#494949]">
+							Discover how we could work together :)<br />
+						</p>
+						<Link
+							href="/contact"
+							className="button-circle w-button bg-black text-white rounded-full w-48 h-48 flex items-center justify-center text-lg font-medium hover:scale-110 transition-transform duration-300"
+						>
+							Get in touch
+						</Link>
+					</div>
+				</div>
+			</div>
+		</>
 	);
 }
