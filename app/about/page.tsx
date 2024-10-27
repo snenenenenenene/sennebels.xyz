@@ -45,6 +45,13 @@ const NOW_ITEMS = [
 	}
 ];
 
+const GEAR_ITEMS = [
+	"MacBook Pro 14\" M1",
+	"iPhone 13",
+	"Keycool Custom 60% Keyboard",
+	"MSI G27 Display"
+];
+
 const ACHIEVEMENTS = [
 	"Graduated Cum Laude, AP University College Antwerp (2022)",
 	"IELTS Overall Score 8.0, British Consulate Brussels (2021)",
@@ -143,15 +150,27 @@ export default function About() {
 								About me in 10 seconds
 							</h1>
 							<p className="text-[#494949] mt-0 mb-10">
-								Hey! I&apos;m Senne, a Creative Full Stack Developer.<br /><br />
+								Hey! I&apos;m Senne, a Creative Full Stack Developer based in Antwerp.<br /><br />
 
 								I create interactive web experiences focused on innovation and user experience.
 								My unique background in Big Data & AI, combined with my ongoing studies in
 								Multimedia and Creative Technologies, allows me to approach problems from multiple angles.<br /><br />
 
 								As an INFP-T individual, I strive to build meaningful applications that make a difference.
-								My current focus? Creating sustainable tech solutions, supporting Okapi conservation,
-								and pushing the boundaries of web development.<br /><br />
+								This passion extends beyond coding – I&apos;m an active WWF volunteer, deeply committed to
+								environmental conservation. At home, I&apos;m surrounded by my four cats and a chihuahua, who
+								keep me company during coding sessions.<br /><br />
+
+								When I&apos;m not coding, you&apos;ll find me climbing walls, hiking trails, or exploring new
+								cities – Vancouver, Munich, and Bergen have all captured my heart. I&apos;m also an avid gamer,
+								particularly enjoying Minecraft, Zelda, Pokémon, Sea of Thieves, and Europa Universalis 4.
+								In my downtime, I play guitar and work on perfecting my setup:<br /><br />
+
+								<span className="block pl-4 border-l-2 border-[#ff8564]">
+									{GEAR_ITEMS.map((gear, index) => (
+										<span key={index} className="block mb-1">{gear}</span>
+									))}
+								</span><br />
 
 								<strong>Think Different, Code Better.</strong>
 							</p>
