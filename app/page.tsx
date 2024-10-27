@@ -154,7 +154,7 @@ export default function Home() {
               style={{ color: introColor }}
               className="text-[2.1rem] sm:text-[3.1rem] md:text-[4.2rem] lg:text-[5rem] leading-[150%]"
             >
-              I'm
+              I&apos;m
             </motion.span>
             <motion.span
               style={{ color: introColor }}

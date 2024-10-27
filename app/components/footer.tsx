@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Github, Linkedin, Mail } from "lucide-react";
 
-const Footer = () => {
+export default function Footer() {
 	return (
 		<footer className="footer border-t border-gray-200 font-satoshi">
 			<div className="container mx-auto px-6">
@@ -128,5 +128,3 @@ const Footer = () => {
 		</footer>
 	);
 };
-
-export default Footer;

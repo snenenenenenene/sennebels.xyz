@@ -143,13 +143,13 @@ export default function About() {
 								About me in 10 seconds
 							</h1>
 							<p className="text-[#494949] mt-0 mb-10">
-								Hey! I'm Senne, a Creative Full Stack Developer.<br /><br />
+								Hey! I&apos;m Senne, a Creative Full Stack Developer.<br /><br />
 
 								I create interactive web experiences focused on innovation and user experience.
 								My unique background in Big Data & AI, combined with my ongoing studies in
 								Multimedia and Creative Technologies, allows me to approach problems from multiple angles.<br /><br />
 
-								As an INTJ-T individual, I strive to build meaningful applications that make a difference.
+								As an INFP-T individual, I strive to build meaningful applications that make a difference.
 								My current focus? Creating sustainable tech solutions, supporting Okapi conservation,
 								and pushing the boundaries of web development.<br /><br />
 
