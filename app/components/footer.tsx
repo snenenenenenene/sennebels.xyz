@@ -8,13 +8,16 @@ const Footer = () => {
 			<div className="container mx-auto px-6">
 				<div className="footer-wrapper py-16">
 					<Link href="/" className="footer-brand inline-block">
-						<Image
+						{/* <Image
 							src="/images/okapi.png"
 							width={56}
 							height={56}
 							alt="Logo"
 							className="w-14"
-						/>
+						/> */}
+						<h2 className="text-xl font-bold text-gray-900 md:text-3xl md:font-extrabold md:text-gray-800">
+							Senne Bels
+						</h2>
 					</Link>
 
 					<div className="footer-content grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
