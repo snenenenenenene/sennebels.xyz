@@ -316,12 +316,12 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Circle Text */}
+      {/* Circle Text
       <div className="fixed bottom-[3%] left-[3%] z-[5] w-24 h-24 hidden md:block">
         <div id="circletext" className="text-sm font-medium text-dark-accent dark:text-white opacity-80">
           ✦ THINK LESS ✦ CREATE MORE
         </div>
-      </div>
+      </div> */}
     </main>
   );
 }

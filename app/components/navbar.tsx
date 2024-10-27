@@ -2,12 +2,17 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Menu } from "lucide-react";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
+
+  // Close menu when pathname changes
+  useEffect(() => {
+    setIsOpen(false);
+  }, [pathname]);
 
   const isActive = (path: string) => {
     if (path === '/') return pathname === '/'
@@ -18,6 +23,7 @@ export default function Navbar() {
     <Link
       href={href}
       target={external ? "_blank" : undefined}
+      onClick={() => setIsOpen(false)}
       className={`
         text-center
         rounded-xl 
@@ -44,14 +50,8 @@ export default function Navbar() {
         <Link
           href="/"
           className="flex items-center order-1 md:order-2 justify-self-start md:justify-self-end"
+          onClick={() => setIsOpen(false)}
         >
-          {/* <Image
-            src="/images/okapi.png"
-            alt="Logo"
-            width={44}
-            height={44}
-            className="w-11"
-          /> */}
           <h2 className="text-2xl font-bold text-gray-900 md:text-3xl md:font-extrabold md:text-gray-800">
             Senne Bels
           </h2>
@@ -111,8 +111,8 @@ export default function Navbar() {
               Work
             </NavLink>
 
-            {/* Dropdown Menu */}
-            {/* <div className="relative group hidden md:block">
+            {/* Optional: Uncomment if you want to add the dropdown menu back
+            <div className="relative group hidden md:block">
               <div className={`
                 rounded-xl 
                 px-3 
@@ -159,23 +159,27 @@ export default function Navbar() {
                 <Link
                   href="/contact"
                   className={`block px-4 py-2 text-sm hover:bg-gray-50 ${isActive('/contact') ? 'font-bold' : ''}`}
+                  onClick={() => setIsOpen(false)}
                 >
                   Contact me
                 </Link>
                 <Link
                   href="/faq"
                   className={`block px-4 py-2 text-sm hover:bg-gray-50 ${isActive('/faq') ? 'font-bold' : ''}`}
+                  onClick={() => setIsOpen(false)}
                 >
                   FAQ
                 </Link>
                 <Link
                   href="/notes"
                   className={`block px-4 py-2 text-sm hover:bg-gray-50 ${isActive('/notes') ? 'font-bold' : ''}`}
+                  onClick={() => setIsOpen(false)}
                 >
                   Notes
                 </Link>
               </div>
-            </div> */}
+            </div>
+            */}
           </nav>
         </div>
       </div>
