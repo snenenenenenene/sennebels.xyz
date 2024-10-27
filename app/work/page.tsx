@@ -7,37 +7,37 @@ const PROJECTS = [
 	{
 		title: "Lokaal Beslist",
 		image: "/images/work/lokaalbeslist.png",
-		description: "Full Stack Development of a citizen participation platform, built with React and Node.js, focusing on government transparency and civic engagement.",
+		description: "Full Stack Development of a citizen participation platform, built with Ember.js and Linked Open Data, focusing on government transparency and civic engagement.",
 		redirect: "https://lokaalbeslist.lblod.info/"
 	},
 	{
 		title: "Waddist",
 		image: "/images/work/waddist.webp",
-		description: "Mobile application development focusing on community engagement and social interaction, built with React Native and Firebase.",
+		description: "Mobile application development focusing on community engagement and social interaction, built with React Native and Django.",
 		redirect: "https://apps.apple.com/be/app/waddist/id1548427323"
 	},
 	{
 		title: "Skinhouse",
 		image: "/images/work/skinhouse.png",
-		description: "E-commerce platform development with Next.js and Stripe integration, featuring a custom CMS for product management.",
+		description: "Skincare portfolio developed with Next.js, featuring a custom CMS for product management.",
 		redirect: "https://skinhouse.vercel.app/"
 	},
 	{
 		title: "Aroy",
 		image: "/images/work/aroy.png",
-		description: "Restaurant website with online ordering system, built with Next.js and Tailwind CSS, featuring real-time order tracking.",
+		description: "Thai Restaurant website, built with Next.js and Tailwind CSS.",
 		redirect: "https://aroy.vercel.app/"
 	},
 	{
 		title: "DND Character Creator",
 		image: "/images/work/dnd.png",
-		description: "Interactive D&D character creation tool with drag-and-drop functionality, built using React and TypeScript.",
+		description: "Interactive D&D character creation tool, built using React and TypeScript.",
 		redirect: "https://dnd-character-tool.vercel.app/"
 	},
 	{
 		title: "Open Summer of Code",
 		image: "/images/work/osoc.png",
-		description: "Website development for the Belgian open-source initiative, featuring project showcases and participant information, built with Next.js.",
+		description: "Website development & maintenance for the Belgian open-source initiative, featuring project showcases and participant information, built with Next.js.",
 		redirect: "https://osoc.be/"
 	}
 ];

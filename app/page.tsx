@@ -19,8 +19,8 @@ const projects = [
     title: "Waddist",
     description: "Mobile App Development",
     image: "/images/work/waddist.webp",
-    year: "2023",
-    link: "https://apps.apple.com/be/app/waddist/id1548427323",
+    year: "2021",
+    link: "https://play.google.com/store/apps/details?id=be.arteveldehogeschool.waddist&hl=en",
   },
   {
     title: "Skinhouse",
@@ -55,7 +55,7 @@ const ProjectCard = ({ title, description, image, year, link }: ProjectCardProps
     <div className="absolute bottom-0 left-0 w-full p-6 rounded-b-2xl">
       <div className="mb-3">
         <div className="inline-block">
-          <div className="bg-[#F7F7F7] px-3 py-1 rounded-full text-sm">
+          <div className="bg-[#6b6b6bb0] px-3 py-1 rounded-full text-sm">
             {year}
           </div>
         </div>
