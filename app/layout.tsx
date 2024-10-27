@@ -7,7 +7,7 @@ import Footer from "./components/footer";
 import SmoothScrolling from "./components/smoothScrolling";
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://sennebels.com'), // Replace with your domain
+  metadataBase: new URL('https://sennebels.xyz'), // Replace with your domain
   title: {
     default: "Senne Bels - Creative Developer",
     template: "%s | Senne Bels"
@@ -36,13 +36,13 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_UK",
-    url: "https://sennebels.com",
+    url: "https://sennebels.xyz",
     siteName: "Senne Bels",
     title: "Senne Bels - Creative Developer",
     description: "Creative developer focused on building interactive, game-like websites and innovative digital experiences.",
     images: [
       {
-        url: "/images/og-image.png", // Add your OG image
+        url: "/images/logo.png", // Add your OG image
         width: 1200,
         height: 630,
         alt: "Senne Bels - Creative Developer",
@@ -53,7 +53,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Senne Bels - Creative Developer",
     description: "Creative developer focused on building interactive websites and innovative digital experiences.",
-    creator: "@yourtwitterhandle", // Add your Twitter handle
+    creator: "@snenenenene", // Add your Twitter handle
     images: ["/images/twitter-image.png"], // Add your Twitter card image
   },
   robots: {
@@ -69,9 +69,9 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/favicon.ico" },
-      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
-      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/icon.ico" },
+      // { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      // { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
     ],
     apple: [
       { url: "/apple-touch-icon.png" },
