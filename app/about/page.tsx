@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { MoveUpRight } from "lucide-react";
 import { useEffect, useState } from "react";
+import { link } from "fs";
 
 const TIMELINE_ITEMS = [
 	{
@@ -36,7 +37,7 @@ const NOW_ITEMS = [
 	{
 		title: "The Okapi Shop",
 		description: "Creating an e-commerce platform to support Okapi preservation.",
-		link: "#"
+		link: "https://the-okapi-webstore.vercel.app/",
 	},
 	{
 		title: "Studying Creative Technologies",

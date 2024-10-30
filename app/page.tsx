@@ -145,91 +145,88 @@ export default function Home() {
     <main className="relative min-h-screen overflow-x-hidden">
       <header
         ref={heroRef}
-        className="pt-[10px] pb-16 sm:pt-[120px] md:pt-[100px] lg:pt-[80px] px-4 sm:px-6 md:px-8"
-      >     <div className="container mx-auto max-w-[728px] lg:max-w-full xl:max-w-[1140px]">
-          <div className="hero-text-wrapper flex flex-wrap items-baseline gap-x-4">
-            {/* Introduction sentence */}
-            <span className="text-[2.6rem] sm:text-[3.5rem] md:text-[5rem] lg:text-[7rem] leading-none">👋</span>
+        className="pt-[10px] pb-16 sm:pt-[120px] md:pt-[100px] lg:pt-[80px] xl:pt-[120px] 2xl:pt-[160px] px-4 sm:px-6 md:px-8 xl:px-12"
+      >
+        <div className="container mx-auto max-w-[728px] lg:max-w-full xl:max-w-[1400px] 2xl:max-w-[1800px]">
+          <div className="hero-text-wrapper flex flex-wrap items-baseline gap-x-4 xl:gap-x-6">
+            <span className="text-[2.6rem] sm:text-[3.5rem] md:text-[5rem] lg:text-[7rem] xl:text-[8rem] 2xl:text-[9rem] leading-none">👋</span>
             <motion.span
               style={{ color: introColor }}
-              className="text-[2.1rem] sm:text-[3.1rem] md:text-[4.2rem] lg:text-[5rem] leading-[150%]"
+              className="text-[2.1rem] sm:text-[3.1rem] md:text-[4.2rem] lg:text-[5rem] xl:text-[6rem] 2xl:text-[7rem] leading-[150%]"
             >
               Hi,
             </motion.span>
             <motion.span
               style={{ color: introColor }}
-              className="text-[2.1rem] sm:text-[3.1rem] md:text-[4.2rem] lg:text-[5rem] leading-[150%]"
+              className="text-[2.1rem] sm:text-[3.1rem] md:text-[4.2rem] lg:text-[5rem] xl:text-[6rem] 2xl:text-[7rem] leading-[150%]"
             >
               I&apos;m
             </motion.span>
             <motion.span
               style={{ color: introColor }}
-              className="text-[2.1rem] sm:text-[3.1rem] md:text-[4.2rem] lg:text-[5rem] leading-[150%]"
+              className="text-[2.1rem] sm:text-[3.1rem] md:text-[4.2rem] lg:text-[5rem] xl:text-[6rem] 2xl:text-[7rem] leading-[150%]"
             >
               Senne&nbsp;Bels,
             </motion.span>
 
-            {/* Role sentence */}
-            <span className="text-[2.6rem] sm:text-[3.5rem] md:text-[5rem] lg:text-[7rem] leading-none">💻</span>
+            <span className="text-[2.6rem] sm:text-[3.5rem] md:text-[5rem] lg:text-[7rem] xl:text-[8rem] 2xl:text-[9rem] leading-none">💻</span>
             <motion.span
               style={{ color: roleColor }}
-              className="text-[2.1rem] sm:text-[3.1rem] md:text-[4.2rem] lg:text-[5rem] leading-[150%]"
+              className="text-[2.1rem] sm:text-[3.1rem] md:text-[4.2rem] lg:text-[5rem] xl:text-[6rem] 2xl:text-[7rem] leading-[150%]"
             >
               Creative
             </motion.span>
             <motion.span
               style={{ color: roleColor }}
-              className="text-[2.1rem] sm:text-[3.1rem] md:text-[4.2rem] lg:text-[5rem] leading-[150%]"
+              className="text-[2.1rem] sm:text-[3.1rem] md:text-[4.2rem] lg:text-[5rem] xl:text-[6rem] 2xl:text-[7rem] leading-[150%]"
             >
               Full&nbsp;Stack
             </motion.span>
             <motion.span
               style={{ color: roleColor }}
-              className="text-[2.1rem] sm:text-[3.1rem] md:text-[4.2rem] lg:text-[5rem] leading-[150%]"
+              className="text-[2.1rem] sm:text-[3.1rem] md:text-[4.2rem] lg:text-[5rem] xl:text-[6rem] 2xl:text-[7rem] leading-[150%]"
             >
               Developer
             </motion.span>
-            {/* Creating sentence */}
-            <span className="text-[2.6rem] sm:text-[3.5rem] md:text-[5rem] lg:text-[7rem] leading-none">🚀</span>
+
+            <span className="text-[2.6rem] sm:text-[3.5rem] md:text-[5rem] lg:text-[7rem] xl:text-[8rem] 2xl:text-[9rem] leading-none">🚀</span>
             <motion.span
               style={{ color: creatingColor }}
-              className="text-[2.1rem] sm:text-[3.1rem] md:text-[4.2rem] lg:text-[5rem] leading-[150%]"
+              className="text-[2.1rem] sm:text-[3.1rem] md:text-[4.2rem] lg:text-[5rem] xl:text-[6rem] 2xl:text-[7rem] leading-[150%]"
             >
               Building
             </motion.span>
             <motion.span
               style={{ color: creatingColor }}
-              className="text-[2.1rem] sm:text-[3.1rem] md:text-[4.2rem] lg:text-[5rem] leading-[150%]"
+              className="text-[2.1rem] sm:text-[3.1rem] md:text-[4.2rem] lg:text-[5rem] xl:text-[6rem] 2xl:text-[7rem] leading-[150%]"
             >
               Impactful
             </motion.span>
             <motion.span
               style={{ color: creatingColor }}
-              className="text-[2.1rem] sm:text-[3.1rem] md:text-[4.2rem] lg:text-[5rem] leading-[150%]"
+              className="text-[2.1rem] sm:text-[3.1rem] md:text-[4.2rem] lg:text-[5rem] xl:text-[6rem] 2xl:text-[7rem] leading-[150%]"
             >
               &amp;
             </motion.span>
             <motion.span
               style={{ color: creatingColor }}
-              className="text-[2.1rem] sm:text-[3.1rem] md:text-[4.2rem] lg:text-[5rem] leading-[150%]"
+              className="text-[2.1rem] sm:text-[3.1rem] md:text-[4.2rem] lg:text-[5rem] xl:text-[6rem] 2xl:text-[7rem] leading-[150%]"
             >
               Sustainable
             </motion.span>
             <motion.span
               style={{ color: creatingColor }}
-              className="text-[2.1rem] sm:text-[3.1rem] md:text-[4.2rem] lg:text-[5rem] leading-[150%]"
+              className="text-[2.1rem] sm:text-[3.1rem] md:text-[4.2rem] lg:text-[5rem] xl:text-[6rem] 2xl:text-[7rem] leading-[150%]"
             >
               Experiences
             </motion.span>
-            <span className="text-[2.6rem] sm:text-[3.5rem] md:text-[5rem] lg:text-[7rem] leading-none">🌳</span>
-
+            <span className="text-[2.6rem] sm:text-[3.5rem] md:text-[5rem] lg:text-[7rem] xl:text-[8rem] 2xl:text-[9rem] leading-none">🌳</span>
           </div>
         </div>
       </header>
 
-      {/* Profile Image Section */}
-      <div className="mt-8 sm:mt-12 md:mt-0 mx-4 sm:mx-6 md:mx-8">
-        <div className="rounded-[36px] sm:rounded-[40px] md:rounded-[80px] h-[360px] sm:h-[320px] md:h-[500px] overflow-hidden">
+      <div className="mt-8 sm:mt-12 md:mt-0 mx-4 sm:mx-6 md:mx-8 xl:mx-12">
+        <div className="rounded-[36px] sm:rounded-[40px] md:rounded-[80px] h-[360px] sm:h-[320px] md:h-[500px] xl:h-[600px] 2xl:h-[700px] overflow-hidden">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}

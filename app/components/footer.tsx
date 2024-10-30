@@ -64,7 +64,9 @@ export default function Footer() {
 									Specular Consulting
 								</span>
 								<span className="footer-link text-gray-600">
-									The Okapi Shop
+									<Link href="https://the-okapi-webstore.vercel.app/" className="footer-link text-gray-600 hover:text-black" >
+										The Okapi Shop
+									</Link>
 								</span>
 								<Link href="/work" className="footer-link text-gray-600 hover:text-black">
 									See all work <strong>→</strong>
