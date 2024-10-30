@@ -154,7 +154,7 @@ export default function About() {
 								Hey! I&apos;m Senne, a Creative Full Stack Developer based in Antwerp.<br /><br />
 
 								I create interactive web experiences focused on innovation and user experience.
-								My unique background in Big Data & AI, combined with my ongoing studies in
+								My unique background in Big Data & AI, combined with my time studying
 								Multimedia and Creative Technologies, allows me to approach problems from multiple angles.<br /><br />
 
 								As an INFP-T individual, I strive to build meaningful applications that make a difference.
