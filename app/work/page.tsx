@@ -176,8 +176,7 @@ export default function Work() {
 						viewport={{ once: true }}
 						className="work-contact-cta-section flex flex-col items-center pt-20"
 					>
-						<div
-						>
+						<div>
 							<Image
 								src="/images/squigle.svg"
 								alt="Squigle"
