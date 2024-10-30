@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { Github, Linkedin, Mail } from "lucide-react";
+import { Github, Linkedin, Mail, Coffee } from "lucide-react";
 
 export default function Footer() {
 	return (
@@ -8,13 +8,6 @@ export default function Footer() {
 			<div className="container mx-auto px-6">
 				<div className="footer-wrapper py-16">
 					<Link href="/" className="footer-brand inline-block">
-						{/* <Image
-							src="/images/okapi.png"
-							width={56}
-							height={56}
-							alt="Logo"
-							className="w-14"
-						/> */}
 						<h2 className="text-xl font-bold text-gray-900 md:text-3xl md:font-extrabold md:text-gray-800">
 							Senne Bels
 						</h2>
@@ -123,10 +116,20 @@ export default function Footer() {
 									<Mail size={20} />
 								</a>
 							</li>
+							<li className="list-item">
+								<a
+									href="https://buymeacoffee.com/snenenenenenene"
+									target="_blank"
+									rel="noopener noreferrer"
+									className="footersocialicons w-8 h-8 flex items-center justify-center hover:opacity-75 text-gray-600 hover:text-black"
+								>
+									<Coffee size={20} />
+								</a>
+							</li>
 						</ul>
 					</div>
 				</div>
 			</div>
 		</footer>
 	);
-};
+}

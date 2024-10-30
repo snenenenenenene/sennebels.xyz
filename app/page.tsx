@@ -18,16 +18,16 @@ const projects = [
   {
     title: "Waddist",
     description: "Mobile App Development",
-    image: "/images/work/waddist.webp",
+    image: "/images/work/waddist.png",
     year: "2021",
     link: "https://play.google.com/store/apps/details?id=be.arteveldehogeschool.waddist&hl=en",
   },
   {
-    title: "Skinhouse",
-    description: "Website Development",
-    image: "/images/work/skinhouse.png",
+    title: "The Okapi Store",
+    image: "/images/work/theokapistore.png",
+    description: "Homebrew E-commerce platform development for a sustainable fashion brand based on Okapi's, built with NextJS, Printful API, and Stripe.",
+    link: "https://the-okapi-webstore.vercel.app/",
     year: "2024",
-    link: "https://skinhouse.vercel.app/",
   },
 ];
 

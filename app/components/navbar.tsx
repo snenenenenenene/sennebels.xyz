@@ -9,7 +9,6 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
 
-  // Close menu when pathname changes
   useEffect(() => {
     setIsOpen(false);
   }, [pathname]);
@@ -44,8 +43,8 @@ export default function Navbar() {
   )
 
   return (
-    <div className="fixed w-full top-0 z-50 bg-[#fdfcf9] md:bg-transparent px-2 sm:px-0 py-1">
-      <div className="max-w-8xl px-8 mx-auto grid grid-cols-[1fr,auto,auto] md:grid-cols-[auto,1fr] items-center gap-4 md:gap-8">
+    <div className="fixed w-full top-0 z-50 bg-[#fdfcf9] md:bg-transparent py-4 md:py-6">
+      <div className="max-w-8xl px-6 md:px-8 mx-auto grid grid-cols-[1fr,auto,auto] md:grid-cols-[auto,1fr] items-center gap-4 md:gap-8">
         {/* Logo - Left on mobile, Right on desktop */}
         <Link
           href="/"
@@ -84,6 +83,7 @@ export default function Navbar() {
           md:shadow-none
           rounded-b-3xl
           md:rounded-none
+          ${isOpen ? 'px-6 md:px-0' : ''}
         `}>
           <nav className="
             flex 
@@ -110,76 +110,6 @@ export default function Navbar() {
             <NavLink href="/work">
               Work
             </NavLink>
-
-            {/* Optional: Uncomment if you want to add the dropdown menu back
-            <div className="relative group hidden md:block">
-              <div className={`
-                rounded-xl 
-                px-3 
-                py-2.5 
-                flex 
-                items-center 
-                cursor-pointer 
-                transition-colors
-                hover:bg-gradient-to-br 
-                hover:from-white/20 
-                hover:to-white/70
-                ${(isActive('/contact') || isActive('/faq') || isActive('/notes')) ? 'font-bold' : 'font-medium'}
-              `}>
-                <span className="text-sm mr-1">More</span>
-                <svg
-                  width="10"
-                  height="6"
-                  viewBox="0 0 10 6"
-                  fill="none"
-                  className="w-2.5 h-2.5 ml-1"
-                >
-                  <path
-                    d="M1 1L5 5L9 1"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </div>
-              <div className="
-                hidden 
-                group-hover:block 
-                absolute 
-                top-full 
-                left-0 
-                bg-white 
-                rounded-lg 
-                shadow-lg 
-                py-2 
-                mt-2 
-                min-w-[160px]
-              ">
-                <Link
-                  href="/contact"
-                  className={`block px-4 py-2 text-sm hover:bg-gray-50 ${isActive('/contact') ? 'font-bold' : ''}`}
-                  onClick={() => setIsOpen(false)}
-                >
-                  Contact me
-                </Link>
-                <Link
-                  href="/faq"
-                  className={`block px-4 py-2 text-sm hover:bg-gray-50 ${isActive('/faq') ? 'font-bold' : ''}`}
-                  onClick={() => setIsOpen(false)}
-                >
-                  FAQ
-                </Link>
-                <Link
-                  href="/notes"
-                  className={`block px-4 py-2 text-sm hover:bg-gray-50 ${isActive('/notes') ? 'font-bold' : ''}`}
-                  onClick={() => setIsOpen(false)}
-                >
-                  Notes
-                </Link>
-              </div>
-            </div>
-            */}
           </nav>
         </div>
       </div>

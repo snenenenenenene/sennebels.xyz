@@ -63,7 +63,16 @@ const PROJECTS = [
 	}
 ];
 
-const ProjectCard = ({ project, index }) => {
+const ProjectCard = ({ project, index }: {
+	project: {
+		title: string;
+		image: string;
+		description: string;
+		redirect: string;
+		tags: string[];
+	};
+	index: number;
+}) => {
 	return (
 		<motion.div
 			initial={{ opacity: 0, y: 20 }}
