@@ -176,15 +176,7 @@ export default function Work() {
 						viewport={{ once: true }}
 						className="work-contact-cta-section flex flex-col items-center pt-20"
 					>
-						<motion.div
-							animate={{
-								rotate: [0, 360],
-							}}
-							transition={{
-								duration: 20,
-								repeat: Infinity,
-								ease: "linear"
-							}}
+						<div
 						>
 							<Image
 								src="/images/squigle.svg"
@@ -193,7 +185,7 @@ export default function Work() {
 								height={100}
 								className="mb-8"
 							/>
-						</motion.div>
+						</div>
 						<motion.h4
 							initial={{ scale: 0.9 }}
 							whileInView={{ scale: 1 }}
