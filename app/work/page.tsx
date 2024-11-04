@@ -24,7 +24,7 @@ const PROJECTS = [
 		image: "/images/work/spotify-art.png",
 		description: "Interactive tool for creating custom Spotify playlist covers with a Notion-like interface. Features drag and drop, image layers, text customization, and dark mode support.",
 		redirect: "https://spotify-playlist-art-generator.vercel.app/",
-		tags: ["Next.js", "React DnD", "TypeScript", "Tailwind"]
+		tags: ["Next.js", "Hooks", "Tailwind"]
 	},
 	{
 		title: "Waddist",
