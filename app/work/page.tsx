@@ -20,6 +20,13 @@ const PROJECTS = [
 		tags: ["VSCode", "Theme", "2023"]
 	},
 	{
+		title: "Spotify Playlist Art Generator",
+		image: "/images/work/spotify-art.png",
+		description: "Interactive tool for creating custom Spotify playlist covers with a Notion-like interface. Features drag and drop, image layers, text customization, and dark mode support.",
+		redirect: "https://spotify-playlist-art-generator.vercel.app/",
+		tags: ["Next.js", "React DnD", "TypeScript", "Tailwind"]
+	},
+	{
 		title: "Waddist",
 		image: "/images/work/waddist.png",
 		description: "Mobile application development focusing on community engagement and social interaction, built with React Native and Django.",
