@@ -1,9 +1,9 @@
 "use client"
-import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { AnimatePresence, motion, useScroll, useTransform } from "framer-motion";
+import { MoveUpRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { MoveUpRight } from "lucide-react";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const TYPING_TEXTS = ["Websites", "Applications", "Side Projects"];
 
@@ -26,7 +26,7 @@ const projects = [
     title: "The Okapi Store",
     image: "/images/work/theokapistore.png",
     description: "Homebrew E-commerce platform development for a sustainable fashion brand based on Okapi's, built with NextJS, Printful API, and Stripe.",
-    link: "https://the-okapi-webstore.vercel.app/",
+    link: "https://theokapistore.com/",
     year: "2024",
   },
 ];

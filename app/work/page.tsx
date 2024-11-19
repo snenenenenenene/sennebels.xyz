@@ -1,15 +1,15 @@
 "use client"
 import { motion } from "framer-motion";
+import { ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
 
 const PROJECTS = [
 	{
 		title: "The Okapi Store",
 		image: "/images/work/theokapistore.png",
 		description: "Homebrew E-commerce platform development for a sustainable fashion brand based on Okapi's, built with NextJS, Printful API, and Stripe.",
-		redirect: "https://the-okapi-webstore.vercel.app/",
+		redirect: "https://theokapistore.com/",
 		tags: ["Next.js", "Stripe", "E-commerce"]
 	},
 	{
