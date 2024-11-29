@@ -237,14 +237,11 @@ export default function Home() {
           >
             <Image
               src="/images/hero.jpg"
-              alt="Landscape photograph by Zita Celis, taken in Vancouver"
+              alt="Landscape photograph taken in Vancouver"
               fill
               className="object-cover"
               priority
             />
-            <div className="absolute bottom-4 right-4 text-white text-sm px-4 py-1 rounded">
-              Photo by Zita Celis © Vancouver
-            </div>
           </motion.div>
         </div>
       </div>
