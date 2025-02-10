@@ -107,7 +107,7 @@ export default function About() {
 					<div className="w-full max-w-[650px]">
 						<div className="rounded-[36px] sm:rounded-[40px] md:rounded-[80px] h-[360px] sm:h-[320px] md:h-[500px] overflow-hidden mb-12">
 							<Image
-								src="/images/me.jpg"
+								src="/images/me.png"
 								alt="Senne Bels"
 								width={2048}
 								height={1365}
@@ -183,17 +183,13 @@ export default function About() {
 							</h2>
 							<p className="text-[#494949] mt-0 mb-10">
 								Reach out to me on{" "}
-								<Link href="https://github.com/username" target="_blank" className="underline text-current">
+								<Link href="https://github.com/snenenenenenene" target="_blank" className="underline text-current">
 									GitHub
 								</Link>
-								,{" "}
-								<Link href="https://www.linkedin.com/in/username/" target="_blank" className="underline text-current">
+								, or{" "}
+								<Link href="https://www.linkedin.com/in/sennebels/" target="_blank" className="underline text-current">
 									LinkedIn
 								</Link>
-								, or{" "}
-								<Link href="https://twitter.com/username" target="_blank" className="underline text-current">
-									Twitter
-								</Link>{" "}
 								for a quick chat or collaboration!
 							</p>
 						</section>
