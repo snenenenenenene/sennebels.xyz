@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import type { Metadata } from "next";
 
 const PROJECTS = [
 	{
@@ -132,7 +133,21 @@ const ProjectCard = ({ project, index }: {
 	);
 };
 
-
+export const metadata: Metadata = {
+	title: "My Work | Creative Developer Portfolio",
+	description: "Explore my portfolio of interactive web experiences and creative development projects. From government platforms to innovative side projects.",
+	openGraph: {
+		title: "Senne Bels - Creative Development Portfolio",
+		description: "Interactive web experiences and creative development projects by Senne Bels. Explore my work in web development and digital experiences.",
+		images: ["/assets/screenshot.png"],
+	},
+	twitter: {
+		card: "summary_large_image",
+		title: "Senne Bels - Creative Development Portfolio",
+		description: "Interactive web experiences and creative development projects by Senne Bels. Explore my work in web development and digital experiences.",
+		images: ["/assets/screenshot.png"],
+	},
+};
 
 export default function Work() {
 	return (

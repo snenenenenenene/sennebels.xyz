@@ -43,10 +43,10 @@ export const metadata: Metadata = {
     description: "Creative developer focused on building interactive, game-like websites and innovative digital experiences.",
     images: [
       {
-        url: "/images/logo.png", // Add your OG image
+        url: "/assets/screenshot.png",
         width: 1200,
         height: 630,
-        alt: "Senne Bels - Creative Developer",
+        alt: "Senne Bels - Creative Developer Portfolio",
       },
     ],
   },
@@ -54,8 +54,8 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Senne Bels - Creative Developer",
     description: "Creative developer focused on building interactive websites and innovative digital experiences.",
-    creator: "@snenenenene", // Add your Twitter handle
-    images: ["/images/twitter-image.png"], // Add your Twitter card image
+    creator: "@snenenenene",
+    images: ["/assets/screenshot.png"],
   },
   robots: {
     index: true,
@@ -71,12 +71,17 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       { url: "/favicon.ico" },
-      // { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
-      // { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/images/icon.ico" },
     ],
     apple: [
-      { url: "/apple-touch-icon.png" },
+      { url: "/images/logo.png" },
     ],
+  },
+  verification: {
+    google: "your-google-site-verification", // Add this if you have it
+  },
+  alternates: {
+    canonical: "https://sennebels.xyz",
   },
   assets: [
     "https://cdn.jsdelivr.net/npm/circletype@2.3.0/dist/circletype.min.js"

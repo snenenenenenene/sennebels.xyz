@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { MoveUpRight } from "lucide-react";
 import { useEffect, useState } from "react";
+import type { Metadata } from "next";
 
 const TIMELINE_ITEMS = [
 	{ year: "2024", description: "Joined Specular Consulting" },
@@ -30,6 +31,22 @@ const ACHIEVEMENTS = [
 	"IELTS 8.0, British Consulate Brussels (2021)",
 	"Chinese A1 Certification, Linguapolis Antwerp (2020)",
 ];
+
+export const metadata: Metadata = {
+	title: "About Me | Creative Developer",
+	description: "Learn about Senne Bels, a creative full-stack developer from Antwerp specializing in interactive web experiences and innovative digital solutions.",
+	openGraph: {
+		title: "About Senne Bels - Creative Developer",
+		description: "Creative full-stack developer from Antwerp specializing in interactive web experiences and innovative digital solutions.",
+		images: ["/images/me.jpg"],
+	},
+	twitter: {
+		card: "summary_large_image",
+		title: "About Senne Bels - Creative Developer",
+		description: "Creative full-stack developer from Antwerp specializing in interactive web experiences and innovative digital solutions.",
+		images: ["/images/me.jpg"],
+	},
+};
 
 export default function About() {
 	const [activeSection, setActiveSection] = useState("about");
@@ -121,11 +138,11 @@ export default function About() {
 								About Me
 							</h1>
 							<p className="text-[#494949] mt-0 mb-10">
-								Hey, I’m Senne! INFP-T, full-stack developer, and a creative tech enthusiast from Antwerp.
+								Hey, I'm Senne! INFP-T, full-stack developer, and a creative tech enthusiast from Antwerp.
 								I focus on building interactive and innovative web experiences, blending functionality with fun.
-								Currently, I’m diving into creative tech while tackling projects like *The Okapi Store*—my e-commerce platform to support okapi conservation.<br /><br />
+								Currently, I'm diving into creative tech while tackling projects like *The Okapi Store*—my e-commerce platform to support okapi conservation.<br /><br />
 
-								Outside of work, you’ll find me adventuring with my pets, enjoying gaming classics (Minecraft, Zelda), and exploring cities like Munich and Bergen.
+								Outside of work, you'll find me adventuring with my pets, enjoying gaming classics (Minecraft, Zelda), and exploring cities like Munich and Bergen.
 								My tech setup keeps me efficient, including:
 								<span className="block pl-4 border-l-2 border-[#ff8564]">
 									{GEAR_ITEMS.map((gear, index) => (
