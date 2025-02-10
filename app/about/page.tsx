@@ -3,7 +3,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { MoveUpRight } from "lucide-react";
 import { useEffect, useState } from "react";
-import type { Metadata } from "next";
 
 const TIMELINE_ITEMS = [
 	{ year: "2024", description: "Joined Specular Consulting" },
@@ -31,22 +30,6 @@ const ACHIEVEMENTS = [
 	"IELTS 8.0, British Consulate Brussels (2021)",
 	"Chinese A1 Certification, Linguapolis Antwerp (2020)",
 ];
-
-export const metadata: Metadata = {
-	title: "About Me | Creative Developer",
-	description: "Learn about Senne Bels, a creative full-stack developer from Antwerp specializing in interactive web experiences and innovative digital solutions.",
-	openGraph: {
-		title: "About Senne Bels - Creative Developer",
-		description: "Creative full-stack developer from Antwerp specializing in interactive web experiences and innovative digital solutions.",
-		images: ["/images/me.jpg"],
-	},
-	twitter: {
-		card: "summary_large_image",
-		title: "About Senne Bels - Creative Developer",
-		description: "Creative full-stack developer from Antwerp specializing in interactive web experiences and innovative digital solutions.",
-		images: ["/images/me.jpg"],
-	},
-};
 
 export default function About() {
 	const [activeSection, setActiveSection] = useState("about");
