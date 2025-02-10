@@ -19,7 +19,7 @@ const NOW_ITEMS = [
 ];
 
 const GEAR_ITEMS = [
-	'MacBook Pro 14" M1',
+	'MacBook Pro 14&quot; M1',
 	"iPhone 13",
 	"Keycool 60% Keyboard",
 	"MSI G27 Display",
@@ -121,11 +121,11 @@ export default function About() {
 								About Me
 							</h1>
 							<p className="text-[#494949] mt-0 mb-10">
-								Hey, I'm Senne! INFP-T, full-stack developer, and a creative tech enthusiast from Antwerp.
+								Hey, I&apos;m Senne! INFP-T, full-stack developer, and a creative tech enthusiast from Antwerp.
 								I focus on building interactive and innovative web experiences, blending functionality with fun.
-								Currently, I'm diving into creative tech while tackling projects like *The Okapi Store*—my e-commerce platform to support okapi conservation.<br /><br />
+								Currently, I&apos;m diving into creative tech while tackling projects like *The Okapi Store*—my e-commerce platform to support okapi conservation.<br /><br />
 
-								Outside of work, you'll find me adventuring with my pets, enjoying gaming classics (Minecraft, Zelda), and exploring cities like Munich and Bergen.
+								Outside of work, you&apos;ll find me adventuring with my pets, enjoying gaming classics (Minecraft, Zelda), and exploring cities like Munich and Bergen.
 								My tech setup keeps me efficient, including:
 								<span className="block pl-4 border-l-2 border-[#ff8564]">
 									{GEAR_ITEMS.map((gear, index) => (
