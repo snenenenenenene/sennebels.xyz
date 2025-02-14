@@ -122,7 +122,7 @@ const BentoCard = ({
       } : {
         target: "_blank"
       })}
-      className="row-span-1 col-span-2 "
+      className="w-full h-full"
       >
         <motion.div
           ref={cardRef}
@@ -161,7 +161,7 @@ const BentoCard = ({
         hover:border-neutral-300 dark:hover:border-neutral-700 
         transition-all duration-300 ease-out group 
         hover:shadow-lg hover:-translate-y-0.5
-        ${size === "small" ? "col-span-1" : size === "medium" ? "col-span-2" : "col-span-3"} 
+        ${size === "small" ? "col-span-1" : size === "medium" ? "col-span-2" : "col-span-4"} 
         ${className}`}
     >
       {children}
@@ -527,6 +527,15 @@ const GitHubStats = () => {
     totalContributions: number;
     languages: Array<{ name: string; percentage: number }>;
     followers: number;
+    contributionCalendar: {
+      totalContributions: number;
+      weeks: Array<{
+        contributionDays: Array<{
+          contributionCount: number;
+          date: string;
+        }>;
+      }>;
+    };
   } | null>(null);
   const statsRef = useRef<HTMLDivElement>(null);
 
@@ -562,28 +571,53 @@ const GitHubStats = () => {
     fetchStats();
   }, []);
 
+  const getContributionColor = (count: number) => {
+    if (count === 0) return 'bg-neutral-100 dark:bg-neutral-800';
+    if (count <= 3) return 'bg-green-200 dark:bg-green-900';
+    if (count <= 6) return 'bg-green-300 dark:bg-green-800';
+    if (count <= 9) return 'bg-green-400 dark:bg-green-700';
+    return 'bg-green-500 dark:bg-green-600';
+  };
+
   return (
     <div ref={statsRef} className="h-full flex flex-col">
-      <h2 className="font-medium text-sm mb-4">Coding Activity</h2>
-      <div className="grid grid-cols-2 gap-3 mb-4">
-        <div className="p-3 bg-neutral-100 dark:bg-neutral-800 rounded-md">
-          <h3 className="text-xs text-neutral-600 dark:text-neutral-400 mb-1">Repositories</h3>
-          <p className="text-2xl font-semibold">{stats?.publicRepos || '...'}</p>
-        </div>
-        <div className="p-3 bg-neutral-100 dark:bg-neutral-800 rounded-md">
-          <h3 className="text-xs text-neutral-600 dark:text-neutral-400 mb-1">Contributions</h3>
-          <p className="text-2xl font-semibold">{stats?.totalContributions || '...'}</p>
+      <div className="flex items-center justify-between mb-3">
+        <h2 className="font-medium text-sm text-black dark:text-white">Coding Activity</h2>
+        <div className="flex items-center gap-2 text-xs text-neutral-600 dark:text-neutral-300">
+          <Github className="w-4 h-4" />
+          <span>{stats?.totalContributions || '...'} contributions</span>
         </div>
       </div>
-      
-      <div className="space-y-3 mb-4">
-        {stats?.languages.map((lang) => (
-          <div key={lang.name}>
-            <div className="flex justify-between items-center mb-1">
-              <span className="text-xs text-neutral-600 dark:text-neutral-400">{lang.name}</span>
-              <span className="text-xs text-neutral-600 dark:text-neutral-400">{lang.percentage}%</span>
+
+      {/* Contribution Calendar - More Compact */}
+      <div className="flex-1 overflow-x-auto">
+        <div className="inline-grid grid-cols-[repeat(53,1fr)] gap-[2px]">
+          {stats?.contributionCalendar.weeks.map((week, weekIndex) => (
+            <div key={weekIndex} className="grid grid-rows-7 gap-[2px]">
+              {week.contributionDays.map((day, dayIndex) => (
+                <motion.div
+                  key={day.date}
+                  initial={{ scale: 0 }}
+                  animate={isVisible ? { scale: 1 } : { scale: 0 }}
+                  transition={{ delay: (weekIndex * 7 + dayIndex) * 0.001 }}
+                  className={`w-1.5 h-1.5 rounded-sm ${getContributionColor(day.contributionCount)}`}
+                  title={`${day.contributionCount} contributions on ${new Date(day.date).toLocaleDateString()}`}
+                />
+              ))}
             </div>
-            <div className="h-1.5 bg-neutral-100 dark:bg-neutral-800 rounded-full overflow-hidden">
+          ))}
+        </div>
+      </div>
+
+      {/* Language Stats - Horizontal */}
+      <div className="flex gap-3 mt-3">
+        {stats?.languages.map((lang) => (
+          <div key={lang.name} className="flex-1">
+            <div className="flex items-center justify-between mb-1">
+              <span className="text-[10px] text-neutral-600 dark:text-neutral-300">{lang.name}</span>
+              <span className="text-[10px] text-neutral-600 dark:text-neutral-300">{lang.percentage}%</span>
+            </div>
+            <div className="h-1 bg-neutral-100 dark:bg-neutral-800 rounded-full overflow-hidden">
               <motion.div
                 initial={{ width: 0 }}
                 animate={isVisible ? { width: `${lang.percentage}%` } : { width: 0 }}
@@ -597,11 +631,6 @@ const GitHubStats = () => {
             </div>
           </div>
         ))}
-      </div>
-
-      <div className="flex items-center gap-2 mt-auto text-xs text-neutral-600 dark:text-neutral-400">
-        <Github className="w-4 h-4" />
-        <span>Last updated {new Date().toLocaleDateString()}</span>
       </div>
     </div>
   );
@@ -661,8 +690,8 @@ export default function HomePage() {
       <ParticleEffect />
       <CustomCursor />
       
-      <div className="max-w-[2000px] mx-auto h-[calc(100vh-2rem)] md:h-[calc(100vh-3rem)]">
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3 h-full auto-rows-[minmax(0,1fr)]">
+      <div className="max-w-[2000px] mx-auto h-[calc(100vh-3rem)]">
+        <div className="grid grid-cols-6 gap-4 h-full auto-rows-[minmax(0,1fr)]">
           {/* Theme Toggle */}
           <motion.button
             whileHover={{ scale: 1.05 }}
@@ -673,159 +702,190 @@ export default function HomePage() {
             {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
           </motion.button>
 
-          {/* Profile Card */}
-          <ProfileCard className="row-span-3 col-span-2 md:col-span-2 lg:col-span-2 bg-white/80 dark:bg-neutral-900/80 rounded-[2rem] p-6 md:p-8 border border-neutral-200/50 dark:border-neutral-800/50 hover:border-neutral-300/50 dark:hover:border-neutral-700/50 transition-all duration-300 ease-out">
-            <div className="h-full flex flex-col justify-between group">
-              <div>
-                <motion.div 
-                  className="flex items-center gap-4 mb-4"
-                  whileHover={{ scale: 1.02 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                >
-                  <Image
-                    src="/images/me.png"
-                    alt="Senne Bels"
-                    width={56}
-                    height={56}
-                    className="rounded-full ring-1 ring-neutral-200 dark:ring-neutral-800"
-                  />
-                  <div>
-                    <h1 className="text-xl md:text-2xl font-bold tracking-tight mb-1 gradient-text">Senne Bels</h1>
-                    <div className="flex items-center gap-2">
-                      <p className="text-sm text-neutral-600 dark:text-neutral-400">
-                        Full-stack Developer & Game Dev
-                      </p>
-                      <span className="text-xs bg-neutral-100 dark:bg-neutral-800 px-2 py-0.5 rounded-full">24</span>
+          <div className="col-span-2 row-span-4 grid grid-rows-[3fr,1fr] gap-4">
+            {/* Profile Card */}
+            <ProfileCard className="row-span-1 bg-white/80 dark:bg-neutral-900/80 rounded-[2rem] p-6 md:p-8 border border-neutral-200/50 dark:border-neutral-800/50 hover:border-neutral-300/50 dark:hover:border-neutral-700/50 transition-all duration-300 ease-out">
+              <div className="h-full flex flex-col justify-between group">
+                <div>
+                  <motion.div 
+                    className="flex items-center gap-4 mb-4"
+                    whileHover={{ scale: 1.02 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                  >
+                    <Image
+                      src="/images/me.png"
+                      alt="Senne Bels"
+                      width={56}
+                      height={56}
+                      className="rounded-full ring-1 ring-neutral-200 dark:ring-neutral-800"
+                    />
+                    <div>
+                      <h1 className="text-xl md:text-2xl font-bold tracking-tight mb-1 gradient-text">Senne Bels</h1>
+                      <div className="flex items-center gap-2">
+                        <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                          Full-stack Developer & Game Dev
+                        </p>
+                        <span className="text-xs bg-neutral-100 dark:bg-neutral-800 px-2 py-0.5 rounded-full">24</span>
+                      </div>
+                    </div>
+                  </motion.div>
+                  
+                  <p className="text-neutral-600 dark:text-neutral-400 text-sm mb-6">
+                    Hey, I&apos;m Senne! INFP-T, full-stack developer, and a creative tech enthusiast from Antwerp.
+                    I focus on building interactive and innovative web experiences, blending functionality with fun.
+                    Currently, I&apos;m diving into creative tech while tackling projects like The Okapi Store—my e-commerce platform to support okapi conservation.
+                  </p>
+                  
+                  {/* Tech Stack */}
+                  <div className="mb-4">
+                    <h2 className="font-medium text-xs mb-2 text-neutral-600 dark:text-neutral-400">PRIMARY STACK</h2>
+                    <div className="flex flex-wrap gap-2">
+                      {["TypeScript", "Next.js", "Prisma", "Tailwind", "ThreeJS", "Python"].map((tech, index) => (
+                        <motion.span
+                          key={tech}
+                          className="px-2 py-1 bg-neutral-100 dark:bg-neutral-800 rounded-md text-xs floating-delayed"
+                          style={{ '--delay': `${index * 0.1}s` } as React.CSSProperties}
+                          whileHover={{ y: -2 }}
+                          transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                        >
+                          {tech}
+                        </motion.span>
+                      ))}
                     </div>
                   </div>
-                </motion.div>
-                
-                <p className="text-neutral-600 dark:text-neutral-400 text-sm mb-6">
-                  Hey, I&apos;m Senne! INFP-T, full-stack developer, and a creative tech enthusiast from Antwerp.
-                  I focus on building interactive and innovative web experiences, blending functionality with fun.
-                  Currently, I&apos;m diving into creative tech while tackling projects like The Okapi Store—my e-commerce platform to support okapi conservation.
-                </p>
-                
-                {/* Tech Stack */}
-                <div className="mb-4">
-                  <h2 className="font-medium text-xs mb-2 text-neutral-600 dark:text-neutral-400">PRIMARY STACK</h2>
-                  <div className="flex flex-wrap gap-2">
-                    {["TypeScript", "Next.js", "Prisma", "Tailwind", "ThreeJS", "Python"].map((tech, index) => (
-                      <motion.span
-                        key={tech}
-                        className="px-2 py-1 bg-neutral-100 dark:bg-neutral-800 rounded-md text-xs floating-delayed"
+
+                  {/* Social Links */}
+                  <div className="flex gap-2">
+                    {[
+                      { icon: Github, href: "https://github.com/snenenenenenene" },
+                      { icon: Linkedin, href: "https://linkedin.com/in/sennebels" },
+                      { icon: Mail, href: "mailto:contact@sennebels.xyz" }
+                    ].map(({ icon: Icon, href }, index) => (
+                      <motion.a
+                        key={href}
+                        href={href}
+                        target="_blank"
+                        className="p-2 bg-neutral-100 dark:bg-neutral-800 rounded-md floating-delayed"
                         style={{ '--delay': `${index * 0.1}s` } as React.CSSProperties}
                         whileHover={{ y: -2 }}
                         transition={{ type: "spring", stiffness: 400, damping: 10 }}
                       >
-                        {tech}
-                      </motion.span>
+                        <Icon className="w-4 h-4" />
+                      </motion.a>
                     ))}
                   </div>
                 </div>
 
-                {/* Social Links */}
-                <div className="flex gap-2">
-                  {[
-                    { icon: Github, href: "https://github.com/snenenenenenene" },
-                    { icon: Linkedin, href: "https://linkedin.com/in/sennebels" },
-                    { icon: Mail, href: "mailto:contact@sennebels.xyz" }
-                  ].map(({ icon: Icon, href }, index) => (
-                    <motion.a
-                      key={href}
-                      href={href}
-                      target="_blank"
-                      className="p-2 bg-neutral-100 dark:bg-neutral-800 rounded-md floating-delayed"
-                      style={{ '--delay': `${index * 0.1}s` } as React.CSSProperties}
-                      whileHover={{ y: -2 }}
-                      transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                    >
-                      <Icon className="w-4 h-4" />
-                    </motion.a>
-                  ))}
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 rounded-full bg-green-400 sophisticated-pulse" />
+                  <span className="text-xs text-neutral-600 dark:text-neutral-400">
+                    Available for freelance projects
+                  </span>
                 </div>
               </div>
+            </ProfileCard>
 
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-green-400 sophisticated-pulse" />
-                <span className="text-xs text-neutral-600 dark:text-neutral-400">
-                  Available for freelance projects
-                </span>
+            {/* Contact Button */}
+            <BentoCard 
+              href="/contact"
+              size="medium" 
+              className="!p-0 overflow-hidden hover:scale-[1.02] transition-transform duration-300"
+            >
+              <div className="w-full h-full bg-black dark:bg-white rounded-[2rem] border border-neutral-200 dark:border-neutral-800">
+                <div className="w-full h-full flex items-center justify-between px-8">
+                  <span className="text-base font-medium text-white dark:text-black">Let's work together</span>
+                  <motion.div
+                    animate={{ x: [0, 5, 0] }}
+                    transition={{ duration: 1, repeat: Infinity, repeatType: "reverse" }}
+                  >
+                    <ArrowUpRight className="w-5 h-5 text-white dark:text-black" />
+                  </motion.div>
+                </div>
               </div>
+            </BentoCard>
+          </div>
+
+          <div className="col-span-4 row-span-4 grid grid-rows-[3fr,1fr] gap-4">
+            {/* Project Carousel */}
+            <BentoCard className="row-span-1 overflow-hidden !p-0">
+              <div className="relative w-full h-full">
+                <div className="absolute top-0 left-0 right-0 p-6 pb-2 z-50 bg-gradient-to-b from-white via-white to-transparent dark:from-neutral-900 dark:via-neutral-900">
+                  <h2 className="font-medium text-sm text-black dark:text-white">Projects</h2>
+                </div>
+                <FeaturedProjects />
+              </div>
+            </BentoCard>
+
+            <div className="grid grid-cols-12 gap-4">
+              {/* GitHub Stats */}
+              <BentoCard className="col-span-4 !p-4">
+                <GitHubStats />
+              </BentoCard>
+
+              {/* Latest Activity */}
+              <BentoCard className="col-span-3 !p-4">
+                <div className="h-full flex flex-col justify-between">
+                  <h2 className="font-medium text-sm text-black dark:text-white mb-2">What I'm Working On</h2>
+                  <div className="flex flex-col gap-2">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full bg-blue-400 sophisticated-pulse" />
+                      <span className="text-xs text-neutral-600 dark:text-neutral-300">
+                        Building The Okapi Store
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300">
+                        Next.js
+                      </span>
+                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300">
+                        Stripe
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </BentoCard>
+
+              {/* Recent Technologies */}
+              <BentoCard className="col-span-3 !p-4">
+                <div className="h-full flex flex-col justify-between">
+                  <h2 className="font-medium text-sm text-black dark:text-white mb-2">Recent Technologies</h2>
+                  <div className="flex flex-wrap gap-2">
+                    {["Next.js", "Tailwind", "Framer"].map((tech) => (
+                      <span key={tech} className="text-[10px] px-2 py-0.5 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300">
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </BentoCard>
+
+              {/* Tech Stack Spotlight */}
+              <BentoCard className="col-span-2 !p-4">
+                <div className="h-full flex flex-col justify-between">
+                  <h2 className="font-medium text-sm text-black dark:text-white mb-2">Tech Spotlight</h2>
+                  <div className="flex flex-col items-center justify-center flex-1">
+                    <motion.div
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                      className="relative w-8 h-8 mb-2"
+                    >
+                      <Image
+                        src="/images/typescript.svg"
+                        alt="TypeScript"
+                        width={32}
+                        height={32}
+                        className="object-contain"
+                      />
+                    </motion.div>
+                    <span className="text-xs font-medium text-black dark:text-white">TypeScript</span>
+                    <span className="text-[10px] text-neutral-600 dark:text-neutral-300 text-center mt-1">
+                      60% of Recent Projects
+                    </span>
+                  </div>
+                </div>
+              </BentoCard>
             </div>
-          </ProfileCard>
-
-          {/* Current Work */}
-          <BentoCard size="medium" className="row-span-2 col-span-2 md:col-span-2 lg:col-span-2">
-            <h2 className="font-medium text-sm mb-3">Current Work</h2>
-            <div className="space-y-3">
-              <div className="p-3 bg-neutral-100 dark:bg-neutral-800 rounded-md">
-                <h3 className="font-medium text-sm mb-1">Specular Consulting</h3>
-                <p className="text-xs text-neutral-600 dark:text-neutral-400">Building a drag-and-drop questionnaire dashboard in Brussels</p>
-              </div>
-              <div className="p-3 bg-neutral-100 dark:bg-neutral-800 rounded-md">
-                <h3 className="font-medium text-sm mb-1">ORNITHO Game</h3>
-                <p className="text-xs text-neutral-600 dark:text-neutral-400">Developing a multiplayer dinosaur horror game set in Antwerp, launching indie studio in 2025</p>
-              </div>
-              <div className="p-3 bg-neutral-100 dark:bg-neutral-800 rounded-md">
-                <h3 className="font-medium text-sm mb-1">The Okapi Store</h3>
-                <p className="text-xs text-neutral-600 dark:text-neutral-400">E-commerce platform supporting okapi conservation through themed merchandise</p>
-              </div>
-            </div>
-          </BentoCard>
-
-          {/* Notable Projects */}
-          <BentoCard size="large" className="row-span-2 col-span-2 md:col-span-2 lg:col-span-2">
-            <h2 className="font-medium text-sm mb-3">Notable Projects</h2>
-            <div className="space-y-3">
-              <div className="p-3 bg-neutral-100 dark:bg-neutral-800 rounded-md">
-                <h3 className="font-medium text-sm mb-1">ABB - Lokaal Beslist</h3>
-                <p className="text-xs text-neutral-600 dark:text-neutral-400">Reduced loading times by 89%, developed citizen engagement platform, created GeoJSON shapefiles for interactive maps</p>
-              </div>
-              <div className="p-3 bg-neutral-100 dark:bg-neutral-800 rounded-md">
-                <h3 className="font-medium text-sm mb-1">BubblyDoo</h3>
-                <p className="text-xs text-neutral-600 dark:text-neutral-400">Built ThreeJS book preview tool, automated Adobe workflow with NextJS, improving efficiency</p>
-              </div>
-              <div className="p-3 bg-neutral-100 dark:bg-neutral-800 rounded-md">
-                <h3 className="font-medium text-sm mb-1">Go Getter</h3>
-                <p className="text-xs text-neutral-600 dark:text-neutral-400">Integrated chatbot with Gainsight (40% UX improvement), developed Python migration scripts</p>
-              </div>
-            </div>
-          </BentoCard>
-
-          {/* Project Carousel */}
-          <BentoCard size="medium" className="row-span-2 col-span-2 md:col-span-2 lg:col-span-2 overflow-hidden p-0">
-            <div className="relative w-full h-full">
-              <div className="absolute top-0 left-0 right-0 p-6 pb-2 z-50 bg-gradient-to-b from-white via-white to-transparent dark:from-neutral-900 dark:via-neutral-900">
-                <h2 className="font-medium text-sm">Projects</h2>
-              </div>
-              <FeaturedProjects />
-            </div>
-          </BentoCard>
-
-          {/* GitHub Stats */}
-          <BentoCard size="medium" className="row-span-2 col-span-2 md:col-span-2 lg:col-span-2">
-            <GitHubStats />
-          </BentoCard>
-
-          {/* Contact Button */}
-          <BentoCard 
-            href="/contact"
-            size="medium" 
-            className="!p-0 overflow-hidden hover:scale-[1.02] transition-transform duration-300 w-full h-full"
-          >
-            <div className="w-full h-full bg-black dark:bg-white rounded-[2rem] border border-neutral-200 dark:border-neutral-800">
-              <div className="w-full h-full flex items-center justify-between px-8">
-                <span className="text-base font-medium text-white dark:text-black">Let's work together</span>
-                <motion.div
-                  animate={{ x: [0, 5, 0] }}
-                  transition={{ duration: 1, repeat: Infinity, repeatType: "reverse" }}
-                >
-                  <ArrowUpRight className="w-5 h-5 text-white dark:text-black" />
-                </motion.div>
-              </div>
-            </div>
-          </BentoCard>
+          </div>
         </div>
       </div>
     </main>
