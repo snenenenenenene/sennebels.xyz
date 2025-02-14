@@ -1,12 +1,13 @@
 "use client"
 
-import React from 'react';
-import type { ReactNode, MouseEvent } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import type { ReactNode, MouseEvent as ReactMouseEvent } from 'react';
 import { AnimatePresence, motion } from "framer-motion";
 import { MoveUpRight, ArrowUpRight, Github, Linkedin, Mail, X, Download, Moon, Sun } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { projects, NOW_ITEMS, TIMELINE_ITEMS, GEAR_ITEMS, ACHIEVEMENTS } from "./constants";
+import { useSpring, animated } from '@react-spring/web';
 
 const TYPING_TEXTS = ["Websites", "Applications", "Side Projects"];
 
@@ -93,6 +94,26 @@ const BentoCard = ({
   href,
   size = "medium",
 }: BentoCardProps) => {
+  const [rotation, setRotation] = useState({ x: 0, y: 0 });
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  const handleMouseMove = (e: ReactMouseEvent<HTMLDivElement>) => {
+    if (!cardRef.current) return;
+
+    const rect = cardRef.current.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+
+    setRotation({
+      x: y * 7,
+      y: x * 7,
+    });
+  };
+
+  const handleMouseLeave = () => {
+    setRotation({ x: 0, y: 0 });
+  };
+
   if (href) {
     return (
       <Link href={href} {...(href.startsWith('/') && !href.startsWith('//') ? {
@@ -100,15 +121,24 @@ const BentoCard = ({
         prefetch: true
       } : {
         target: "_blank"
-      })}>
+      })}
+      className="row-span-1 col-span-2 "
+      >
         <motion.div
+          ref={cardRef}
+          onMouseMove={handleMouseMove}
+          onMouseLeave={handleMouseLeave}
           layoutId={`expandable-card-${href}`}
+          style={{
+            transform: `perspective(1000px) rotateX(${rotation.x}deg) rotateY(${rotation.y}deg)`,
+            transition: 'transform 0.3s ease-out',
+          }}
           className={`relative rounded-[2rem] bg-white dark:bg-neutral-900 p-6 md:p-8 
             border border-neutral-200 dark:border-neutral-800 
             hover:border-neutral-300 dark:hover:border-neutral-700 
             transition-all duration-300 ease-out group 
             hover:shadow-lg hover:-translate-y-0.5
-            ${size === "small" ? "col-span-1" : size === "medium" ? "col-span-2" : "col-span-3"} 
+            w-full h-full 
             ${className}`}
         >
           {children}
@@ -119,6 +149,13 @@ const BentoCard = ({
 
   return (
     <motion.div
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{
+        transform: `perspective(1000px) rotateX(${rotation.x}deg) rotateY(${rotation.y}deg)`,
+        transition: 'transform 0.3s ease-out',
+      }}
       className={`relative rounded-[2rem] bg-white dark:bg-neutral-900 p-6 md:p-8 
         border border-neutral-200 dark:border-neutral-800 
         hover:border-neutral-300 dark:hover:border-neutral-700 
@@ -348,27 +385,258 @@ const ParticleBackground = () => {
   );
 };
 
-// Custom cursor component
+// Add Particle Effect Component
+const ParticleEffect = () => {
+  const particlesRef = useRef<HTMLDivElement>(null);
+  const [particles, setParticles] = useState<Array<{ x: number; y: number; size: number; speed: number }>>([]);
+
+  useEffect(() => {
+    const createParticles = () => {
+      const newParticles = Array.from({ length: 50 }, () => ({
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        size: Math.random() * 4 + 1,
+        speed: Math.random() * 0.5 + 0.1
+      }));
+      setParticles(newParticles);
+    };
+
+    createParticles();
+    window.addEventListener('resize', createParticles);
+    return () => window.removeEventListener('resize', createParticles);
+  }, []);
+
+  useEffect(() => {
+    const moveParticles = () => {
+      setParticles(prev => prev.map(particle => ({
+        ...particle,
+        y: particle.y + particle.speed > window.innerHeight ? 0 : particle.y + particle.speed
+      })));
+    };
+
+    const interval = setInterval(moveParticles, 50);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="particles" ref={particlesRef}>
+      {particles.map((particle, index) => (
+        <div
+          key={index}
+          className="particle"
+          style={{
+            left: particle.x,
+            top: particle.y,
+            width: particle.size,
+            height: particle.size
+          }}
+        />
+      ))}
+    </div>
+  );
+};
+
+// Enhanced Custom Cursor
 const CustomCursor = () => {
-  const cursorRef = React.useRef<HTMLDivElement>(null);
-  
-  React.useEffect(() => {
+  const cursorRef = useRef<HTMLDivElement>(null);
+  const [isHovering, setIsHovering] = useState(false);
+
+  useEffect(() => {
     const cursor = cursorRef.current;
     if (!cursor) return;
-    
+
     const moveCursor = (e: globalThis.MouseEvent) => {
-      cursor.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
+      cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
     };
+
+    const handleMouseOver = (e: globalThis.MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (target.closest('a, button, [role="button"]')) {
+        setIsHovering(true);
+      } else {
+        setIsHovering(false);
+      }
+    };
+
     window.addEventListener('mousemove', moveCursor);
-    return () => window.removeEventListener('mousemove', moveCursor);
+    window.addEventListener('mouseover', handleMouseOver);
+
+    return () => {
+      window.removeEventListener('mousemove', moveCursor);
+      window.removeEventListener('mouseover', handleMouseOver);
+    };
   }, []);
 
   return (
     <div 
       ref={cursorRef}
-      className="fixed w-3 h-3 bg-black dark:bg-white rounded-full pointer-events-none mix-blend-difference z-50 transition-transform duration-100 ease-out"
-      style={{ transform: 'translate3d(-50%, -50%, 0)' }}
+      className={`custom-cursor ${isHovering ? 'hovering' : ''}`}
     />
+  );
+};
+
+// Enhanced Profile Card
+interface ProfileCardProps {
+  children: ReactNode;
+  [key: string]: any;
+}
+
+const ProfileCard = ({ children, ...props }: ProfileCardProps) => {
+  const [rotation, setRotation] = useState({ x: 0, y: 0 });
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  const handleMouseMove = (e: ReactMouseEvent<HTMLDivElement>) => {
+    if (!cardRef.current) return;
+
+    const rect = cardRef.current.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+
+    setRotation({
+      x: y * 7,
+      y: x * 7,
+    });
+  };
+
+  const handleMouseLeave = () => {
+    setRotation({ x: 0, y: 0 });
+  };
+
+  return (
+    <motion.div
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{
+        transform: `perspective(1000px) rotateX(${rotation.x}deg) rotateY(${rotation.y}deg)`,
+        transition: 'transform 0.3s ease-out',
+      }}
+      className="shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(255,255,255,0.04)] backdrop-blur-sm"
+      {...props}
+    >
+      {children}
+    </motion.div>
+  );
+};
+
+// Enhanced GitHub Stats Card with animations
+const GitHubStats = () => {
+  const [isVisible, setIsVisible] = useState(false);
+  const [stats, setStats] = useState<{
+    publicRepos: number;
+    totalContributions: number;
+    languages: Array<{ name: string; percentage: number }>;
+    followers: number;
+  } | null>(null);
+  const statsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (statsRef.current) {
+      observer.observe(statsRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const response = await fetch('/api/github');
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error);
+        setStats(data);
+      } catch (error) {
+        console.error('Failed to fetch GitHub stats:', error);
+      }
+    };
+
+    fetchStats();
+  }, []);
+
+  return (
+    <div ref={statsRef} className="h-full flex flex-col">
+      <h2 className="font-medium text-sm mb-4">Coding Activity</h2>
+      <div className="grid grid-cols-2 gap-3 mb-4">
+        <div className="p-3 bg-neutral-100 dark:bg-neutral-800 rounded-md">
+          <h3 className="text-xs text-neutral-600 dark:text-neutral-400 mb-1">Repositories</h3>
+          <p className="text-2xl font-semibold">{stats?.publicRepos || '...'}</p>
+        </div>
+        <div className="p-3 bg-neutral-100 dark:bg-neutral-800 rounded-md">
+          <h3 className="text-xs text-neutral-600 dark:text-neutral-400 mb-1">Contributions</h3>
+          <p className="text-2xl font-semibold">{stats?.totalContributions || '...'}</p>
+        </div>
+      </div>
+      
+      <div className="space-y-3 mb-4">
+        {stats?.languages.map((lang) => (
+          <div key={lang.name}>
+            <div className="flex justify-between items-center mb-1">
+              <span className="text-xs text-neutral-600 dark:text-neutral-400">{lang.name}</span>
+              <span className="text-xs text-neutral-600 dark:text-neutral-400">{lang.percentage}%</span>
+            </div>
+            <div className="h-1.5 bg-neutral-100 dark:bg-neutral-800 rounded-full overflow-hidden">
+              <motion.div
+                initial={{ width: 0 }}
+                animate={isVisible ? { width: `${lang.percentage}%` } : { width: 0 }}
+                transition={{ duration: 1, ease: "easeOut" }}
+                className={`h-full rounded-full ${
+                  lang.name === 'TypeScript' ? 'bg-blue-500' :
+                  lang.name === 'JavaScript' ? 'bg-yellow-500' :
+                  'bg-green-500'
+                }`}
+              />
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="flex items-center gap-2 mt-auto text-xs text-neutral-600 dark:text-neutral-400">
+        <Github className="w-4 h-4" />
+        <span>Last updated {new Date().toLocaleDateString()}</span>
+      </div>
+    </div>
+  );
+};
+
+// Enhanced Contact Button with magnetic effect
+const ContactButton = ({ children }: { children: React.ReactNode }) => {
+  const buttonRef = useRef<HTMLDivElement>(null);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!buttonRef.current) return;
+
+    const rect = buttonRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
+
+    setPosition({ x: x * 0.1, y: y * 0.1 });
+  };
+
+  const handleMouseLeave = () => {
+    setPosition({ x: 0, y: 0 });
+  };
+
+  return (
+    <motion.div
+      ref={buttonRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      animate={{ x: position.x, y: position.y }}
+      transition={{ type: "spring", stiffness: 150, damping: 15 }}
+      className="magnetic"
+    >
+      {children}
+    </motion.div>
   );
 };
 
@@ -390,6 +658,7 @@ export default function HomePage() {
 
   return (
     <main className="min-h-screen w-full bg-white dark:bg-black p-4 md:p-6 overflow-x-hidden">
+      <ParticleEffect />
       <CustomCursor />
       
       <div className="max-w-[2000px] mx-auto h-[calc(100vh-2rem)] md:h-[calc(100vh-3rem)]">
@@ -405,15 +674,15 @@ export default function HomePage() {
           </motion.button>
 
           {/* Profile Card */}
-          <BentoCard size="large" className="row-span-3 col-span-2 md:col-span-2 lg:col-span-2">
+          <ProfileCard className="row-span-3 col-span-2 md:col-span-2 lg:col-span-2 bg-white/80 dark:bg-neutral-900/80 rounded-[2rem] p-6 md:p-8 border border-neutral-200/50 dark:border-neutral-800/50 hover:border-neutral-300/50 dark:hover:border-neutral-700/50 transition-all duration-300 ease-out">
             <div className="h-full flex flex-col justify-between group">
               <div>
                 <motion.div 
                   className="flex items-center gap-4 mb-4"
                   whileHover={{ scale: 1.02 }}
                   transition={{ type: "spring", stiffness: 400, damping: 10 }}
-          >
-            <Image
+                >
+                  <Image
                     src="/images/me.png"
                     alt="Senne Bels"
                     width={56}
@@ -421,7 +690,7 @@ export default function HomePage() {
                     className="rounded-full ring-1 ring-neutral-200 dark:ring-neutral-800"
                   />
                   <div>
-                    <h1 className="text-xl md:text-2xl font-bold tracking-tight mb-1">Senne Bels</h1>
+                    <h1 className="text-xl md:text-2xl font-bold tracking-tight mb-1 gradient-text">Senne Bels</h1>
                     <div className="flex items-center gap-2">
                       <p className="text-sm text-neutral-600 dark:text-neutral-400">
                         Full-stack Developer & Game Dev
@@ -429,64 +698,62 @@ export default function HomePage() {
                       <span className="text-xs bg-neutral-100 dark:bg-neutral-800 px-2 py-0.5 rounded-full">24</span>
                     </div>
                   </div>
-          </motion.div>
-                <p className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed mb-4">
-                  Quick-working team player with 4 years of web dev experience. Currently at Specular Consulting, building innovative solutions. Co-founding an indie game studio in 2025, working on ORNITHO - a multiplayer dinosaur horror game set in Antwerp.
+                </motion.div>
+                
+                <p className="text-neutral-600 dark:text-neutral-400 text-sm mb-6">
+                  Hey, I&apos;m Senne! INFP-T, full-stack developer, and a creative tech enthusiast from Antwerp.
+                  I focus on building interactive and innovative web experiences, blending functionality with fun.
+                  Currently, I&apos;m diving into creative tech while tackling projects like The Okapi Store—my e-commerce platform to support okapi conservation.
                 </p>
                 
                 {/* Tech Stack */}
                 <div className="mb-4">
                   <h2 className="font-medium text-xs mb-2 text-neutral-600 dark:text-neutral-400">PRIMARY STACK</h2>
                   <div className="flex flex-wrap gap-2">
-                    {["TypeScript", "Next.js", "Prisma", "Tailwind", "ThreeJS", "Python"].map((tech) => (
+                    {["TypeScript", "Next.js", "Prisma", "Tailwind", "ThreeJS", "Python"].map((tech, index) => (
                       <motion.span
                         key={tech}
-                        className="px-2 py-1 bg-neutral-100 dark:bg-neutral-800 rounded-md text-xs"
+                        className="px-2 py-1 bg-neutral-100 dark:bg-neutral-800 rounded-md text-xs floating-delayed"
+                        style={{ '--delay': `${index * 0.1}s` } as React.CSSProperties}
                         whileHover={{ y: -2 }}
                         transition={{ type: "spring", stiffness: 400, damping: 10 }}
                       >
                         {tech}
                       </motion.span>
                     ))}
-        </div>
-      </div>
+                  </div>
+                </div>
 
                 {/* Social Links */}
                 <div className="flex gap-2">
-                  <motion.a 
-                    href="https://github.com/snenenenenenene" 
-                    target="_blank"
-                    whileHover={{ y: -2 }}
-                    className="p-2 bg-neutral-100 dark:bg-neutral-800 rounded-md"
-                  >
-                    <Github className="w-4 h-4" />
-                  </motion.a>
-                  <motion.a 
-                    href="https://linkedin.com/in/sennebels" 
-                    target="_blank"
-                    whileHover={{ y: -2 }}
-                    className="p-2 bg-neutral-100 dark:bg-neutral-800 rounded-md"
-                  >
-                    <Linkedin className="w-4 h-4" />
-                  </motion.a>
-                  <motion.a 
-                    href="mailto:contact@sennebels.xyz"
-                    whileHover={{ y: -2 }}
-                    className="p-2 bg-neutral-100 dark:bg-neutral-800 rounded-md"
-                  >
-                    <Mail className="w-4 h-4" />
-                  </motion.a>
+                  {[
+                    { icon: Github, href: "https://github.com/snenenenenenene" },
+                    { icon: Linkedin, href: "https://linkedin.com/in/sennebels" },
+                    { icon: Mail, href: "mailto:contact@sennebels.xyz" }
+                  ].map(({ icon: Icon, href }, index) => (
+                    <motion.a
+                      key={href}
+                      href={href}
+                      target="_blank"
+                      className="p-2 bg-neutral-100 dark:bg-neutral-800 rounded-md floating-delayed"
+                      style={{ '--delay': `${index * 0.1}s` } as React.CSSProperties}
+                      whileHover={{ y: -2 }}
+                      transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                    >
+                      <Icon className="w-4 h-4" />
+                    </motion.a>
+                  ))}
                 </div>
               </div>
 
               <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+                <div className="w-2 h-2 rounded-full bg-green-400 sophisticated-pulse" />
                 <span className="text-xs text-neutral-600 dark:text-neutral-400">
                   Available for freelance projects
                 </span>
               </div>
             </div>
-          </BentoCard>
+          </ProfileCard>
 
           {/* Current Work */}
           <BentoCard size="medium" className="row-span-2 col-span-2 md:col-span-2 lg:col-span-2">
@@ -503,8 +770,8 @@ export default function HomePage() {
               <div className="p-3 bg-neutral-100 dark:bg-neutral-800 rounded-md">
                 <h3 className="font-medium text-sm mb-1">The Okapi Store</h3>
                 <p className="text-xs text-neutral-600 dark:text-neutral-400">E-commerce platform supporting okapi conservation through themed merchandise</p>
+              </div>
             </div>
-          </div>
           </BentoCard>
 
           {/* Notable Projects */}
@@ -538,76 +805,27 @@ export default function HomePage() {
 
           {/* GitHub Stats */}
           <BentoCard size="medium" className="row-span-2 col-span-2 md:col-span-2 lg:col-span-2">
-            <div className="h-full flex flex-col">
-              <h2 className="font-medium text-sm mb-4">Coding Activity</h2>
-              <div className="grid grid-cols-2 gap-3 mb-4">
-                <div className="p-3 bg-neutral-100 dark:bg-neutral-800 rounded-md">
-                  <h3 className="text-xs text-neutral-600 dark:text-neutral-400 mb-1">Repositories</h3>
-                  <p className="text-2xl font-semibold">54</p>
-                </div>
-                <div className="p-3 bg-neutral-100 dark:bg-neutral-800 rounded-md">
-                  <h3 className="text-xs text-neutral-600 dark:text-neutral-400 mb-1">Contributions</h3>
-                  <p className="text-2xl font-semibold">2.4k</p>
-                </div>
-              </div>
-              
-              <div className="space-y-3 mb-4">
-                <div>
-                  <div className="flex justify-between items-center mb-1">
-                    <span className="text-xs text-neutral-600 dark:text-neutral-400">TypeScript</span>
-                    <span className="text-xs text-neutral-600 dark:text-neutral-400">65%</span>
-                  </div>
-                  <div className="h-1.5 bg-neutral-100 dark:bg-neutral-800 rounded-full overflow-hidden">
-                    <div className="h-full bg-blue-500 rounded-full" style={{ width: '65%' }} />
-                  </div>
-                </div>
-                <div>
-                  <div className="flex justify-between items-center mb-1">
-                    <span className="text-xs text-neutral-600 dark:text-neutral-400">JavaScript</span>
-                    <span className="text-xs text-neutral-600 dark:text-neutral-400">20%</span>
-                  </div>
-                  <div className="h-1.5 bg-neutral-100 dark:bg-neutral-800 rounded-full overflow-hidden">
-                    <div className="h-full bg-yellow-500 rounded-full" style={{ width: '20%' }} />
-                  </div>
-                </div>
-                <div>
-                  <div className="flex justify-between items-center mb-1">
-                    <span className="text-xs text-neutral-600 dark:text-neutral-400">Python</span>
-                    <span className="text-xs text-neutral-600 dark:text-neutral-400">15%</span>
-                  </div>
-                  <div className="h-1.5 bg-neutral-100 dark:bg-neutral-800 rounded-full overflow-hidden">
-                    <div className="h-full bg-green-500 rounded-full" style={{ width: '15%' }} />
-                  </div>
-                </div>
-              </div>
+            <GitHubStats />
+          </BentoCard>
 
-              <div className="flex gap-2 mt-auto">
-                <div className="flex items-center gap-1.5">
-                  <div className="w-2 h-2 rounded-full bg-yellow-500" />
-                  <span className="text-xs text-neutral-600 dark:text-neutral-400">Quickdraw</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <div className="w-2 h-2 rounded-full bg-blue-500" />
-                  <span className="text-xs text-neutral-600 dark:text-neutral-400">Pull Shark ×2</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <div className="w-2 h-2 rounded-full bg-green-500" />
-                  <span className="text-xs text-neutral-600 dark:text-neutral-400">YOLO</span>
-                </div>
+          {/* Contact Button */}
+          <BentoCard 
+            href="/contact"
+            size="medium" 
+            className="!p-0 overflow-hidden hover:scale-[1.02] transition-transform duration-300 w-full h-full"
+          >
+            <div className="w-full h-full bg-black dark:bg-white rounded-[2rem] border border-neutral-200 dark:border-neutral-800">
+              <div className="w-full h-full flex items-center justify-between px-8">
+                <span className="text-base font-medium text-white dark:text-black">Let's work together</span>
+                <motion.div
+                  animate={{ x: [0, 5, 0] }}
+                  transition={{ duration: 1, repeat: Infinity, repeatType: "reverse" }}
+                >
+                  <ArrowUpRight className="w-5 h-5 text-white dark:text-black" />
+                </motion.div>
               </div>
             </div>
           </BentoCard>
-
-          {/* Contact */}
-          <Link 
-            href="/contact"
-            className="row-span-1 col-span-2 bg-white dark:bg-neutral-900 rounded-[2rem] border border-neutral-200 dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700 transition-all duration-300 ease-out group hover:shadow-lg hover:-translate-y-0.5"
-          >
-            <div className="h-full flex items-center gap-2 px-6">
-              <span className="text-sm font-medium">Let's work together</span>
-              <ArrowUpRight className="w-4 h-4" />
-            </div>
-          </Link>
         </div>
       </div>
     </main>
