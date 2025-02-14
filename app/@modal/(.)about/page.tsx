@@ -1,11 +1,11 @@
 "use client";
 
-import { TIMELINE_ITEMS, GEAR_ITEMS, ACHIEVEMENTS } from "../constants";
+import { TIMELINE_ITEMS, GEAR_ITEMS, ACHIEVEMENTS } from "../../constants";
 import Image from "next/image";
 
-export default function AboutPage() {
+export default function AboutModal() {
   return (
-    <div className="max-w-4xl mx-auto p-4 md:p-6">
+    <div className="max-w-4xl mx-auto">
       <div className="rounded-[36px] sm:rounded-[40px] md:rounded-[80px] h-[360px] sm:h-[320px] md:h-[500px] overflow-hidden mb-12">
         <Image
           src="/images/me.png"

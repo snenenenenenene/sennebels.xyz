@@ -1,14 +1,10 @@
 // app/layout.tsx
 import type { Metadata } from "next";
 import "./globals.css";
-import Navbar from "./components/navbar";
-import Providers from "./components/providers";
-import Footer from "./components/footer";
 import { Analytics } from "@vercel/analytics/react"
-import SmoothScrolling from "./components/smoothScrolling";
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://sennebels.xyz'), // Replace with your domain
+  metadataBase: new URL('https://sennebels.xyz'),
   title: {
     default: "Senne Bels - Creative Developer",
     template: "%s | Senne Bels"
@@ -24,9 +20,14 @@ export const metadata: Metadata = {
     "React Developer",
     "Next.js",
     "TypeScript",
-    "Senne Bels"
+    "Tailwind CSS",
+    "Node.js",
+    "PostgreSQL",
+    "Senne Bels",
+    "Belgium Developer",
+    "Antwerp Developer"
   ],
-  authors: [{ name: "Senne Bels" }],
+  authors: [{ name: "Senne Bels", url: "https://sennebels.xyz" }],
   creator: "Senne Bels",
   publisher: "Senne Bels",
   formatDetection: {
@@ -71,43 +72,53 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       { url: "/favicon.ico" },
-      { url: "/images/icon.ico" },
+      { url: "/images/icon.ico", type: "image/x-icon" },
+      { url: "/images/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/images/icon-512.png", sizes: "512x512", type: "image/png" },
     ],
     apple: [
       { url: "/images/logo.png" },
     ],
+    other: [
+      { rel: "mask-icon", url: "/images/safari-pinned-tab.svg", color: "#000000" },
+    ],
   },
+  manifest: "/manifest.json",
   verification: {
-    google: "your-google-site-verification", // Add this if you have it
+    google: "your-google-site-verification",
+    yandex: "yandex-verification",
+    me: ["mailto:contact@sennebels.xyz"],
   },
   alternates: {
     canonical: "https://sennebels.xyz",
+    languages: {
+      'en-US': 'https://sennebels.xyz',
+    },
   },
-  assets: [
-    "https://cdn.jsdelivr.net/npm/circletype@2.3.0/dist/circletype.min.js"
-  ],
+  category: "technology",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+  modal
+}: {
   children: React.ReactNode;
-}>) {
+  modal: React.ReactNode;
+}) {
   return (
     <html lang="en" className="h-full">
       <head>
         <script src="https://cdn.jsdelivr.net/npm/circletype@2.3.0/dist/circletype.min.js" defer />
+        <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+        <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
-      <SmoothScrolling>
+      <body className="min-h-full">
         <Analytics />
-        <body className="min-h-full">
-          <Providers>
-            {children}
-            <Navbar />
-          </Providers>
-          <Footer />
-        </body>
-      </SmoothScrolling>
+        {children}
+        {modal}
+      </body>
     </html>
   );
 }

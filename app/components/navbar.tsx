@@ -94,7 +94,7 @@ export default function Navbar() {
             md:bg-[rgba(179,179,179,0.1)] 
             md:backdrop-blur-[18px] 
             md:rounded-xl 
-            py-5
+            py-5image.png
             md:py-[5px] 
             px-5
             md:px-2

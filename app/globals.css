@@ -148,3 +148,58 @@
       padding-right: 20px;
   }
 }
+
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* For the project carousel */
+.snap-y {
+  scroll-snap-type: y mandatory;
+}
+
+.snap-center {
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+}
+
+/* Custom styles for the GitHub stats card */
+.github-stats-bar {
+  @apply h-1.5 bg-neutral-100 dark:bg-neutral-800 rounded-full overflow-hidden transition-all duration-300;
+}
+
+.github-stats-bar > div {
+  @apply h-full rounded-full transition-all duration-300;
+}
+
+/* Hover effects for project cards */
+.project-card-hover {
+  @apply transition-all duration-300;
+}
+
+.project-card-hover:hover {
+  @apply transform scale-[1.02];
+}
+
+/* Animation for the achievement badges */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.achievement-badge {
+  animation: pulse 2s infinite;
+}
