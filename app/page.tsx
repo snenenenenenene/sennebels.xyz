@@ -8,6 +8,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { projects, NOW_ITEMS, TIMELINE_ITEMS, GEAR_ITEMS, ACHIEVEMENTS } from "./constants";
 import { useSpring, animated } from '@react-spring/web';
+import TechCube from './components/techCube';
 
 const TYPING_TEXTS = ["Websites", "Applications", "Side Projects"];
 
@@ -879,50 +880,18 @@ export default function HomePage() {
 
             <div className="grid grid-cols-12 gap-4">
               {/* GitHub Stats */}
-              <BentoCard className="col-span-4 !p-4">
+              <BentoCard className="col-span-8 !p-4">
                 <div className="h-full flex flex-col scrollbar-hide">
                   <GitHubStats />
                 </div>
               </BentoCard>
 
-              {/* Latest Activity */}
-              <BentoCard className="col-span-3 !p-4">
-                <div className="h-full flex flex-col justify-between">
-                  <h2 className="font-medium text-sm text-black dark:text-white mb-2">What I'm Working On</h2>
-                  <div className="flex flex-col gap-2">
-                    <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 rounded-full bg-blue-400 sophisticated-pulse" />
-                      <span className="text-xs text-neutral-600 dark:text-neutral-300">
-                        Building The Okapi Store
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs px-3 py-1 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300">
-                        Next.js
-                      </span>
-                      <span className="text-xs px-3 py-1 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300">
-                        Stripe
-                      </span>
-                    </div>
-                  </div>
-                </div>
+              {/* Tanuki Model */}
+              <BentoCard className="col-span-2 !p-0 overflow-hidden">
+                <TechCube />
               </BentoCard>
 
-              {/* Recent Technologies */}
-              <BentoCard className="col-span-3 !p-4">
-                <div className="h-full flex flex-col justify-between">
-                  <h2 className="font-medium text-sm text-black dark:text-white mb-2">Recent Technologies</h2>
-                  <div className="flex flex-wrap gap-2">
-                    {["Next.js", "Tailwind", "Framer"].map((tech) => (
-                      <span key={tech} className="text-xs px-3 py-1 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300">
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </BentoCard>
-
-              {/* Convert Tech Spotlight to Theme Toggle */}
+              {/* Theme Toggle */}
               <BentoCard className="col-span-2 !p-4">
                 <div className="h-full flex flex-col justify-between">
                   <h2 className="font-medium text-sm text-black dark:text-white mb-2">Theme</h2>
