@@ -176,13 +176,13 @@ const FeaturedProjects = () => {
   const [isDragging, setIsDragging] = React.useState(false);
   const timeoutRef = React.useRef<NodeJS.Timeout>();
   const lastScrollTime = React.useRef(Date.now());
+  const [scrollProgress, setScrollProgress] = useState(0);
 
   // Create an infinite array by repeating projects three times
   const infiniteProjects = [...projects, ...projects, ...projects];
 
   React.useEffect(() => {
     if (containerRef.current) {
-      // Set initial scroll position to show the first set of projects
       containerRef.current.scrollTop = containerRef.current.offsetHeight;
     }
   }, []);
@@ -217,12 +217,14 @@ const FeaturedProjects = () => {
     const currentScroll = container.scrollTop;
     const totalHeight = itemHeight * infiniteProjects.length;
 
+    // Calculate scroll progress for the current project (0 to 1)
+    const progress = (currentScroll % itemHeight) / itemHeight;
+    setScrollProgress(progress);
+
     // Handle infinite scroll wrapping
     if (currentScroll < itemHeight) {
-      // When scrolling up past the first project
       container.scrollTop = currentScroll + (itemHeight * projects.length);
     } else if (currentScroll > totalHeight - (itemHeight * 2)) {
-      // When scrolling down past the last project
       container.scrollTop = currentScroll - (itemHeight * projects.length);
     }
 
@@ -238,7 +240,7 @@ const FeaturedProjects = () => {
     if (!containerRef.current || isScrolling) return;
 
     const now = Date.now();
-    if (now - lastScrollTime.current < 500) return; // Debounce scroll events
+    if (now - lastScrollTime.current < 500) return;
     lastScrollTime.current = now;
 
     const direction = e.deltaY > 0 ? 1 : -1;
@@ -267,34 +269,93 @@ const FeaturedProjects = () => {
             className="w-full h-full snap-center relative group"
             style={{ scrollSnapAlign: 'center', scrollSnapStop: 'always' }}
           >
-            <Link
-              href={project.link}
-              target="_blank"
-              className="absolute inset-0"
-            >
-              <Image
-                src={project.image}
-                alt={project.title}
-                fill
-                className="object-cover transition-transform duration-500 group-hover:scale-105"
-                sizes="(max-width: 768px) 100vw, 50vw"
-                priority={index === 0}
-              />
-              <div className="absolute inset-0 bg-black/20 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-              <div className="absolute bottom-8 left-8 text-white">
-                <p className="text-sm text-neutral-200 mb-2 tracking-wider">{project.year}</p>
-                <h3 className="text-xl font-medium mb-2 tracking-tight">{project.title}</h3>
-                <p className="text-sm text-neutral-300 max-w-md leading-relaxed">{project.description}</p>
+            <div className="absolute inset-0 flex flex-col p-10">
+              {/* Top section - Project Image (3/4) */}
+              <div className="relative w-full h-[75%] overflow-hidden rounded-3xl ">
+                <motion.div
+                  initial={false}
+                  animate={{
+                    scale: isDragging ? 1.05 : 1,
+                  }}
+                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                  className="absolute inset-0 object-contain"
+                  style={{
+                    transform: `translateY(${scrollProgress * -20}px)`,
+                    transition: 'transform 0.2s ease-out'
+                  }}
+                >
+                  <Image
+                    src={project.image}
+                    alt={project.title}
+                    fill
+                    className="object-cover"
+                    sizes="100vw"
+                    priority={index === 0}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-black/5 to-transparent" />
+                  
+                  {/* Technology pills in top right */}
+                  <div className="absolute top-6 right-6 flex flex-wrap gap-2 justify-end max-w-[50%]">
+                    {["Next.js", "TypeScript", "Tailwind"].map((tech) => (
+                      <span
+                        key={tech}
+                        className="px-3 py-1 bg-white/90 dark:bg-neutral-900/90 backdrop-blur-sm rounded-full text-sm text-neutral-600 dark:text-neutral-300"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                </motion.div>
               </div>
-              <div className="absolute top-8 right-8 opacity-0 group-hover:opacity-100 transition-all duration-300 transform group-hover:-translate-y-1">
-                <ArrowUpRight className="w-6 h-6 text-white" />
-              </div>
-            </Link>
+
+              {/* Bottom section - Project Details (1/4) */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className="relative h-[25%] p-8 bg-white dark:bg-neutral-900"
+              >
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-3">
+                    <span className="text-sm px-3 py-1 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300">
+                      {project.year}
+                    </span>
+                    <Link
+                      href={project.link}
+                      target="_blank"
+                      className="text-sm text-neutral-600 dark:text-neutral-400 hover:text-black dark:hover:text-white transition-colors flex items-center gap-1 group"
+                    >
+                      View Project <ArrowUpRight className="w-3 h-3 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                    </Link>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-[2fr,3fr] gap-8">
+                  <div>
+                    <h3 className="text-2xl font-medium tracking-tight text-black dark:text-white mb-2">
+                      {project.title}
+                    </h3>
+                    <p className="text-sm text-neutral-600 dark:text-neutral-300 line-clamp-2">
+                      {project.description}
+                    </p>
+                  </div>
+
+                  <div>
+                    <h4 className="text-sm font-medium mb-2 text-black dark:text-white">Key Features</h4>
+                    <ul className="list-disc list-inside text-sm text-neutral-600 dark:text-neutral-300 space-y-1">
+                      <li>Responsive design with modern UI/UX principles</li>
+                      <li>Server-side rendering for optimal performance</li>
+                      <li>Seamless integration with external APIs</li>
+                    </ul>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
           </div>
         ))}
       </div>
       
+      {/* Project Navigation */}
       <div className="absolute right-6 top-1/2 -translate-y-1/2 flex flex-col gap-2 z-50">
         {projects.map((_, index) => (
           <button
@@ -302,8 +363,8 @@ const FeaturedProjects = () => {
             onClick={() => scrollToProject(index)}
             className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
               currentProject === index 
-                ? 'bg-white scale-150' 
-                : 'bg-white/30 hover:bg-white/50'
+                ? 'bg-black dark:bg-white scale-150' 
+                : 'bg-neutral-300 dark:bg-neutral-700 hover:bg-neutral-400 dark:hover:bg-neutral-600'
             }`}
             aria-label={`Go to project ${index + 1}`}
           />
@@ -590,7 +651,7 @@ const GitHubStats = () => {
       </div>
 
       {/* Contribution Calendar - More Compact */}
-      <div className="flex-1 overflow-x-auto">
+      <div className="flex-1 overflow-x-auto scrollbar-hide">
         <div className="inline-grid grid-cols-[repeat(53,1fr)] gap-[2px]">
           {stats?.contributionCalendar.weeks.map((week, weekIndex) => (
             <div key={weekIndex} className="grid grid-rows-7 gap-[2px]">
@@ -692,16 +753,6 @@ export default function HomePage() {
       
       <div className="max-w-[2000px] mx-auto h-[calc(100vh-3rem)]">
         <div className="grid grid-cols-6 gap-4 h-full auto-rows-[minmax(0,1fr)]">
-          {/* Theme Toggle */}
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={toggleTheme}
-            className="fixed top-6 right-6 p-2 rounded-full bg-white/80 dark:bg-neutral-900/80 shadow-sm backdrop-blur-sm z-50 border border-neutral-200 dark:border-neutral-800"
-          >
-            {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-          </motion.button>
-
           <div className="col-span-2 row-span-4 grid grid-rows-[3fr,1fr] gap-4">
             {/* Profile Card */}
             <ProfileCard className="row-span-1 bg-white/80 dark:bg-neutral-900/80 rounded-[2rem] p-6 md:p-8 border border-neutral-200/50 dark:border-neutral-800/50 hover:border-neutral-300/50 dark:hover:border-neutral-700/50 transition-all duration-300 ease-out">
@@ -725,62 +776,75 @@ export default function HomePage() {
                         <p className="text-sm text-neutral-600 dark:text-neutral-400">
                           Full-stack Developer & Game Dev
                         </p>
-                        <span className="text-xs bg-neutral-100 dark:bg-neutral-800 px-2 py-0.5 rounded-full">24</span>
+                        <span className="text-xs bg-neutral-100 dark:bg-neutral-800 px-2 py-0.5 rounded-full text-neutral-600 dark:text-neutral-300">24</span>
                       </div>
                     </div>
                   </motion.div>
                   
-                  <p className="text-neutral-600 dark:text-neutral-400 text-sm mb-6">
-                    Hey, I&apos;m Senne! INFP-T, full-stack developer, and a creative tech enthusiast from Antwerp.
-                    I focus on building interactive and innovative web experiences, blending functionality with fun.
-                    Currently, I&apos;m diving into creative tech while tackling projects like The Okapi Store—my e-commerce platform to support okapi conservation.
+                  <p className="text-neutral-600 dark:text-neutral-400 text-sm mb-6 leading-relaxed">
+                    Hey, I&apos;m <span className="font-medium text-black dark:text-white">Senne</span>! <span className="font-medium text-black dark:text-white">INFP-T</span>, full-stack developer, and a creative tech enthusiast from <span className="font-medium text-black dark:text-white">Antwerp</span>.
+                    I focus on building <span className="font-medium text-black dark:text-white">interactive and innovative web experiences</span>, blending functionality with fun.
+                    Currently, I&apos;m diving into <span className="font-medium text-black dark:text-white">creative tech</span> while tackling projects like <span className="font-medium text-black dark:text-white">The Okapi Store</span>—my e-commerce platform to support okapi conservation.
                   </p>
                   
                   {/* Tech Stack */}
                   <div className="mb-4">
                     <h2 className="font-medium text-xs mb-2 text-neutral-600 dark:text-neutral-400">PRIMARY STACK</h2>
                     <div className="flex flex-wrap gap-2">
-                      {["TypeScript", "Next.js", "Prisma", "Tailwind", "ThreeJS", "Python"].map((tech, index) => (
-                        <motion.span
+                      {["TypeScript", "Next.js", "Prisma", "Tailwind", "ThreeJS", "Python"].map((tech) => (
+                        <span
                           key={tech}
-                          className="px-2 py-1 bg-neutral-100 dark:bg-neutral-800 rounded-md text-xs floating-delayed"
-                          style={{ '--delay': `${index * 0.1}s` } as React.CSSProperties}
-                          whileHover={{ y: -2 }}
-                          transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                          className="px-3 py-1 bg-neutral-100 dark:bg-neutral-800 rounded-full text-xs text-neutral-600 dark:text-neutral-300"
                         >
                           {tech}
-                        </motion.span>
+                        </span>
                       ))}
                     </div>
                   </div>
 
-                  {/* Social Links */}
+                  {/* Additional Info */}
+                  <div className="grid grid-cols-2 gap-4 mb-4">
+                    <div className="space-y-2">
+                      <h3 className="font-medium text-xs text-neutral-600 dark:text-neutral-400">LOCATION</h3>
+                      <p className="text-xs text-neutral-600 dark:text-neutral-300">
+                        🇧🇪 Antwerp, Belgium
+                      </p>
+                    </div>
+                    <div className="space-y-2">
+                      <h3 className="font-medium text-xs text-neutral-600 dark:text-neutral-400">LANGUAGES</h3>
+                      <div className="flex flex-wrap gap-2">
+                        <span className="text-xs text-neutral-600 dark:text-neutral-300">🇬🇧 English</span>
+                        <span className="text-xs text-neutral-600 dark:text-neutral-300">🇳🇱 Dutch</span>
+                        <span className="text-xs text-neutral-600 dark:text-neutral-300">🇩🇪 German</span>
+                        <span className="text-xs text-neutral-600 dark:text-neutral-300">🇫🇷 French</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full bg-green-400 sophisticated-pulse" />
+                    <span className="text-xs text-neutral-600 dark:text-neutral-400">
+                      Available for freelance projects
+                    </span>
+                  </div>
                   <div className="flex gap-2">
                     {[
                       { icon: Github, href: "https://github.com/snenenenenenene" },
                       { icon: Linkedin, href: "https://linkedin.com/in/sennebels" },
                       { icon: Mail, href: "mailto:contact@sennebels.xyz" }
-                    ].map(({ icon: Icon, href }, index) => (
+                    ].map(({ icon: Icon, href }) => (
                       <motion.a
                         key={href}
                         href={href}
                         target="_blank"
-                        className="p-2 bg-neutral-100 dark:bg-neutral-800 rounded-md floating-delayed"
-                        style={{ '--delay': `${index * 0.1}s` } as React.CSSProperties}
-                        whileHover={{ y: -2 }}
-                        transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                        className="p-2 bg-neutral-100 dark:bg-neutral-800 rounded-md hover:-translate-y-0.5 transition-transform"
                       >
-                        <Icon className="w-4 h-4" />
+                        <Icon className="w-4 h-4 text-neutral-600 dark:text-neutral-400" />
                       </motion.a>
                     ))}
                   </div>
-                </div>
-
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-green-400 sophisticated-pulse" />
-                  <span className="text-xs text-neutral-600 dark:text-neutral-400">
-                    Available for freelance projects
-                  </span>
                 </div>
               </div>
             </ProfileCard>
@@ -809,9 +873,6 @@ export default function HomePage() {
             {/* Project Carousel */}
             <BentoCard className="row-span-1 overflow-hidden !p-0">
               <div className="relative w-full h-full">
-                <div className="absolute top-0 left-0 right-0 p-6 pb-2 z-50 bg-gradient-to-b from-white via-white to-transparent dark:from-neutral-900 dark:via-neutral-900">
-                  <h2 className="font-medium text-sm text-black dark:text-white">Projects</h2>
-                </div>
                 <FeaturedProjects />
               </div>
             </BentoCard>
@@ -819,7 +880,9 @@ export default function HomePage() {
             <div className="grid grid-cols-12 gap-4">
               {/* GitHub Stats */}
               <BentoCard className="col-span-4 !p-4">
-                <GitHubStats />
+                <div className="h-full flex flex-col scrollbar-hide">
+                  <GitHubStats />
+                </div>
               </BentoCard>
 
               {/* Latest Activity */}
@@ -834,10 +897,10 @@ export default function HomePage() {
                       </span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300">
+                      <span className="text-xs px-3 py-1 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300">
                         Next.js
                       </span>
-                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300">
+                      <span className="text-xs px-3 py-1 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300">
                         Stripe
                       </span>
                     </div>
@@ -851,7 +914,7 @@ export default function HomePage() {
                   <h2 className="font-medium text-sm text-black dark:text-white mb-2">Recent Technologies</h2>
                   <div className="flex flex-wrap gap-2">
                     {["Next.js", "Tailwind", "Framer"].map((tech) => (
-                      <span key={tech} className="text-[10px] px-2 py-0.5 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300">
+                      <span key={tech} className="text-xs px-3 py-1 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300">
                         {tech}
                       </span>
                     ))}
@@ -859,29 +922,32 @@ export default function HomePage() {
                 </div>
               </BentoCard>
 
-              {/* Tech Stack Spotlight */}
+              {/* Convert Tech Spotlight to Theme Toggle */}
               <BentoCard className="col-span-2 !p-4">
                 <div className="h-full flex flex-col justify-between">
-                  <h2 className="font-medium text-sm text-black dark:text-white mb-2">Tech Spotlight</h2>
-                  <div className="flex flex-col items-center justify-center flex-1">
+                  <h2 className="font-medium text-sm text-black dark:text-white mb-2">Theme</h2>
+                  <motion.button
+                    onClick={toggleTheme}
+                    className="flex flex-col items-center justify-center flex-1 group"
+                  >
                     <motion.div
                       animate={{ rotate: 360 }}
                       transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
                       className="relative w-8 h-8 mb-2"
                     >
-                      <Image
-                        src="/images/typescript.svg"
-                        alt="TypeScript"
-                        width={32}
-                        height={32}
-                        className="object-contain"
-                      />
+                      {isDark ? (
+                        <Sun className="w-8 h-8 text-neutral-600 dark:text-neutral-300 group-hover:text-neutral-900 dark:group-hover:text-white transition-colors" />
+                      ) : (
+                        <Moon className="w-8 h-8 text-neutral-600 dark:text-neutral-300 group-hover:text-neutral-900 dark:group-hover:text-white transition-colors" />
+                      )}
                     </motion.div>
-                    <span className="text-xs font-medium text-black dark:text-white">TypeScript</span>
-                    <span className="text-[10px] text-neutral-600 dark:text-neutral-300 text-center mt-1">
-                      60% of Recent Projects
+                    <span className="text-xs font-medium text-black dark:text-white">
+                      {isDark ? 'Light Mode' : 'Dark Mode'}
                     </span>
-                  </div>
+                    <span className="text-[10px] text-neutral-600 dark:text-neutral-300 text-center mt-1">
+                      Click to toggle
+                    </span>
+                  </motion.button>
                 </div>
               </BentoCard>
             </div>
