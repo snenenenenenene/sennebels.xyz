@@ -172,200 +172,143 @@ const BentoCard = ({
 
 const FeaturedProjects = () => {
   const [currentProject, setCurrentProject] = React.useState(0);
-  const containerRef = React.useRef<HTMLDivElement>(null);
   const [isScrolling, setIsScrolling] = React.useState(false);
-  const [isDragging, setIsDragging] = React.useState(false);
-  const timeoutRef = React.useRef<NodeJS.Timeout>();
-  const lastScrollTime = React.useRef(Date.now());
-  const [scrollProgress, setScrollProgress] = useState(0);
+  const [direction, setDirection] = React.useState(0);
 
-  // Create an infinite array by repeating projects three times
-  const infiniteProjects = [...projects, ...projects, ...projects];
-
-  React.useEffect(() => {
-    if (containerRef.current) {
-      containerRef.current.scrollTop = containerRef.current.offsetHeight;
-    }
-  }, []);
-
-  const scrollToProject = (index: number, behavior: ScrollBehavior = 'smooth') => {
-    if (!containerRef.current || isScrolling) return;
-    
+  const handleProjectChange = (index: number) => {
+    if (isScrolling) return;
     setIsScrolling(true);
-    const container = containerRef.current;
-    const targetScroll = (index + 1) * container.offsetHeight;
-    
-    container.scrollTo({
-      top: targetScroll,
-      behavior
-    });
-    
+    setDirection(index > currentProject ? 1 : -1);
     setCurrentProject(index);
-    
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-    timeoutRef.current = setTimeout(() => {
+    setTimeout(() => {
       setIsScrolling(false);
+      setDirection(0);
     }, 500);
   };
 
-  const handleScroll = () => {
-    if (!containerRef.current || isDragging) return;
+  const handleWheel = (e: React.WheelEvent) => {
+    e.preventDefault();
+    if (isScrolling) return;
 
-    const container = containerRef.current;
-    const itemHeight = container.offsetHeight;
-    const currentScroll = container.scrollTop;
-    const totalHeight = itemHeight * infiniteProjects.length;
-
-    // Calculate scroll progress for the current project (0 to 1)
-    const progress = (currentScroll % itemHeight) / itemHeight;
-    setScrollProgress(progress);
-
-    // Handle infinite scroll wrapping
-    if (currentScroll < itemHeight) {
-      container.scrollTop = currentScroll + (itemHeight * projects.length);
-    } else if (currentScroll > totalHeight - (itemHeight * 2)) {
-      container.scrollTop = currentScroll - (itemHeight * projects.length);
-    }
-
-    // Update current project index
-    const newIndex = Math.round((container.scrollTop / itemHeight) - 1) % projects.length;
-    if (newIndex !== currentProject && newIndex >= 0 && newIndex < projects.length) {
-      setCurrentProject(newIndex);
-    }
+    const dir = e.deltaY > 0 ? 1 : -1;
+    const nextProject = (currentProject + dir + projects.length) % projects.length;
+    setDirection(dir);
+    handleProjectChange(nextProject);
   };
 
-  const handleWheel = (e: React.WheelEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    if (!containerRef.current || isScrolling) return;
-
-    const now = Date.now();
-    if (now - lastScrollTime.current < 500) return;
-    lastScrollTime.current = now;
-
-    const direction = e.deltaY > 0 ? 1 : -1;
-    const nextProject = (currentProject + direction + projects.length) % projects.length;
-    scrollToProject(nextProject);
+  const variants = {
+    enter: (direction: number) => ({
+      scale: 0.2,
+      y: direction > 0 ? 50 : -50,
+      rotateX: direction > 0 ? 45 : -45,
+      opacity: 0,
+      z: -100
+    }),
+    center: {
+      scale: 1,
+      y: 0,
+      rotateX: 0,
+      opacity: 1,
+      z: 0
+    },
+    exit: (direction: number) => ({
+      scale: 0.2,
+      y: direction > 0 ? -50 : 50,
+      rotateX: direction > 0 ? -45 : 45,
+      opacity: 0,
+      z: -100
+    })
   };
 
   return (
-    <div className="absolute inset-0">
-      <div 
-        ref={containerRef}
-        className="w-full h-full overflow-y-auto snap-y snap-mandatory scrollbar-hide"
-        onScroll={handleScroll}
-        onWheel={handleWheel}
-        onMouseDown={() => setIsDragging(true)}
-        onMouseUp={() => setIsDragging(false)}
-        onMouseLeave={() => setIsDragging(false)}
-        style={{
-          scrollSnapType: 'y mandatory',
-          WebkitOverflowScrolling: 'touch',
-        }}
-      >
-        {infiniteProjects.map((project, index) => (
-          <div
-            key={`${project.title}-${index}`}
-            className="w-full h-full snap-center relative group"
-            style={{ scrollSnapAlign: 'center', scrollSnapStop: 'always' }}
+    <div className="relative w-full h-full perspective-[2000px]" onWheel={handleWheel}>
+      <div className="absolute inset-0">
+        {/* Project Image - Full height with overlay gradient */}
+        <AnimatePresence initial={false} custom={direction}>
+          <motion.div
+            key={currentProject}
+            custom={direction}
+            variants={variants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={{
+              type: "spring",
+              stiffness: 300,
+              damping: 30,
+              mass: 1
+            }}
+            className="absolute inset-0 origin-center"
+            style={{ 
+              transformStyle: "preserve-3d",
+              backfaceVisibility: "hidden"
+            }}
           >
-            <div className="absolute inset-0 flex flex-col p-10">
-              {/* Top section - Project Image (3/4) */}
-              <div className="relative w-full h-[75%] overflow-hidden rounded-3xl ">
-                <motion.div
-                  initial={false}
-                  animate={{
-                    scale: isDragging ? 1.05 : 1,
-                  }}
-                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                  className="absolute inset-0 object-contain"
-                  style={{
-                    transform: `translateY(${scrollProgress * -20}px)`,
-                    transition: 'transform 0.2s ease-out'
-                  }}
-                >
-                  <Image
-                    src={project.image}
-                    alt={project.title}
-                    fill
-                    className="object-cover"
-                    sizes="100vw"
-                    priority={index === 0}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-black/5 to-transparent" />
-                  
-                  {/* Technology pills in top right */}
-                  <div className="absolute top-6 right-6 flex flex-wrap gap-2 justify-end max-w-[50%]">
-                    {["Next.js", "TypeScript", "Tailwind"].map((tech) => (
-                      <span
-                        key={tech}
-                        className="px-3 py-1 bg-white/90 dark:bg-neutral-900/90 backdrop-blur-sm rounded-full text-sm text-neutral-600 dark:text-neutral-300"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                </motion.div>
-              </div>
+            <div className="relative w-full h-full">
+              <Image
+                src={projects[currentProject].image}
+                alt={projects[currentProject].title}
+                fill
+                className="object-cover transition-transform duration-500 ease-out hover:scale-105"
+                sizes="100vw"
+                priority
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
-              {/* Bottom section - Project Details (1/4) */}
-              <motion.div
+              {/* Project Info - Overlaid on image */}
+              <motion.div 
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
-                className="relative h-[25%] p-8 bg-white dark:bg-neutral-900"
+                className="absolute bottom-0 left-0 right-0 p-8 text-white"
               >
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center gap-3">
-                    <span className="text-sm px-3 py-1 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300">
-                      {project.year}
-                    </span>
-                    <Link
-                      href={project.link}
-                      target="_blank"
-                      className="text-sm text-neutral-600 dark:text-neutral-400 hover:text-black dark:hover:text-white transition-colors flex items-center gap-1 group"
-                    >
-                      View Project <ArrowUpRight className="w-3 h-3 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                    </Link>
-                  </div>
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-sm px-3 py-1 rounded-full bg-white/10 backdrop-blur-sm">
+                    {projects[currentProject].year}
+                  </span>
+                  <Link
+                    href={projects[currentProject].link}
+                    target="_blank"
+                    className="text-sm text-white/80 hover:text-white transition-colors flex items-center gap-1 group"
+                  >
+                    View Project <ArrowUpRight className="w-3 h-3 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  </Link>
                 </div>
 
-                <div className="grid grid-cols-[2fr,3fr] gap-8">
-                  <div>
-                    <h3 className="text-2xl font-medium tracking-tight text-black dark:text-white mb-2">
-                      {project.title}
-                    </h3>
-                    <p className="text-sm text-neutral-600 dark:text-neutral-300 line-clamp-2">
-                      {project.description}
-                    </p>
-                  </div>
+                <h3 className="text-3xl font-medium tracking-tight mb-3">
+                  {projects[currentProject].title}
+                </h3>
+                
+                <p className="text-sm text-white/80 mb-4 leading-relaxed max-w-2xl">
+                  {projects[currentProject].description}
+                </p>
 
-                  <div>
-                    <h4 className="text-sm font-medium mb-2 text-black dark:text-white">Key Features</h4>
-                    <ul className="list-disc list-inside text-sm text-neutral-600 dark:text-neutral-300 space-y-1">
-                      <li>Responsive design with modern UI/UX principles</li>
-                      <li>Server-side rendering for optimal performance</li>
-                      <li>Seamless integration with external APIs</li>
-                    </ul>
-                  </div>
+                <div className="flex flex-wrap gap-2">
+                  {projects[currentProject].tech.map((tech) => (
+                    <span
+                      key={tech}
+                      className="px-3 py-1 bg-white/10 backdrop-blur-sm rounded-full text-sm text-white/90"
+                    >
+                      {tech}
+                    </span>
+                  ))}
                 </div>
               </motion.div>
             </div>
-          </div>
-        ))}
+          </motion.div>
+        </AnimatePresence>
       </div>
       
       {/* Project Navigation */}
-      <div className="absolute right-6 top-1/2 -translate-y-1/2 flex flex-col gap-2 z-50">
+      <div className="absolute right-8 top-1/2 -translate-y-1/2 flex flex-col gap-2 z-50">
         {projects.map((_, index) => (
           <button
             key={index}
-            onClick={() => scrollToProject(index)}
+            onClick={() => handleProjectChange(index)}
             className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
               currentProject === index 
-                ? 'bg-black dark:bg-white scale-150' 
-                : 'bg-neutral-300 dark:bg-neutral-700 hover:bg-neutral-400 dark:hover:bg-neutral-600'
+                ? 'bg-white scale-150' 
+                : 'bg-white/50 hover:bg-white/80'
             }`}
             aria-label={`Go to project ${index + 1}`}
           />
@@ -870,7 +813,7 @@ export default function HomePage() {
             </BentoCard>
           </div>
 
-          <div className="col-span-4 row-span-4 grid grid-rows-[3fr,1fr] gap-4">
+          <div className="col-span-4 row-span-4 grid grid-rows-[4fr,1fr] gap-4">
             {/* Project Carousel */}
             <BentoCard className="row-span-1 overflow-hidden !p-0">
               <div className="relative w-full h-full">
@@ -879,15 +822,15 @@ export default function HomePage() {
             </BentoCard>
 
             <div className="grid grid-cols-12 gap-4">
-              {/* GitHub Stats */}
-              <BentoCard className="col-span-8 !p-4">
+              {/* GitHub Stats - reduced width */}
+              <BentoCard className="col-span-6 !p-4">
                 <div className="h-full flex flex-col scrollbar-hide">
                   <GitHubStats />
                 </div>
               </BentoCard>
 
-              {/* Tanuki Model */}
-              <BentoCard className="col-span-2 !p-0 overflow-hidden">
+              {/* Tanuki Model - increased width */}
+              <BentoCard className="col-span-4 !p-0 overflow-hidden">
                 <TechCube />
               </BentoCard>
 

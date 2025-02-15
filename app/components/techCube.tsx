@@ -5,6 +5,7 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, PresentationControls, Environment, Text, Float } from '@react-three/drei';
 import { Model as Shiba } from './models/shiba';
 import { useTheme } from 'next-themes';
+import { Suspense } from 'react';
 
 function TamagotchiStats({ position, happiness, energy }: { position: [number, number, number], happiness: number, energy: number }) {
   const textColor = '#00ff00';
@@ -81,8 +82,8 @@ function FloatingIcons({ onFeed, onPlay }: { onFeed: () => void, onPlay: () => v
 export default function TechCube() {
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === 'dark';
-  const [happiness, setHappiness] = useState(80);
-  const [energy, setEnergy] = useState(70);
+  const [happiness, setHappiness] = useState(85);
+  const [energy, setEnergy] = useState(92);
   const [isJumping, setIsJumping] = useState(false);
   const modelRef = useRef();
 
@@ -112,48 +113,50 @@ export default function TechCube() {
   };
 
   return (
-    <div className="h-full w-full rounded-[2rem] overflow-hidden bg-white dark:bg-neutral-900">
-      <Canvas camera={{ position: [0, 2, 6], fov: 45 }}>
-        
-        {/* Enhanced lighting setup */}
-        <ambientLight intensity={isDark ? 0.6 : 0.8} />
-        <directionalLight 
-          position={[5, 5, 5]} 
-          intensity={isDark ? 0.8 : 1} 
-          color={isDark ? "#ffffff" : "#ffffff"}
-        />
-        <directionalLight 
-          position={[-5, 3, -5]} 
-          intensity={isDark ? 0.4 : 0.6} 
-          color={isDark ? "#b6ceff" : "#f8f8f8"}
-        />
-        
-        {/* Environment */}
-        <Environment preset={isDark ? "night" : "dawn"} />
-        
-        {/* Interactive elements */}
-        <PresentationControls
-          global
-          rotation={[0, -Math.PI / 4, 0]}
-          polar={[-Math.PI / 4, Math.PI / 4]}
-          azimuth={[-Math.PI / 4, Math.PI / 4]}
-          config={{ mass: 2, tension: 400 }}
-          snap={{ mass: 4, tension: 400 }}
-        >
-          <group position={[0, -1, 0]}>
-            <Shiba 
-              ref={modelRef}
-              rotation={[0, Math.PI / 4, 0]} 
-              position={[0, isJumping ? 0.5 : 0, 0]}
+    <div className="relative w-full h-full">
+      {/* Stats Overlay */}
+      <div className="absolute top-4 left-4 z-10 flex flex-col gap-2">
+        <div className="flex items-center gap-2">
+          <span className="text-xs text-neutral-300">Happiness</span>
+          <div className="w-20 h-1.5 bg-neutral-800 rounded-full overflow-hidden">
+            <div 
+              className="h-full bg-green-500 rounded-full transition-all duration-300"
+              style={{ width: `${happiness}%` }}
             />
-            <TamagotchiStats 
-              position={[0, 3, 0]}
-              happiness={happiness}
-              energy={energy}
+          </div>
+          <span className="text-xs text-neutral-300">{happiness}%</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="text-xs text-neutral-300">Energy</span>
+          <div className="w-20 h-1.5 bg-neutral-800 rounded-full overflow-hidden">
+            <div 
+              className="h-full bg-blue-500 rounded-full transition-all duration-300"
+              style={{ width: `${energy}%` }}
             />
-          </group>
-        </PresentationControls>
+          </div>
+          <span className="text-xs text-neutral-300">{energy}%</span>
+        </div>
+      </div>
 
+      {/* 3D Scene */}
+      <Canvas
+        camera={{ position: [0, 0, 5], fov: 10 }}
+        className="w-full h-full"
+      >
+        <color attach="background" args={['#000000']} />
+        
+        {/* Reduced lighting intensity */}
+        <ambientLight intensity={0.2} />
+        <directionalLight position={[5, 5, 5]} intensity={0.1} />
+        <directionalLight position={[-5, -5, -5]} intensity={0.1} />
+
+        <Suspense fallback={null}>
+          <Shiba 
+            ref={modelRef}
+            rotation={[0, 0, 0]} 
+            position={[0, -1, 0]}
+          />
+        </Suspense>
         <FloatingIcons onFeed={handleFeed} onPlay={handlePlay} />
 
         <OrbitControls 

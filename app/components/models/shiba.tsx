@@ -30,15 +30,15 @@ function ShibaModel(props: JSX.IntrinsicElements['group']) {
 
 	// Clone and scale the scene
 	const scaledScene = scene.clone()
-	scaledScene.scale.set(3, 3, 3)
+	scaledScene.scale.set(4, 4, 4)
 
 	// Add subtle animation
 	useFrame((state) => {
 		if (group.current) {
 			// Smoother rotation
-			group.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.5) * 0.2 + (props.rotation?.[1] || 0);
+			group.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.5) * 0.15 + (props.rotation?.[1] || 0);
 			// Gentler floating motion
-			group.current.position.y = Math.sin(state.clock.elapsedTime) * 0.1 + (props.position?.[1] || 0);
+			group.current.position.y = Math.sin(state.clock.elapsedTime) * 0.05 + (props.position?.[1] || 0);
 		}
 	})
 

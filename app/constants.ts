@@ -27,38 +27,67 @@ export const ACHIEVEMENTS = [
 
 export const projects = [
   {
-    title: "The Okapi Store",
-    description: "E-commerce platform supporting okapi conservation through themed merchandise, built with Next.js and Stripe",
-    image: "/images/work/theokapistore.png",
-    year: "2024",
-    link: "https://github.com/snenenenenenene/the-okapi-store",
-  },
-  {
-    title: "LBLOD - Lokaal Beslist",
+    title: "Lokaal Beslist",
     description: "Front-end for citizen engagement platform using linked data to empower Flanders citizens to consult local authority decisions",
     image: "/images/work/lokaalbeslist.png",
     year: "2023",
-    link: "https://github.com/lblod/frontend-burgernabije-besluitendatabank",
+    link: "https://lokaalbeslist.be",
+    tech: ["Next.js", "TypeScript", "Tailwind"]
   },
   {
-    title: "DnD Character Tool",
-    description: "Tool for creating and managing D&D campaign characters with ease",
-    image: "/images/work/dnd.png",
+    title: "Waddist",
+    description: "A modern web application for tracking and sharing your favorite restaurants and food spots",
+    image: "/images/work/waddist.png",
     year: "2023",
-    link: "https://github.com/snenenenenenene/dnd-character-tool",
+    link: "https://waddist.com",
+    tech: ["React", "Node.js", "MongoDB"]
   },
   {
-    title: "VSCode Calico",
-    description: "Custom minimalist theme for Visual Studio Code",
-    image: "/images/work/calico.png",
+    title: "BeeDee",
+    description: "Digital platform for beekeepers to manage their hives and track colony health",
+    image: "/images/work/beedee.png",
     year: "2023",
-    link: "https://github.com/snenenenenenene/vscode-calico",
+    link: "https://beedee.io",
+    tech: ["Vue.js", "Firebase", "TailwindCSS"]
   },
   {
-    title: "Stremio Rich Presence",
-    description: "Discord Rich Presence integration for Stremio media player",
-    image: "/images/work/stremio.png",
-    year: "2023",
-    link: "https://github.com/snenenenenenene/stremio-rich-presence",
+    title: "Musicians Hub",
+    description: "Social platform connecting musicians, bands, and venues for collaboration and booking",
+    image: "/images/work/musicians.png",
+    year: "2022",
+    link: "https://musicians-hub.com",
+    tech: ["React", "Express", "PostgreSQL"]
   },
+  {
+    title: "OSOC Projects",
+    description: "Open Summer of Code project showcase platform featuring student innovations",
+    image: "/images/work/osoc.png",
+    year: "2022",
+    link: "https://osoc.be",
+    tech: ["Next.js", "GraphQL", "TailwindCSS"]
+  },
+  {
+    title: "Skinhouse",
+    description: "E-commerce platform for premium skincare products with personalized recommendations",
+    image: "/images/work/skinhouse.png",
+    year: "2022",
+    link: "https://skinhouse.be",
+    tech: ["Shopify", "React", "TailwindCSS"]
+  },
+  {
+    title: "Spotify Artwork",
+    description: "Web app that generates beautiful artwork from your Spotify listening history",
+    image: "/images/work/spotify-art.png",
+    year: "2022",
+    link: "https://spotify-artwork.com",
+    tech: ["React", "Spotify API", "Canvas"]
+  },
+  {
+    title: "Private Swimming",
+    description: "Platform connecting private pool owners with swimmers for exclusive swimming sessions",
+    image: "/images/work/privateswimming.png",
+    year: "2021",
+    link: "https://privateswimming.com",
+    tech: ["Next.js", "Stripe", "PostgreSQL"]
+  }
 ]; 
