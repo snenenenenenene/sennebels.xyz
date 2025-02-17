@@ -320,61 +320,63 @@ const BentoCard = ({
   );
 };
 
-const FeaturedProjects = () => {
+const FeaturedProjects = ({ 
+  onScrollingChange 
+}: { 
+  onScrollingChange: (isScrolling: boolean) => void 
+}) => {
   const [currentProject, setCurrentProject] = React.useState(0);
-  const [isScrolling, setIsScrolling] = React.useState(false);
   const [direction, setDirection] = React.useState(0);
+  const [isScrollLocked, setIsScrollLocked] = React.useState(false);
 
   const handleProjectChange = (index: number) => {
-    if (isScrolling) return;
-    setIsScrolling(true);
+    if (isScrollLocked) return;
+    setIsScrollLocked(true);
+    onScrollingChange(true);
+    
     setDirection(index > currentProject ? 1 : -1);
     setCurrentProject(index);
+
+    // Reset scroll lock and animation after transition
     setTimeout(() => {
-      setIsScrolling(false);
-      setDirection(0);
-    }, 500);
+      setIsScrollLocked(false);
+      onScrollingChange(false);
+    }, 700); // Increased from 500 to 700ms to ensure complete transition
   };
 
   const handleWheel = (e: React.WheelEvent) => {
     e.preventDefault();
-    if (isScrolling) return;
+    if (isScrollLocked) return;
 
     const dir = e.deltaY > 0 ? 1 : -1;
-    const nextProject = (currentProject + dir + projects.length) % projects.length;
-    setDirection(dir);
-    handleProjectChange(nextProject);
+    const nextProject = Math.min(Math.max(0, currentProject + dir), projects.length - 1);
+    if (nextProject !== currentProject) {
+      handleProjectChange(nextProject);
+    }
   };
 
   const variants = {
     enter: (direction: number) => ({
-      scale: 0.2,
-      y: direction > 0 ? 50 : -50,
-      rotateX: direction > 0 ? 45 : -45,
+      scale: 1.05,
       opacity: 0,
-      z: -100
     }),
     center: {
       scale: 1,
-      y: 0,
-      rotateX: 0,
       opacity: 1,
-      z: 0
     },
     exit: (direction: number) => ({
-      scale: 0.2,
-      y: direction > 0 ? -50 : 50,
-      rotateX: direction > 0 ? -45 : 45,
+      scale: 0.95,
       opacity: 0,
-      z: -100
     })
   };
 
   return (
-    <div className="relative w-full h-full perspective-[2000px]" onWheel={handleWheel}>
+    <div 
+      className="relative w-full h-full"
+      onWheel={handleWheel}
+    >
       <div className="absolute inset-0">
-        {/* Project Image - Full height with overlay gradient */}
-        <AnimatePresence initial={false} custom={direction}>
+        <AnimatePresence initial={false} custom={direction} mode="wait">
           <motion.div
             key={currentProject}
             custom={direction}
@@ -389,21 +391,26 @@ const FeaturedProjects = () => {
               mass: 1
             }}
             className="absolute inset-0 origin-center"
-            style={{ 
-              transformStyle: "preserve-3d",
-              backfaceVisibility: "hidden"
-            }}
           >
             <div className="relative w-full h-full">
+              {/* View Project Link - Now at top right */}
+              <Link
+                href={projects[currentProject].link}
+                target="_blank"
+                className="absolute top-8 right-8 z-10 text-sm text-white/80 hover:text-white transition-colors flex items-center gap-1 group bg-black/20 backdrop-blur-sm px-4 py-2 rounded-full"
+              >
+                View Project <ArrowUpRight className="w-3 h-3 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </Link>
+
               <Image
                 src={projects[currentProject].image}
                 alt={projects[currentProject].title}
                 fill
-                className="object-cover transition-transform duration-500 ease-out hover:scale-105"
+                className="object-cover rounded-[2rem]"
                 sizes="100vw"
                 priority
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent rounded-[2rem]" />
 
               {/* Project Info - Overlaid on image */}
               <motion.div 
@@ -412,17 +419,10 @@ const FeaturedProjects = () => {
                 transition={{ delay: 0.2 }}
                 className="absolute bottom-0 left-0 right-0 p-8 text-white"
               >
-                <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center mb-4">
                   <span className="text-sm px-3 py-1 rounded-full bg-white/10 backdrop-blur-sm">
                     {projects[currentProject].year}
                   </span>
-                  <Link
-                    href={projects[currentProject].link}
-                    target="_blank"
-                    className="text-sm text-white/80 hover:text-white transition-colors flex items-center gap-1 group"
-                  >
-                    View Project <ArrowUpRight className="w-3 h-3 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                  </Link>
                 </div>
 
                 <h3 className="text-3xl font-medium tracking-tight mb-3">
@@ -827,6 +827,7 @@ const ContactButton = ({ children }: { children: React.ReactNode }) => {
 export default function HomePage() {
   const [isDark, setIsDark] = React.useState(false);
   const [isAvailable, setIsAvailable] = React.useState(true);
+  const [isProjectScrolling, setIsProjectScrolling] = React.useState(false);
 
   React.useEffect(() => {
     if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
@@ -965,11 +966,18 @@ export default function HomePage() {
 
           <div className="col-span-4 row-span-4 grid grid-rows-[4fr,1fr] gap-4">
             {/* Project Carousel */}
-            <BentoCard className="row-span-1 overflow-hidden !p-0">
-              <div className="relative w-full h-full">
-                <FeaturedProjects />
-              </div>
-            </BentoCard>
+            <motion.div
+              initial={false}
+              animate={{ scale: isProjectScrolling ? 0.97 : 1 }}
+              transition={{ duration: 0.5, ease: [0.32, 0.72, 0, 1] }}
+              className="row-span-1 w-full h-full"
+            >
+              <BentoCard className="h-full overflow-hidden !p-0">
+                <div className="relative w-full h-full">
+                  <FeaturedProjects onScrollingChange={setIsProjectScrolling} />
+                </div>
+              </BentoCard>
+            </motion.div>
 
             <div className="grid grid-cols-12 gap-4">
               {/* GitHub Stats */}
