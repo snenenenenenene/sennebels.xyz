@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import type { ReactNode, MouseEvent as ReactMouseEvent } from 'react';
 import { AnimatePresence, motion } from "framer-motion";
 import { MoveUpRight, ArrowUpRight, Github, Linkedin, Mail, X, Download, Moon, Sun } from "lucide-react";
@@ -8,9 +8,159 @@ import Image from "next/image";
 import Link from "next/link";
 import { projects, NOW_ITEMS, TIMELINE_ITEMS, GEAR_ITEMS, ACHIEVEMENTS } from "./constants";
 import { useSpring, animated } from '@react-spring/web';
-import TechCube from './components/techCube';
 
-const TYPING_TEXTS = ["Websites", "Applications", "Side Projects"];
+// Pastel color palette
+const COLORS = {
+  pink: '#ffd6e0',
+  lavender: '#e6e6fa',
+  mint: '#c1f0c1',
+  peach: '#ffcba4',
+  sky: '#bfe6ff',
+  lilac: '#dcd0ff',
+} as const;
+
+// Tetris shapes
+const SHAPES = {
+  I: [[1, 1, 1, 1]],
+  O: [[1, 1], [1, 1]],
+  T: [[0, 1, 0], [1, 1, 1]],
+  L: [[1, 0], [1, 0], [1, 1]],
+  J: [[0, 1], [0, 1], [1, 1]],
+  S: [[0, 1, 1], [1, 1, 0]],
+  Z: [[1, 1, 0], [0, 1, 1]],
+} as const;
+
+type TetrisBlock = {
+  id: number;
+  x: number;
+  y: number;
+  shape: keyof typeof SHAPES;
+  color: keyof typeof COLORS;
+  rotation: number;
+};
+
+// Terminal commands and responses
+const TERMINAL_COMMANDS = {
+  help: 'Available commands: help, about, skills, projects, contact, theme, clear',
+  about: 'Full-stack developer & game dev from Antwerp. INFP-T. Creative tech enthusiast.',
+  skills: 'TypeScript, Next.js, Prisma, Tailwind, ThreeJS, Python',
+  projects: 'Type "projects" to see my latest work',
+  contact: 'Email: contact@sennebels.xyz',
+  theme: 'Usage: theme [light|dark] - Toggle or set theme',
+  clear: 'Clear terminal history',
+} as const;
+
+const DevTerminal = () => {
+  const [history, setHistory] = useState<Array<{ command: string; response: string }>>([]);
+  const [currentCommand, setCurrentCommand] = useState('');
+  const [isDark, setIsDark] = useState(false);
+  const terminalRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Initialize theme on mount
+  useEffect(() => {
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      setIsDark(true);
+      document.documentElement.classList.add('dark');
+    }
+  }, []);
+
+  const handleThemeCommand = (args: string[]) => {
+    const mode = args[0]?.toLowerCase();
+    if (mode === 'light' || mode === 'dark') {
+      setIsDark(mode === 'dark');
+      document.documentElement.classList.toggle('dark', mode === 'dark');
+      return `Theme set to ${mode} mode`;
+    } else {
+      const newTheme = !isDark;
+      setIsDark(newTheme);
+      document.documentElement.classList.toggle('dark', newTheme);
+      return `Theme toggled to ${newTheme ? 'dark' : 'light'} mode`;
+    }
+  };
+
+  const handleContainerClick = () => {
+    inputRef.current?.focus();
+  };
+
+  const executeCommand = (cmd: string) => {
+    const [command, ...args] = cmd.toLowerCase().trim().split(' ');
+    
+    let response = '';
+    
+    switch (command) {
+      case 'theme':
+        response = handleThemeCommand(args);
+        break;
+      case 'clear':
+        setHistory([]);
+        return;
+      default:
+        response = TERMINAL_COMMANDS[command as keyof typeof TERMINAL_COMMANDS] || 'Command not found. Type "help" for available commands.';
+    }
+    
+    setHistory(prev => [...prev, { command: cmd, response }]);
+    setCurrentCommand('');
+    
+    setTimeout(() => {
+      if (terminalRef.current) {
+        terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
+      }
+    }, 0);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      executeCommand(currentCommand);
+    }
+  };
+
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
+
+  return (
+    <div 
+      ref={containerRef}
+      onClick={handleContainerClick}
+      className="relative w-full h-full bg-[#1a1a1a] rounded-[2rem] overflow-hidden font-mono text-sm"
+    >
+      <div 
+        ref={terminalRef}
+        className="absolute inset-0 p-4 overflow-y-auto scrollbar-hide pb-[60px]"
+      >
+        <div className="text-[#27c93f] mb-4">
+          Welcome! Type "help" to see available commands.
+        </div>
+        
+        {history.map((entry, i) => (
+          <div key={i} className="mb-2">
+            <div className="flex items-center text-[#efefef]">
+              <span className="text-[#27c93f]">❯</span>
+              <span className="ml-2">{entry.command}</span>
+            </div>
+            <div className="text-[#efefef] ml-4 opacity-80">
+              {entry.response}
+            </div>
+          </div>
+        ))}
+      </div>
+      
+      <div className="absolute bottom-0 left-0 right-0 flex items-center text-[#efefef] p-4 border-t border-[#3a3a3a] bg-[#2a2a2a]">
+        <span className="text-[#27c93f]">❯</span>
+        <input
+          ref={inputRef}
+          type="text"
+          value={currentCommand}
+          onChange={(e) => setCurrentCommand(e.target.value)}
+          onKeyDown={handleKeyDown}
+          className="ml-2 bg-transparent outline-none flex-1 caret-[#27c93f]"
+        />
+      </div>
+    </div>
+  );
+};
 
 interface ProjectCardProps {
   title: string;
@@ -822,45 +972,16 @@ export default function HomePage() {
             </BentoCard>
 
             <div className="grid grid-cols-12 gap-4">
-              {/* GitHub Stats - reduced width */}
+              {/* GitHub Stats */}
               <BentoCard className="col-span-6 !p-4">
                 <div className="h-full flex flex-col scrollbar-hide">
                   <GitHubStats />
                 </div>
               </BentoCard>
 
-              {/* Tanuki Model - increased width */}
-              <BentoCard className="col-span-4 !p-0 overflow-hidden">
-                <TechCube />
-              </BentoCard>
-
-              {/* Theme Toggle */}
-              <BentoCard className="col-span-2 !p-4">
-                <div className="h-full flex flex-col justify-between">
-                  <h2 className="font-medium text-sm text-black dark:text-white mb-2">Theme</h2>
-                  <motion.button
-                    onClick={toggleTheme}
-                    className="flex flex-col items-center justify-center flex-1 group"
-                  >
-                    <motion.div
-                      animate={{ rotate: 360 }}
-                      transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                      className="relative w-8 h-8 mb-2"
-                    >
-                      {isDark ? (
-                        <Sun className="w-8 h-8 text-neutral-600 dark:text-neutral-300 group-hover:text-neutral-900 dark:group-hover:text-white transition-colors" />
-                      ) : (
-                        <Moon className="w-8 h-8 text-neutral-600 dark:text-neutral-300 group-hover:text-neutral-900 dark:group-hover:text-white transition-colors" />
-                      )}
-                    </motion.div>
-                    <span className="text-xs font-medium text-black dark:text-white">
-                      {isDark ? 'Light Mode' : 'Dark Mode'}
-                    </span>
-                    <span className="text-[10px] text-neutral-600 dark:text-neutral-300 text-center mt-1">
-                      Click to toggle
-                    </span>
-                  </motion.button>
-                </div>
+              {/* Terminal (now includes theme control) */}
+              <BentoCard className="col-span-6 !p-0 overflow-hidden">
+                <DevTerminal />
               </BentoCard>
             </div>
           </div>
