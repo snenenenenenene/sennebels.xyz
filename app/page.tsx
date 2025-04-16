@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState, useCallback, Suspense } from 'react';
 import type { ReactNode, MouseEvent as ReactMouseEvent } from 'react';
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowUpRight, Github, Linkedin, Mail, Download, Activity, MapPin, LanguagesIcon, Sun, Moon, Palette as PaletteIcon, Sparkles, Cat } from "lucide-react";
+import { ArrowUpRight, Github, Linkedin, Mail, Download, Activity, MapPin, LanguagesIcon, Sun, Moon, Sparkles, Cat } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { projects } from "./constants";
@@ -56,7 +56,7 @@ const BENTO_BASE_CLASSES = "bg-neutral-100/80 dark:bg-[#1D1D1F]/80 backdrop-blur
 const BentoCard = ({ 
   children, 
   className = '', 
-  href, 
+  href,
   theme = 'immersive',
   overrideBg, // Optional override for color blocking
   ...props 
@@ -471,7 +471,7 @@ const GitHubStats = ({ theme, overrideBg }: { theme?: Theme; overrideBg?: string
             <Github className="w-3 h-3" /> {stats.totalContributions?.toLocaleString()} contributions
           </span>
         )}
-    </div>
+          </div>
 
       {/* Main Content Area (Graph or Status) */}
       <div className="flex-grow flex items-center justify-center">
@@ -480,26 +480,11 @@ const GitHubStats = ({ theme, overrideBg }: { theme?: Theme; overrideBg?: string
         {stats && !loading && !error && (
           <div className="w-full">
             <ContributionGraph contributions={stats.contributionCalendar} />
-          </div>
+        </div>
         )}
       </div>
     </BentoCard>
   );
-};
-
-// Utility function for language colors (can be expanded)
-const getLanguageColor = (language: string): string => {
-  const colors: { [key: string]: string } = {
-    TypeScript: 'bg-blue-500',
-    JavaScript: 'bg-yellow-400',
-    Python: 'bg-green-500',
-    HTML: 'bg-orange-500',
-    CSS: 'bg-purple-500',
-    Shell: 'bg-lime-500',
-    CSharp: 'bg-teal-500', // Added C# as it appeared in screenshot
-    // Add more languages and colors as needed
-  };
-  return colors[language] || 'bg-gray-400'; // Default color
 };
 
 // Contribution Graph Component (Using Popover Component)
@@ -545,8 +530,8 @@ const ContributionGraph = ({ contributions }: { contributions: any }) => {
                   key={day.date || dayIndex}
                   className={`w-2.5 h-2.5 rounded-sm ${getContributionColor(day.contributionCount)} transition-colors cursor-default`} // Added transition and cursor
                   onMouseEnter={(e) => handleMouseEnter(e, day)}
-                  onMouseMove={handleMouseMove}
-                  onMouseLeave={handleMouseLeave}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
                   // Removed title attribute as popover replaces it
                 />
               ))}
@@ -697,8 +682,8 @@ const ThemeSwitcher = ({ currentTheme, setTheme }: { currentTheme: Theme; setThe
       <button
         onClick={cycleTheme}
         onMouseEnter={handleMouseEnter}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
         className="fixed bottom-6 left-6 z-50 p-2 rounded-full bg-neutral-200/70 dark:bg-neutral-800/70 backdrop-blur-sm border border-black/10 dark:border-white/10 text-neutral-700 dark:text-neutral-300 hover:text-black dark:hover:text-white hover:scale-110 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
         aria-label={`Current theme: ${currentTheme}. Switch theme.`}
       >
@@ -781,35 +766,44 @@ export default function HomePage() {
       {/* Grain Overlay - Moved outside main for fixed positioning */} 
       <div className="grain-overlay"></div> 
       
-      <div className="relative z-10 max-w-7xl mx-auto h-[calc(100vh-4rem)] lg:h-[calc(100vh-5rem)]"> {/* Added relative and z-index */}
-        <motion.div 
-          className="grid grid-cols-6 gap-4 md:gap-6 h-full auto-rows-[minmax(0,1fr)]"
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
+      {/* Removed fixed height, allowing content to grow. Added min-height for viewport height */}
+      {/* Reverted: Set fixed height on md+ screens, min-height only for mobile */}
+      <div className="relative z-10 max-w-7xl mx-auto min-h-[calc(100vh-4rem)] md:h-[calc(100vh-4rem)] lg:h-[calc(100vh-5rem)]"> 
+                  <motion.div 
+           // Changed to 1 column by default, 6 columns on large screens
+           className="grid grid-cols-1 lg:grid-cols-6 gap-4 md:gap-6 h-full"
+           variants={containerVariants}
+           initial="hidden"
+           animate="visible"
         >
-          {/* --- Left Column (Profile Only) --- */}
+          {/* --- Left Column (Profile) --- */}
+          {/* Changed to span 1 column by default, 2 on large screens */}
+          {/* Removed row-span, should fill height automatically */}
+          {/* Added overflow-hidden to enforce grid cell boundary */}
           <motion.div 
-            className="col-span-6 lg:col-span-2 row-span-4 flex flex-col gap-4 md:gap-6"
+            className="col-span-1 lg:col-span-2 flex flex-col gap-4 md:gap-6 overflow-hidden"
             variants={itemVariants}
           >
              {/* Profile Card Wrapper (Takes full column height) */}
              <div className="flex-1 min-h-0"> 
                <ProfileCard /> 
-             </div>
-          </motion.div>
-
-          {/* --- Right Column (Unchanged) --- */}
+                    </div>
+                  </motion.div>
+                  
+          {/* --- Right Column (Projects, Stats, Model) --- */}
+          {/* Changed to span 1 column by default, 4 on large screens */}
+          {/* Removed row-span, should fill height automatically */}
+          {/* Added overflow-hidden to enforce grid cell boundary */}
           <motion.div 
-            className="col-span-6 lg:col-span-4 row-span-4 grid grid-rows-[minmax(0,3fr)_minmax(0,1fr)] gap-4 md:gap-6"
+            className="col-span-1 lg:col-span-4 grid grid-rows-[auto_auto] lg:grid-rows-[minmax(0,3fr)_minmax(0,1fr)] gap-4 md:gap-6 overflow-hidden"
             variants={itemVariants}
           >
             {/* Projects Carousel Wrapper */}
-            <motion.div
+                  <motion.div
               initial={false}
               animate={{ scale: isProjectScrolling ? 0.985 : 1 }} // Even subtler scale
               transition={{ duration: 0.5, ease: [0.32, 0.72, 0, 1] }}
-              className="row-span-1 w-full h-full overflow-hidden"
+              className="row-span-1 w-full h-[50vh] lg:h-full overflow-hidden" // Added default height for mobile project view
             >
               <BentoCard className="h-full overflow-hidden !p-0" theme={theme}>
                 <FeaturedProjects 
@@ -817,18 +811,21 @@ export default function HomePage() {
                   setCurrentProject={setCurrentProject} 
                   onScrollingChange={setIsProjectScrolling} 
                 />
-              </BentoCard>
+            </BentoCard>
                     </motion.div>
 
             {/* Bottom Row (GitHub & 3D Model) */}
-            <div className="grid grid-cols-12 gap-4 md:gap-6">
-              <div className="col-span-12 md:col-span-7 min-h-0"> <GitHubStats theme={theme} /> </div>
-              <div className="col-span-12 md:col-span-5 min-h-0"> <ShibaModelViewer theme={theme} /> </div>
-            </div>
+            {/* Changed to 1 column by default, 12 columns on medium screens */}
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-6">
+              {/* Changed to span 1 column by default, 7 on medium screens. Added overflow-hidden */}
+              <div className="col-span-1 md:col-span-7 min-h-0 overflow-hidden"> <GitHubStats theme={theme} /> </div>
+              {/* Changed to span 1 column by default, 5 on medium screens. Added overflow-hidden */}
+              <div className="col-span-1 md:col-span-5 min-h-0 overflow-hidden"> <ShibaModelViewer theme={theme} /> </div>
+              </div>
           </motion.div>
 
-        </motion.div>
-      </div>
+                    </motion.div>
+                </div>
       {/* Theme Switcher UI */}
       <ThemeSwitcher currentTheme={theme} setTheme={setTheme} />
     </main>
