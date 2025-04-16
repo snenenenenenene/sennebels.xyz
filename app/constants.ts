@@ -31,8 +31,8 @@ export const projects = [
     description: "Front-end for citizen engagement platform using linked data to empower Flanders citizens to consult local authority decisions",
     image: "/images/work/lokaalbeslist.png",
     year: "2023",
-    link: "https://lokaalbeslist.be",
-    tech: ["Next.js", "TypeScript", "Tailwind"],
+    link: "https://lokaalbeslist.vlaanderen.be/",
+    tech: ["Emberjs", "TypeScript", "Musemtech"],
     gradientFrom: "#bda5cd", // Sky Blue Light
     gradientVia: "#764398",  // Sky Blue Mid
     gradientTo: "#5c41c2",   // Sky Blue Darker
@@ -42,8 +42,8 @@ export const projects = [
     description: "A modern web application for tracking and sharing your favorite restaurants and food spots",
     image: "/images/work/waddist.png",
     year: "2023",
-    link: "https://waddist.com",
-    tech: ["React", "Node.js", "MongoDB"],
+    link: "https://ambrassade.be/nl/kennis/waddist",
+    tech: ["React Native", "Django", "PostgreSQL"],
     gradientFrom: "#e7d0e9", // Red Light
     gradientVia: "#dea6dd",  // Red Mid
     gradientTo: "#c92b67",   // Red Darker
@@ -53,8 +53,8 @@ export const projects = [
     description: "Digital platform for beekeepers to manage their hives and track colony health",
     image: "/images/work/beedee.png",
     year: "2023",
-    link: "https://beedee.io",
-    tech: ["Vue.js", "Firebase", "TailwindCSS"],
+    link: "https://beedee.com/",
+    tech: ["React Native", "Firebase", "XCode"],
     gradientFrom: "#16081b", // Yellow Light
     gradientVia: "#53132c",  // Yellow Mid
     gradientTo: "#891e3c",   // Yellow Darker (Amber)
@@ -64,8 +64,8 @@ export const projects = [
     description: "Social platform connecting musicians, bands, and venues for collaboration and booking",
     image: "/images/work/musicians.png",
     year: "2022",
-    link: "https://musicians-hub.com",
-    tech: ["React", "Express", "PostgreSQL"],
+    link: "https://musicians-blond.vercel.app/",
+    tech: ["React", "Next.JS", "Tailwind"],
     gradientFrom: "#34a7d8", // Indigo Light
     gradientVia: "#5f8fa9",  // Indigo Mid
     gradientTo: "#372b2f",   // Indigo Darker
@@ -86,7 +86,7 @@ export const projects = [
     description: "E-commerce platform for premium skincare products with personalized recommendations",
     image: "/images/work/skinhouse.png",
     year: "2022",
-    link: "https://skinhouse.be",
+    link: "https://skinhouse.vercel.app/",
     tech: ["Shopify", "React", "TailwindCSS"],
     gradientFrom: "#efefef", // Pink Light
     gradientVia: "#d6c5bf",  // Pink Mid
@@ -97,8 +97,8 @@ export const projects = [
     description: "Web app that generates beautiful artwork from your Spotify listening history",
     image: "/images/work/spotify-art.png",
     year: "2022",
-    link: "https://spotify-artwork.com",
-    tech: ["React", "Spotify API", "Canvas"],
+    link: "https://spotify-playlist-art-generator.vercel.app/",
+    tech: ["Next.js"],
     gradientFrom: "#d1cfd8", // Violet Light
     gradientVia: "#9c7085",  // Violet Mid
     gradientTo: "#a73624",   // Violet Darker
@@ -108,8 +108,8 @@ export const projects = [
     description: "Platform connecting private pool owners with swimmers for exclusive swimming sessions",
     image: "/images/work/privateswimming.png",
     year: "2021",
-    link: "https://privateswimming.com",
-    tech: ["Next.js", "Stripe", "PostgreSQL"],
+    link: "https://www.privezwemles.be/",
+    tech: ["Next.js", "Tailwind"],
     gradientFrom: "#e4e4e4", // Teal Light
     gradientVia: "#a8acab",  // Teal Mid
     gradientTo: "#232727",   // Teal Darker
