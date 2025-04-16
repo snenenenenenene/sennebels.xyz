@@ -356,43 +356,42 @@ const FeaturedProjects = ({
             }}
             className="absolute inset-0 origin-center"
           >
-            <div className="relative w-full h-full">
-              {/* View Project Link - Now at top right */}
-              <Link
-                href={projects[currentProject].link}
-                target="_blank"
-                className="absolute top-8 right-8 z-10 text-sm text-white/80 hover:text-white transition-colors flex items-center gap-1 group bg-black/20 backdrop-blur-sm px-4 py-2 rounded-full"
-              >
-                View Project <ArrowUpRight className="w-3 h-3 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </Link>
+            <div className="relative w-full h-full flex flex-col"> {/* Changed to flex column */} 
+              {/* Image Container (Takes up most space) */} 
+              <div className="relative flex-grow overflow-hidden rounded-t-3xl"> {/* Added rounding */} 
+                <Image
+                  src={projects[currentProject].image}
+                  alt={projects[currentProject].title}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  priority
+                />
+                {/* Removed gradient overlay div */} 
+              </div>
 
-                  <Image
-                src={projects[currentProject].image}
-                alt={projects[currentProject].title}
-                    fill
-                className="object-cover rounded-3xl"
-                    sizes="100vw"
-                priority
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent rounded-3xl" />
-
-              {/* Project Info - Overlaid on image */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                className="absolute bottom-0 left-0 right-0 p-8 text-white"
-              >
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-3xl font-medium tracking-tight">
-                    {projects[currentProject].title}
-                  </h3>
-                  <span className="text-sm px-3 py-1 rounded-full bg-white/10 backdrop-blur-sm">
-                    {projects[currentProject].year}
+              {/* Info Panel Container (Bottom section) */} 
+              <div className="flex-shrink-0 p-6 md:p-8 text-black dark:text-white bg-neutral-50/80 dark:bg-black/30 rounded-b-3xl"> {/* Added padding, background, rounding */} 
+                <div className="flex items-start justify-between mb-3 gap-4"> {/* Use start align, add gap */} 
+                  <div> {/* Wrap title/year */} 
+                    <h3 className="text-xl md:text-2xl font-medium tracking-tight mb-1"> {/* Adjusted size */} 
+                      {projects[currentProject].title}
+                    </h3>
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-black/10 dark:bg-white/10 backdrop-blur-sm font-medium text-neutral-600 dark:text-neutral-400"> {/* Adjusted styling */} 
+                      {projects[currentProject].year}
                     </span>
+                  </div>
+                  {/* Moved View Project Link here */} 
+                  <Link
+                    href={projects[currentProject].link}
+                    target="_blank"
+                    className="flex-shrink-0 text-xs text-neutral-700 dark:text-neutral-300 hover:text-black dark:hover:text-white transition-colors flex items-center gap-1 group bg-black/10 dark:bg-white/10 backdrop-blur-sm px-3 py-1.5 rounded-full font-medium whitespace-nowrap" // Adjusted styling
+                  >
+                    View Project <ArrowUpRight className="w-3 h-3 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  </Link>
                 </div>
 
-                <p className="text-sm text-white/80 mb-4 leading-relaxed max-w-2xl">
+                <p className="text-sm text-neutral-700 dark:text-neutral-300 mb-4 leading-relaxed max-w-2xl"> {/* Adjusted text color */} 
                   {projects[currentProject].description}
                 </p>
 
@@ -400,15 +399,15 @@ const FeaturedProjects = ({
                   {projects[currentProject].tech.map((tech) => (
                     <span
                       key={tech}
-                      className="px-3 py-1 bg-white/10 backdrop-blur-sm rounded-full text-sm text-white/90"
+                      className="px-3 py-1 bg-black/10 dark:bg-white/10 backdrop-blur-sm rounded-full text-xs font-medium text-neutral-600 dark:text-neutral-400" // Adjusted styling
                     >
                       {tech}
                     </span>
                   ))}
-                  </div>
-              </motion.div>
                 </div>
-              </motion.div>
+              </div>
+            </div>
+          </motion.div>
         </AnimatePresence>
       </div>
       
