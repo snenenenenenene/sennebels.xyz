@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState, useCallback, Suspense } from 'react';
 import type { ReactNode, MouseEvent as ReactMouseEvent } from 'react';
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowUpRight, Github, Linkedin, Mail, Download, Activity, MapPin, LanguagesIcon } from "lucide-react";
+import { ArrowUpRight, Github, Linkedin, Mail, Download, Activity, MapPin, LanguagesIcon, Sun, Moon, Palette as PaletteIcon, Sparkles, Cat } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { projects } from "./constants";
@@ -12,41 +12,93 @@ import { OrbitControls, useGLTF, Environment, Html } from '@react-three/drei';
 import * as THREE from 'three';
 import ReactDOM from 'react-dom';
 
+// Define Theme Type
+type Theme = 'light' | 'dark' | 'calico' | 'immersive';
+
+// Define Calico Palette Hexcodes
+const CALICO_WHITE = '#FAF8F5';
+const CALICO_ORANGE = '#D87A4A';
+const CALICO_BROWN = '#8C6D5E';
+const CALICO_BLACK = '#261F1C';
+
+// Define Theme Colors (Updated Calico)
+const THEME_COLORS = {
+  light: { 
+    bg: '#FFFFFF', 
+    card: 'bg-neutral-100/90 dark:bg-neutral-800/90', 
+    border: 'border-black/5 dark:border-white/10', 
+    text: 'text-neutral-900 dark:text-neutral-100' // Base text color for theme
+  }, 
+  dark: { 
+    bg: '#191919', 
+    card: 'bg-[#2F2F2F]/90 dark:bg-[#2F2F2F]/90', 
+    border: 'border-white/10 dark:border-white/10', 
+    text: 'text-neutral-100 dark:text-neutral-100' // Dark theme uses light text
+  }, 
+  calico: { 
+    bg: CALICO_WHITE, // Use Calico off-white for background
+    card: `bg-white`, // Default card is white
+    border: `border-[${CALICO_BLACK}]/20`, // Dark brown border, slightly more visible
+    text: `text-[${CALICO_BLACK}]` // Dark brown text for Calico
+  }, 
+  immersive: { 
+    bg: 'dynamic', 
+    card: 'bg-neutral-100/80 dark:bg-[#1D1D1F]/80', 
+    border: 'border-black/5 dark:border-white/10', 
+    text: 'text-neutral-900 dark:text-neutral-100' // Default like light theme text
+  } 
+};
+
 // Base Bento Card Styling
 const BENTO_BASE_CLASSES = "bg-neutral-100/80 dark:bg-[#1D1D1F]/80 backdrop-blur-lg border border-black/5 dark:border-white/10 rounded-3xl shadow-sm transition-colors duration-300";
 
-// Refined Bento Card Wrapper
+// Updated Bento Card Wrapper (Uses theme text color)
 const BentoCard = ({ 
   children, 
   className = '', 
-  href,
+  href, 
+  theme = 'immersive',
+  overrideBg, // Optional override for color blocking
   ...props 
 }: { 
   children: React.ReactNode; 
   className?: string; 
   href?: string; 
+  theme?: Theme;
+  overrideBg?: string; // e.g., 'bg-[#D87A4A]' 
   [key: string]: any; 
 }) => {
-  const baseClassName = `${BENTO_BASE_CLASSES} ${className}`;
+  const themeConfig = THEME_COLORS[theme];
+  // Use override or default card background
+  const cardBg = overrideBg && theme === 'calico' ? overrideBg : themeConfig.card;
+  const baseClassName = `${cardBg} ${themeConfig.border} backdrop-blur-lg rounded-3xl shadow-sm transition-colors duration-300 ${className}`;
+  // Use theme's base text color
+  const textClassName = overrideBg && theme === 'calico' ? `text-[${CALICO_WHITE}]` : themeConfig.text;
+  const hoverClasses = theme !== 'immersive' 
+      ? `hover:border-[${theme === 'calico' ? CALICO_BLACK : 'black'}]/25 dark:hover:border-white/25` 
+      : 'hover:border-black/10 dark:hover:border-white/20';
+
+  const combinedClassName = `${baseClassName} ${textClassName}`;
+
+  const content = (
+    <div className={combinedClassName} {...props}>
+      {children}
+    </div>
+  );
 
   if (href) {
-    // Apply hover styles directly to the link/card wrapper
     return (
       <Link 
         href={href} 
-        className={`block h-full w-full ${baseClassName} hover:border-black/10 dark:hover:border-white/20`} 
+        className={`block h-full w-full ${combinedClassName} ${hoverClasses}`} 
         {...props}
-        >
-          {children}
+      >
+        {content}
       </Link>
     );
   }
 
-  return (
-    <div className={baseClassName} {...props}>
-      {children}
-    </div>
-  );
+  return content;
 };
 
 // --- Reusable Popover Component ---
@@ -380,7 +432,7 @@ const FeaturedProjects = ({
 };
 
 // Refined GitHub Stats (Language bars removed)
-const GitHubStats = () => {
+const GitHubStats = ({ theme, overrideBg }: { theme?: Theme; overrideBg?: string }) => {
   const [stats, setStats] = React.useState<any>(null);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);
@@ -408,7 +460,7 @@ const GitHubStats = () => {
   }, []);
 
   return (
-    <BentoCard className="h-full p-6 md:p-8 flex flex-col">
+    <BentoCard theme={theme} overrideBg={overrideBg} className="h-full p-6 md:p-8 flex flex-col">
       {/* Header */}
       <div className="flex justify-between items-center mb-4">
         <h3 className="flex items-center gap-2 text-sm font-medium text-black dark:text-white">
@@ -540,7 +592,7 @@ function ShibaModel(props: any) {
 // Preload the model for smoother loading
 useGLTF.preload('/models/shiba/scene.gltf');
 
-const ShibaModelViewer = () => {
+const ShibaModelViewer = ({ theme }: { theme?: Theme }) => {
   const controlsRef = useRef<any>(); // Ref for OrbitControls
   const [isRotating, setIsRotating] = React.useState(true); // State to control rotation
 
@@ -553,7 +605,7 @@ const ShibaModelViewer = () => {
   };
 
   return (
-    <BentoCard className="h-full !p-0 overflow-hidden relative">
+    <BentoCard theme={theme} className="h-full !p-0 overflow-hidden relative">
       <Canvas 
         camera={{ position: [0, 1, 5], fov: 50 }} // Raised camera slightly
         shadows // Ensure shadows are enabled
@@ -605,26 +657,111 @@ const ShibaModelViewer = () => {
   );
 };
 
+// --- Theme Switcher Component (with Cat Icon and Popover) ---
+const ThemeSwitcher = ({ currentTheme, setTheme }: { currentTheme: Theme; setTheme: (theme: Theme) => void }) => {
+  const themes: Theme[] = ['light', 'dark', 'calico', 'immersive'];
+  const icons = { light: Sun, dark: Moon, calico: Cat, immersive: Sparkles };
+
+  const [popover, setPopover] = useState<{ visible: boolean; content: string; x: number; y: number } | null>(null);
+
+  const cycleTheme = () => {
+    const currentIndex = themes.indexOf(currentTheme);
+    const nextIndex = (currentIndex + 1) % themes.length;
+    setTheme(themes[nextIndex]);
+    // Hide popover on click
+    setPopover(prev => prev ? { ...prev, visible: false } : null);
+  };
+
+  const handleMouseEnter = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const currentIndex = themes.indexOf(currentTheme);
+    const nextIndex = (currentIndex + 1) % themes.length;
+    const nextThemeName = themes[nextIndex];
+    const content = `Switch to ${nextThemeName.charAt(0).toUpperCase() + nextThemeName.slice(1)}`;
+    setPopover({ visible: true, content, x: e.clientX, y: e.clientY });
+  };
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (popover?.visible) {
+      setPopover(prev => prev ? { ...prev, x: e.clientX, y: e.clientY } : null);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    setPopover(prev => prev ? { ...prev, visible: false } : null);
+  };
+
+  const Icon = icons[currentTheme];
+
+  return (
+    <>
+      <button
+        onClick={cycleTheme}
+        onMouseEnter={handleMouseEnter}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        className="fixed bottom-6 left-6 z-50 p-2 rounded-full bg-neutral-200/70 dark:bg-neutral-800/70 backdrop-blur-sm border border-black/10 dark:border-white/10 text-neutral-700 dark:text-neutral-300 hover:text-black dark:hover:text-white hover:scale-110 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
+        aria-label={`Current theme: ${currentTheme}. Switch theme.`}
+      >
+        <Icon className="w-5 h-5" />
+      </button>
+      {/* Popover for Theme Switcher */}
+      <Popover 
+        visible={!!popover?.visible} 
+        content={popover?.content || ''} 
+        x={popover?.x || 0} 
+        y={popover?.y || 0} 
+      />
+    </>
+  );
+};
+
 // Main Page Component - Staggered Animations
 export default function HomePage() {
   const [isProjectScrolling, setIsProjectScrolling] = React.useState(false);
-  // Lifted currentProject state
   const [currentProject, setCurrentProject] = React.useState(0);
-  // State for background style
   const [backgroundStyle, setBackgroundStyle] = React.useState({});
+  
+  // Define themes array *before* using it in useState
+  const themes: Theme[] = ['light', 'dark', 'calico', 'immersive']; 
 
-  // Effect to update background based on currentProject
-  React.useEffect(() => {
-    const project = projects[currentProject];
-    if (project && project.gradientFrom && project.gradientVia && project.gradientTo) {
-      setBackgroundStyle({
-        background: `linear-gradient(135deg, ${project.gradientFrom}, ${project.gradientVia}, ${project.gradientTo})`,
-      });
-    } else {
-      // Default background if colors not defined
-      setBackgroundStyle({}); 
+  // Theme State
+  const [theme, setTheme] = useState<Theme>(() => {
+    // Check local storage or system preference on initial load
+    if (typeof window !== 'undefined') {
+      const savedTheme = localStorage.getItem('portfolio-theme') as Theme;
+      // Now themes is accessible here
+      if (savedTheme && themes.includes(savedTheme)) return savedTheme;
     }
-  }, [currentProject]);
+    return 'immersive'; // Default theme
+  });
+
+  // Effect to update background based on theme and currentProject
+  React.useEffect(() => {
+    const themeConfig = THEME_COLORS[theme];
+    if (theme === 'immersive') {
+      const project = projects[currentProject];
+      if (project && project.gradientFrom && project.gradientVia && project.gradientTo) {
+        setBackgroundStyle({ background: `linear-gradient(135deg, ${project.gradientFrom}, ${project.gradientVia}, ${project.gradientTo})` });
+      } else {
+        setBackgroundStyle({ background: THEME_COLORS.dark.bg }); // Fallback for immersive
+      }
+    } else {
+      setBackgroundStyle({ background: themeConfig.bg });
+    }
+
+    // Apply dark class for Tailwind dark: variants
+    if (theme === 'dark' || theme === 'immersive') { // Apply dark styles for dark and immersive themes
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+
+    // Persist theme choice
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('portfolio-theme', theme);
+    }
+
+  }, [theme, currentProject]);
 
   // Animation Variants for Staggering
   const containerVariants = {
@@ -638,10 +775,13 @@ export default function HomePage() {
 
   return (
     <main 
-      className="min-h-screen w-full bg-neutral-100 dark:bg-black p-4 md:p-6 lg:p-8 overflow-hidden transition-background duration-700 ease-in-out" // Added transition class
-      style={backgroundStyle} // Apply dynamic background
+      className={`min-h-screen w-full p-4 md:p-6 lg:p-8 overflow-hidden transition-background duration-1000 ease-in-out`} // Increased duration
+      style={backgroundStyle} 
     >
-      <div className="max-w-7xl mx-auto h-[calc(100vh-4rem)] lg:h-[calc(100vh-5rem)]">
+      {/* Grain Overlay - Moved outside main for fixed positioning */} 
+      <div className="grain-overlay"></div> 
+      
+      <div className="relative z-10 max-w-7xl mx-auto h-[calc(100vh-4rem)] lg:h-[calc(100vh-5rem)]"> {/* Added relative and z-index */}
         <motion.div 
           className="grid grid-cols-6 gap-4 md:gap-6 h-full auto-rows-[minmax(0,1fr)]"
           variants={containerVariants}
@@ -671,7 +811,7 @@ export default function HomePage() {
               transition={{ duration: 0.5, ease: [0.32, 0.72, 0, 1] }}
               className="row-span-1 w-full h-full overflow-hidden"
             >
-              <BentoCard className="h-full overflow-hidden !p-0">
+              <BentoCard className="h-full overflow-hidden !p-0" theme={theme}>
                 <FeaturedProjects 
                   currentProject={currentProject} 
                   setCurrentProject={setCurrentProject} 
@@ -682,13 +822,15 @@ export default function HomePage() {
 
             {/* Bottom Row (GitHub & 3D Model) */}
             <div className="grid grid-cols-12 gap-4 md:gap-6">
-              <div className="col-span-12 md:col-span-7 min-h-0"> <GitHubStats /> </div>
-              <div className="col-span-12 md:col-span-5 min-h-0"> <ShibaModelViewer /> </div>
+              <div className="col-span-12 md:col-span-7 min-h-0"> <GitHubStats theme={theme} /> </div>
+              <div className="col-span-12 md:col-span-5 min-h-0"> <ShibaModelViewer theme={theme} /> </div>
             </div>
           </motion.div>
 
         </motion.div>
       </div>
+      {/* Theme Switcher UI */}
+      <ThemeSwitcher currentTheme={theme} setTheme={setTheme} />
     </main>
   );
 }
