@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState, useCallback, Suspense } from 'react';
 import type { ReactNode, MouseEvent as ReactMouseEvent } from 'react';
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowUpRight, Github, Linkedin, Mail, Download, Activity, MapPin, LanguagesIcon, Briefcase } from "lucide-react";
+import { ArrowUpRight, Github, Linkedin, Mail, Download, Activity, MapPin, LanguagesIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { projects } from "./constants";
@@ -18,7 +18,7 @@ const BENTO_BASE_CLASSES = "bg-neutral-100/80 dark:bg-[#1D1D1F]/80 backdrop-blur
 const BentoCard = ({ 
   children, 
   className = '', 
-  href, 
+  href,
   ...props 
 }: { 
   children: React.ReactNode; 
@@ -35,8 +35,8 @@ const BentoCard = ({
         href={href} 
         className={`block h-full w-full ${baseClassName} hover:border-black/10 dark:hover:border-white/20`} 
         {...props}
-      >
-        {children}
+        >
+          {children}
       </Link>
     );
   }
@@ -48,97 +48,85 @@ const BentoCard = ({
   );
 };
 
-// Profile Card (Clarify Okapi Works)
+// Profile Card (Integrating Links into Footer)
 const ProfileCard = () => {
-  return (
-    <BentoCard className="h-full flex flex-col p-6 md:p-8 overflow-hidden">
-      {/* Header */}
-      <div className="flex items-start gap-4 mb-6">
-        <div className="relative w-16 h-16 rounded-full overflow-hidden border-2 border-white/10 shrink-0">
-          <Image src="/images/avatar.png" alt="Senne Bels Avatar" fill className="object-cover" sizes="64px" />
-        </div>
-        <div>
-          <h1 className="text-xl font-semibold tracking-tight text-black dark:text-white mb-0.5">
-            Senne Bels
-          </h1>
-          <p className="text-sm text-neutral-600 dark:text-neutral-400">
-            Full-stack Developer & Game Dev
-          </p>
-        </div>
-      </div>
-
-      {/* Bio - Clarified Okapi Works */}
-      <p className="text-sm text-neutral-700 dark:text-neutral-300 leading-relaxed mb-6">
-        Full-stack developer & creative tech enthusiast from Antwerp, Belgium. Founder of <strong className="font-medium text-black dark:text-white">Okapi Works, my freelance company</strong>. Focused on building interactive, scalable web experiences. Actively seeking international freelance/contract opportunities (remote/hybrid) in <strong className="font-medium text-black dark:text-white">North America, Japan, or the UK</strong>.
-      </p>
-
-      {/* Spacer */}
-      <div className="flex-grow"></div> 
-
-      {/* Footer Info */}
-      <div className="grid grid-cols-2 gap-4 text-xs border-t border-black/5 dark:border-white/10 pt-4">
-        <div>
-          <h3 className="flex items-center gap-1.5 font-medium text-neutral-500 dark:text-neutral-400 mb-1.5">
-            <MapPin className="w-3 h-3" /> LOCATION
-          </h3>
-          <p className="text-neutral-600 dark:text-neutral-300">
-            🇧🇪 Antwerp, Belgium
-          </p>
-          <p className="text-neutral-500 dark:text-neutral-400 text-[11px]">(Open to relocate)</p>
-        </div>
-        <div>
-          <h3 className="flex items-center gap-1.5 font-medium text-neutral-500 dark:text-neutral-400 mb-1.5">
-             <LanguagesIcon className="w-3 h-3" /> LANGUAGES
-          </h3>
-          <p className="text-neutral-600 dark:text-neutral-300">🇬🇧 English (Fluent)</p>
-          <p className="text-neutral-600 dark:text-neutral-300">🇳🇱 Dutch (Native)</p>
-        </div>
-      </div>
-    </BentoCard>
-  );
-};
-
-// Contact Info Card (Simplified: Links Only)
-const ContactInfoCard = () => {
   const links = [
     { icon: Github, href: "https://github.com/snenenenenenene", label: "GitHub" },
     { icon: Linkedin, href: "https://linkedin.com/in/sennebels", label: "LinkedIn" },
-    { icon: Mail, href: "mailto:contact@sennebels.xyz", label: "Email" }
+    { icon: Mail, href: "mailto:contact@sennebels.xyz", label: "Email" },
+    { icon: Download, href: "/assets/CV Senne Bels.pdf", label: "Resume", download: "CV Senne Bels.pdf" }
   ];
 
   return (
-    <BentoCard className="h-full p-6 md:p-8 overflow-hidden flex flex-col justify-center"> {/* Adjusted flex alignment */}
-      {/* REMOVED Header */}
-      {/* REMOVED Availability Status */}
-      
-      {/* Links */}
-      <div className="flex flex-col gap-2"> {/* Reduced gap slightly */}
-        {links.map(({ icon: Icon, href, label }) => (
-          <a
-            key={href}
-            href={href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group flex items-center gap-2 p-2 rounded-md hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-all duration-200 text-sm text-neutral-600 dark:text-neutral-400 hover:text-black dark:hover:text-white" /* Increased font size slightly */
-          >
-            <Icon className="w-4 h-4 transition-transform duration-200 group-hover:-translate-y-0.5" /> {/* Increased icon size slightly */}
-            <span className="transition-transform duration-200 group-hover:-translate-y-0.5">{label}</span>
-          </a>
-        ))}
-         {/* Resume Link Placeholder */}
-         <a
-            href="#" // Replace with actual resume path
-            className="group flex items-center gap-2 p-2 rounded-md hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-all duration-200 text-sm text-neutral-600 dark:text-neutral-400 hover:text-black dark:hover:text-white"
-          >
-            <Download className="w-4 h-4 transition-transform duration-200 group-hover:-translate-y-0.5" />
-            <span className="transition-transform duration-200 group-hover:-translate-y-0.5">Download Resume</span>
-          </a>
+    <BentoCard className="h-full flex flex-col p-6 md:p-8 overflow-hidden">
+      <div className="flex-grow"> {/* Wrapper to allow bio to push footer down */} 
+        {/* Header */}
+        <div className="flex items-start gap-4 mb-6">
+          <div className="relative w-16 h-16 rounded-full overflow-hidden border-2 border-white/10 shrink-0">
+            <Image src="/images/avatar.png" alt="Senne Bels Avatar" fill className="object-cover" sizes="64px" />
+          </div>
+          <div>
+            <h1 className="text-xl font-semibold tracking-tight text-black dark:text-white mb-0.5">
+              Senne Bels
+            </h1>
+            <p className="text-sm text-neutral-600 dark:text-neutral-400">
+              Full-stack Developer & Game Dev
+            </p>
+          </div>
+        </div>
+
+        {/* Bio */}
+        <p className="text-sm text-neutral-700 dark:text-neutral-300 leading-relaxed mb-6">
+          Full-stack developer & creative tech enthusiast from Antwerp, Belgium. Founder of <strong className="font-medium text-black dark:text-white">Okapi Works, my freelance company</strong>. Focused on building interactive, scalable web experiences. Actively seeking international freelance/contract opportunities (remote/hybrid) in <strong className="font-medium text-black dark:text-white">North America, Japan, or the UK</strong>.
+        </p>
+      </div>
+
+      {/* Footer Info (Location, Languages, Links) */}
+      <div className="mt-auto border-t border-black/5 dark:border-white/10 pt-4">
+        <div className="grid grid-cols-2 gap-4 text-xs mb-4">
+          <div>
+            <h3 className="flex items-center gap-1.5 font-medium text-neutral-500 dark:text-neutral-400 mb-1.5">
+              <MapPin className="w-3 h-3" /> LOCATION
+            </h3>
+            <p className="text-neutral-600 dark:text-neutral-300">
+              🇧🇪 Antwerp, Belgium
+            </p>
+            <p className="text-neutral-500 dark:text-neutral-400 text-[11px]">(Open to relocate)</p>
+          </div>
+          <div>
+            <h3 className="flex items-center gap-1.5 font-medium text-neutral-500 dark:text-neutral-400 mb-1.5">
+              <LanguagesIcon className="w-3 h-3" /> LANGUAGES
+            </h3>
+            <p className="text-neutral-600 dark:text-neutral-300">🇬🇧 English (Fluent)</p>
+            <p className="text-neutral-600 dark:text-neutral-300">🇳🇱 Dutch (Native)</p>
+          </div>
+        </div>
+        {/* Links Section Added */}
+        <div className="flex items-center justify-between border-t border-black/5 dark:border-white/10 pt-4">
+           <span className="text-xs text-neutral-500 dark:text-neutral-400">Get in touch:</span>
+           <div className="flex gap-3">
+            {links.map(({ icon: Icon, href, label, download }) => (
+              <motion.a
+                key={label}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                download={download} // Add download attribute if present
+                className="p-1.5 text-neutral-500 dark:text-neutral-400 hover:text-black dark:hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-sky-500 dark:focus-visible:ring-offset-black rounded-lg" // Simpler styling, icon only visual
+                whileTap={{ scale: 0.90 }} // Slightly stronger tap feedback
+                aria-label={label} // Keep aria-label
+              >
+                <Icon className="w-4 h-4" />
+              </motion.a>
+            ))}
+          </div>
+        </div>
       </div>
     </BentoCard>
   );
 };
 
-// Featured Projects Card (Accepts state and setter)
+// Featured Projects Card (Matching Border Radius)
 const FeaturedProjects = ({ 
   currentProject, 
   setCurrentProject, 
@@ -226,9 +214,8 @@ const FeaturedProjects = ({
 
   return (
       <div 
-        ref={projectContainerRef} // Add ref to the div
+        ref={projectContainerRef}
         className="relative w-full h-full"
-        // Removed onWheel prop, using manual event listener now
       >
       <div className="absolute inset-0">
         <AnimatePresence initial={false} custom={direction} mode="wait">
@@ -261,11 +248,11 @@ const FeaturedProjects = ({
                 src={projects[currentProject].image}
                 alt={projects[currentProject].title}
                     fill
-                className="object-cover rounded-[2rem]"
+                className="object-cover rounded-3xl"
                     sizes="100vw"
                 priority
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent rounded-[2rem]" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent rounded-3xl" />
 
               {/* Project Info - Overlaid on image */}
               <motion.div
@@ -303,17 +290,17 @@ const FeaturedProjects = ({
         </AnimatePresence>
       </div>
       
-      {/* Project Navigation */}
-      <div className="absolute right-8 top-1/2 -translate-y-1/2 flex flex-col gap-2 z-50">
+      {/* Navigation Dots (Refined Focus) */}
+      <div className="absolute right-6 top-1/2 -translate-y-1/2 flex flex-col gap-2.5 z-20">
         {projects.map((project, index) => (
           <button
             key={index}
             onClick={() => handleProjectChange(index)}
-            className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
+            className={`w-1.5 h-1.5 rounded-full transition-all duration-300 outline-none ${
               currentProject === index 
                 ? 'bg-white scale-150' 
-                : 'bg-white/50 hover:bg-white/80 focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-black/30'
-            }`}
+                : 'bg-white/50 hover:bg-white/80'
+            } focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-black/50`}
             aria-label={`Go to project: ${project.title}`}
           />
         ))}
@@ -362,7 +349,7 @@ const GitHubStats = () => {
             <Github className="w-3 h-3" /> {stats.totalContributions?.toLocaleString()} contributions
           </span>
         )}
-      </div>
+    </div>
 
       {/* Main Content Area (Graph or Status) */}
       <div className="flex-grow flex items-center justify-center">
@@ -419,10 +406,10 @@ const ContributionGraph = ({ contributions }: { contributions: any }) => {
                   title={`${day.contributionCount} contributions on ${new Date(day.date).toLocaleDateString()}`}
                 />
               ))}
-            </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
+    </div>
   );
 };
 
@@ -453,8 +440,19 @@ function ShibaModel(props: any) {
 useGLTF.preload('/models/shiba/scene.gltf');
 
 const ShibaModelViewer = () => {
+  const controlsRef = useRef<any>(); // Ref for OrbitControls
+  const [isRotating, setIsRotating] = React.useState(true); // State to control rotation
+
+  const handleInteractionStart = () => {
+    setIsRotating(false);
+  };
+
+  const handleInteractionEnd = () => {
+    setIsRotating(true);
+  };
+
   return (
-    <BentoCard className="h-full !p-0 overflow-hidden relative"> 
+    <BentoCard className="h-full !p-0 overflow-hidden relative">
       <Canvas 
         camera={{ position: [0, 1, 5], fov: 50 }} // Raised camera slightly
         shadows // Ensure shadows are enabled
@@ -489,14 +487,17 @@ const ShibaModelViewer = () => {
           </group>
           <Environment preset="city" /> 
         </Suspense>
-        <OrbitControls 
+        <OrbitControls
+          ref={controlsRef}
           enableZoom={false}
           enablePan={false}
-          autoRotate 
-          autoRotateSpeed={0.5} // Slightly slower rotation
-          minPolarAngle={Math.PI / 2.8} // Adjusted rotation limits slightly
+          autoRotate={isRotating}
+          autoRotateSpeed={0.5}
+          minPolarAngle={Math.PI / 2.8}
           maxPolarAngle={Math.PI / 1.8}
-          target={[0, 0.2, 0]} // Adjust target slightly higher
+          target={[0, 0.2, 0]}
+          onStart={handleInteractionStart}
+          onEnd={handleInteractionEnd}
         />
       </Canvas>
     </BentoCard>
@@ -546,16 +547,15 @@ export default function HomePage() {
           initial="hidden"
           animate="visible"
         >
-          {/* --- Left Column (Simplified) --- */}
+          {/* --- Left Column (Profile Only) --- */}
           <motion.div 
             className="col-span-6 lg:col-span-2 row-span-4 flex flex-col gap-4 md:gap-6"
             variants={itemVariants}
           >
-             {/* Profile Card Wrapper (Takes more space) */}
-             <div className="flex-[3_1_0%] min-h-0"> <ProfileCard /> </div>
-             {/* REMOVED Tech Stack Card Wrapper */}
-             {/* Contact Info Card Wrapper (Takes remaining flexible space) */}
-             <div className="flex-[1_1_0%] min-h-0"> <ContactInfoCard /> </div>
+             {/* Profile Card Wrapper (Takes full column height) */}
+             <div className="flex-1 min-h-0"> 
+               <ProfileCard /> 
+             </div>
           </motion.div>
 
           {/* --- Right Column (Unchanged) --- */}
@@ -577,7 +577,7 @@ export default function HomePage() {
                   onScrollingChange={setIsProjectScrolling} 
                 />
               </BentoCard>
-            </motion.div>
+                    </motion.div>
 
             {/* Bottom Row (GitHub & 3D Model) */}
             <div className="grid grid-cols-12 gap-4 md:gap-6">
