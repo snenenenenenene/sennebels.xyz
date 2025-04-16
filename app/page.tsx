@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState, useCallback, Suspense } from 'react';
 import type { ReactNode, MouseEvent as ReactMouseEvent } from 'react';
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, PanInfo } from "framer-motion";
 import { ArrowUpRight, Github, Linkedin, Mail, Download, Activity, MapPin, LanguagesIcon, Sun, Moon, Sparkles, Cat } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -262,9 +262,11 @@ const FeaturedProjects = ({
   const [direction, setDirection] = React.useState(0);
   const [isScrollLocked, setIsScrollLocked] = React.useState(false);
   const projectContainerRef = React.useRef<HTMLDivElement>(null);
+  const dragThreshold = 50; // Min drag distance in pixels to trigger change
+  const dragVelocityThreshold = 300; // Min velocity to trigger change
 
   const handleProjectChange = React.useCallback((index: number) => {
-    if (isScrollLocked) return;
+    if (isScrollLocked || index === currentProject) return; // Don't change if locked or same index
     setIsScrollLocked(true);
     onScrollingChange(true);
     
@@ -275,71 +277,53 @@ const FeaturedProjects = ({
     setTimeout(() => {
       setIsScrollLocked(false);
       onScrollingChange(false);
-    }, 700);
+    }, 500); // Reduced timeout slightly to match faster animation
   }, [isScrollLocked, onScrollingChange, currentProject, setCurrentProject]); // Added dependencies
 
-  // Wheel Handler uses handleProjectChange which now uses lifted state
-  const handleWheel = useCallback((e: WheelEvent) => {
-    if (!isScrollLocked) {
-      e.preventDefault();
-      const dir = e.deltaY > 0 ? 1 : -1;
-      const nextProjectIndex = (currentProject + dir + projects.length) % projects.length;
-      handleProjectChange(nextProjectIndex);
-    }
-  }, [isScrollLocked, handleProjectChange, currentProject]); // Added currentProject
+  // Drag End Handler for Kinetic Swipe
+  const handleDragEnd = (event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const offset = info.offset.x;
+    const velocity = info.velocity.x;
+    let nextProjectIndex = currentProject;
 
-  // Keyboard Navigation uses handleProjectChange
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (isScrollLocked) return;
-      let nextProjectIndex = -1;
-      if (e.key === 'ArrowRight') {
+    if (Math.abs(offset) > dragThreshold || Math.abs(velocity) > dragVelocityThreshold) {
+      if (offset < -dragThreshold || velocity < -dragVelocityThreshold) {
+        // Swiped Left
         nextProjectIndex = (currentProject + 1 + projects.length) % projects.length;
-      } else if (e.key === 'ArrowLeft') {
+      } else if (offset > dragThreshold || velocity > dragVelocityThreshold) {
+        // Swiped Right
         nextProjectIndex = (currentProject - 1 + projects.length) % projects.length;
       }
-      if (nextProjectIndex !== -1 && nextProjectIndex !== currentProject) {
-        handleProjectChange(nextProjectIndex);
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [handleProjectChange, isScrollLocked, currentProject]); // Added currentProject
-
-  // Add useEffect for manual wheel listener attachment
-  useEffect(() => {
-    const element = projectContainerRef.current;
-    if (element) {
-      element.addEventListener('wheel', handleWheel, { passive: false });
     }
-    return () => {
-      if (element) {
-        element.removeEventListener('wheel', handleWheel);
-      }
-    };
-  }, [handleWheel]);
+    
+    // Only trigger change if the index is different
+    if (nextProjectIndex !== currentProject) {
+       handleProjectChange(nextProjectIndex);
+    }
+  };
 
+  // Updated variants for slide transition
   const variants = {
     enter: (direction: number) => ({
-      scale: 1.05,
-      opacity: 0,
+      x: direction > 0 ? '100%' : '-100%', // Start off-screen
+      opacity: 0
     }),
     center: {
-      scale: 1,
-      opacity: 1,
+      x: 0, // Center position
+      opacity: 1
     },
     exit: (direction: number) => ({
-      scale: 0.95,
-      opacity: 0,
+      x: direction < 0 ? '100%' : '-100%', // Exit off-screen
+      opacity: 0
     })
   };
 
   return (
       <div 
         ref={projectContainerRef}
-        className="relative w-full h-full"
+        className="relative w-full h-full cursor-grab active:cursor-grabbing" // Added grab cursors
       >
-      <div className="absolute inset-0">
+      <div className="absolute inset-0 overflow-hidden"> {/* Added overflow hidden here */} 
         <AnimatePresence initial={false} custom={direction} mode="wait">
                 <motion.div
             key={currentProject}
@@ -349,12 +333,15 @@ const FeaturedProjects = ({
             animate="center"
             exit="exit"
             transition={{
-              type: "spring",
-              stiffness: 300,
-              damping: 30,
-              mass: 1
+              x: { type: "spring", stiffness: 300, damping: 30 },
+              opacity: { duration: 0.2 }
             }}
             className="absolute inset-0 origin-center"
+            // Drag properties
+            drag="x"
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={0.1}
+            onDragEnd={handleDragEnd}
           >
             <div className="relative w-full h-full flex flex-col"> {/* Changed to flex column */} 
               {/* Image Container (Takes up most space) */} 
@@ -405,26 +392,16 @@ const FeaturedProjects = ({
                     </span>
                   ))}
                 </div>
+                {/* Page Number Indicator */} 
+                <div className="text-center mt-4">
+                  <span className="text-xs font-medium text-neutral-500 dark:text-neutral-400">
+                    {currentProject + 1} / {projects.length}
+                  </span>
+                </div>
               </div>
             </div>
           </motion.div>
         </AnimatePresence>
-      </div>
-      
-      {/* Navigation Dots (Refined Focus) */}
-      <div className="absolute right-6 top-1/2 -translate-y-1/2 flex flex-col gap-2.5 z-20">
-        {projects.map((project, index) => (
-          <button
-            key={index}
-            onClick={() => handleProjectChange(index)}
-            className={`w-1.5 h-1.5 rounded-full transition-all duration-300 outline-none ${
-              currentProject === index 
-                ? 'bg-white scale-150' 
-                : 'bg-white/50 hover:bg-white/80'
-            } focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-black/50`}
-            aria-label={`Go to project: ${project.title}`}
-          />
-        ))}
       </div>
     </div>
   );
