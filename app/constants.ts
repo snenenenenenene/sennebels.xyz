@@ -32,7 +32,10 @@ export const projects = [
     image: "/images/work/lokaalbeslist.png",
     year: "2023",
     link: "https://lokaalbeslist.be",
-    tech: ["Next.js", "TypeScript", "Tailwind"]
+    tech: ["Next.js", "TypeScript", "Tailwind"],
+    gradientFrom: "#bda5cd", // Sky Blue Light
+    gradientVia: "#764398",  // Sky Blue Mid
+    gradientTo: "#5c41c2",   // Sky Blue Darker
   },
   {
     title: "Waddist",
@@ -40,7 +43,10 @@ export const projects = [
     image: "/images/work/waddist.png",
     year: "2023",
     link: "https://waddist.com",
-    tech: ["React", "Node.js", "MongoDB"]
+    tech: ["React", "Node.js", "MongoDB"],
+    gradientFrom: "#e7d0e9", // Red Light
+    gradientVia: "#dea6dd",  // Red Mid
+    gradientTo: "#c92b67",   // Red Darker
   },
   {
     title: "BeeDee",
@@ -48,7 +54,10 @@ export const projects = [
     image: "/images/work/beedee.png",
     year: "2023",
     link: "https://beedee.io",
-    tech: ["Vue.js", "Firebase", "TailwindCSS"]
+    tech: ["Vue.js", "Firebase", "TailwindCSS"],
+    gradientFrom: "#16081b", // Yellow Light
+    gradientVia: "#53132c",  // Yellow Mid
+    gradientTo: "#891e3c",   // Yellow Darker (Amber)
   },
   {
     title: "Musicians Hub",
@@ -56,7 +65,10 @@ export const projects = [
     image: "/images/work/musicians.png",
     year: "2022",
     link: "https://musicians-hub.com",
-    tech: ["React", "Express", "PostgreSQL"]
+    tech: ["React", "Express", "PostgreSQL"],
+    gradientFrom: "#34a7d8", // Indigo Light
+    gradientVia: "#5f8fa9",  // Indigo Mid
+    gradientTo: "#372b2f",   // Indigo Darker
   },
   {
     title: "OSOC Projects",
@@ -64,7 +76,10 @@ export const projects = [
     image: "/images/work/osoc.png",
     year: "2022",
     link: "https://osoc.be",
-    tech: ["Next.js", "GraphQL", "TailwindCSS"]
+    tech: ["Next.js", "GraphQL", "TailwindCSS"],
+    gradientFrom: "#eca918", // Green Light
+    gradientVia: "#d88217",  // Green Mid
+    gradientTo: "#662c09",   // Green Darker
   },
   {
     title: "Skinhouse",
@@ -72,7 +87,10 @@ export const projects = [
     image: "/images/work/skinhouse.png",
     year: "2022",
     link: "https://skinhouse.be",
-    tech: ["Shopify", "React", "TailwindCSS"]
+    tech: ["Shopify", "React", "TailwindCSS"],
+    gradientFrom: "#efefef", // Pink Light
+    gradientVia: "#d6c5bf",  // Pink Mid
+    gradientTo: "#694031",   // Pink Darker
   },
   {
     title: "Spotify Artwork",
@@ -80,7 +98,10 @@ export const projects = [
     image: "/images/work/spotify-art.png",
     year: "2022",
     link: "https://spotify-artwork.com",
-    tech: ["React", "Spotify API", "Canvas"]
+    tech: ["React", "Spotify API", "Canvas"],
+    gradientFrom: "#d1cfd8", // Violet Light
+    gradientVia: "#9c7085",  // Violet Mid
+    gradientTo: "#a73624",   // Violet Darker
   },
   {
     title: "Private Swimming",
@@ -88,6 +109,9 @@ export const projects = [
     image: "/images/work/privateswimming.png",
     year: "2021",
     link: "https://privateswimming.com",
-    tech: ["Next.js", "Stripe", "PostgreSQL"]
+    tech: ["Next.js", "Stripe", "PostgreSQL"],
+    gradientFrom: "#e4e4e4", // Teal Light
+    gradientVia: "#a8acab",  // Teal Mid
+    gradientTo: "#232727",   // Teal Darker
   }
 ]; 
