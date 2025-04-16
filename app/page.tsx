@@ -522,17 +522,16 @@ const ContributionGraph = ({ contributions }: { contributions: any }) => {
     <div className="relative"> {/* Added relative positioning context */}
       {/* Contribution Grid */}
       <div className="overflow-x-auto scrollbar-hide pb-1">
-        <div className="inline-grid grid-flow-col auto-cols-max gap-[3px]">
+        <div className="inline-grid grid-flow-col auto-cols-max gap-[2px]">
           {contributions.weeks.map((week: any, weekIndex: number) => (
-            <div key={weekIndex} className="grid grid-rows-7 gap-[3px]">
+            <div key={weekIndex} className="grid grid-rows-7 gap-[2px]">
               {week.contributionDays.map((day: any, dayIndex: number) => (
                 <div
                   key={day.date || dayIndex}
-                  className={`w-2.5 h-2.5 rounded-sm ${getContributionColor(day.contributionCount)} transition-colors cursor-default`} // Added transition and cursor
+                  className={`w-2 h-2 rounded-sm ${getContributionColor(day.contributionCount)} transition-colors cursor-default`}
                   onMouseEnter={(e) => handleMouseEnter(e, day)}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-                  // Removed title attribute as popover replaces it
                 />
               ))}
             </div>
