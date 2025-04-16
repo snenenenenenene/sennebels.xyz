@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState, useCallback, Suspense } from 'react';
 import type { ReactNode, MouseEvent as ReactMouseEvent } from 'react';
-import { AnimatePresence, motion, PanInfo } from "framer-motion";
+import { AnimatePresence, motion, PanInfo, useAnimation, useMotionValue, useSpring, animate } from "framer-motion";
 import { ArrowUpRight, Github, Linkedin, Mail, Download, Activity, MapPin, LanguagesIcon, Sun, Moon, Sparkles, Cat, LayoutGrid, X, ChevronLeft } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -174,9 +174,13 @@ const ProfileCard = () => {
       <div className="flex-grow"> {/* Wrapper to allow bio to push footer down */} 
         {/* Header */}
         <div className="flex items-start gap-4 mb-6">
-          <div className="relative w-16 h-16 rounded-full overflow-hidden border-2 border-white/10 shrink-0">
+          <motion.div 
+            className="relative w-16 h-16 rounded-full overflow-hidden border-2 border-white/10 shrink-0"
+            whileHover={{ scale: 1.05 }}
+            transition={{ type: 'spring', stiffness: 300 }}
+          >
             <Image src="/images/avatar.png" alt="Senne Bels Avatar" fill className="object-cover" sizes="64px" />
-          </div>
+          </motion.div>
           <div>
             <h1 className="text-xl font-semibold tracking-tight text-black dark:text-white mb-0.5">
               Senne Bels
@@ -229,6 +233,10 @@ const ProfileCard = () => {
                 download={download}
                 className="p-1.5 text-neutral-500 dark:text-neutral-400 hover:text-black dark:hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-sky-500 dark:focus-visible:ring-offset-black rounded-lg"
                 whileTap={{ scale: 0.90 }}
+                whileHover={{ 
+                  rotate: [0, -8, 8, -8, 8, 0],
+                  transition: { duration: 0.4, ease: "easeInOut" } 
+                }}
                 aria-label={label}
                 onMouseEnter={(e) => handleIconMouseEnter(e, label)}
                 onMouseMove={handleIconMouseMove}
@@ -556,8 +564,14 @@ const GitHubStats = ({ theme, overrideBg }: { theme?: Theme; overrideBg?: string
   const [stats, setStats] = React.useState<any>(null);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);
+  
+  // Animation for contribution count
+  const count = useMotionValue(0);
+  const rounded = useSpring(count, { stiffness: 100, damping: 30, mass: 1 });
 
   React.useEffect(() => {
+    let animationControls: ReturnType<typeof animate> | null = null;
+
     fetch('/api/github')
       .then(res => {
         if (!res.ok) {
@@ -571,13 +585,33 @@ const GitHubStats = ({ theme, overrideBg }: { theme?: Theme; overrideBg?: string
         }
         setStats(data);
         setLoading(false);
+        // Animate the count when data arrives
+        if (data.totalContributions) {
+          animationControls = animate(count, data.totalContributions, {
+             type: "spring",
+             duration: 1.5 // Duration for the count-up
+          });
+        }
       })
       .catch(err => {
         console.error('Error fetching GitHub stats:', err);
         setError(err.message || 'Could not load stats.');
         setLoading(false);
       });
-  }, []);
+
+    // Cleanup function to stop animation if component unmounts
+    return () => {
+       animationControls?.stop();
+    };
+  }, [count]); // Dependency array includes count
+
+  // Use a separate effect to format the number to avoid re-renders on every frame
+  const displayCount = React.useRef<string>("0");
+  React.useEffect(() => {
+    return rounded.on("change", (latest) => {
+      displayCount.current = latest.toLocaleString("en-US", { maximumFractionDigits: 0 });
+    });
+  }, [rounded]);
 
   return (
     <BentoCard theme={theme} overrideBg={overrideBg} className="h-full p-6 md:p-8 flex flex-col">
@@ -586,12 +620,21 @@ const GitHubStats = ({ theme, overrideBg }: { theme?: Theme; overrideBg?: string
         <h3 className="flex items-center gap-2 text-sm font-medium text-black dark:text-white">
           <Activity className="w-4 h-4" /> GitHub Activity
         </h3>
-        {stats && !loading && (
-          <span className="text-xs text-neutral-500 dark:text-neutral-400 flex items-center gap-1">
-            <Github className="w-3 h-3" /> {stats.totalContributions?.toLocaleString()} contributions
-          </span>
-        )}
-          </div>
+        {/* Display loading/error or the animated count */} 
+        <span className="text-xs text-neutral-500 dark:text-neutral-400 flex items-center gap-1">
+          <Github className="w-3 h-3" /> 
+          {loading ? (
+            'Loading...'
+          ) : error ? (
+            'Error'
+          ) : (
+            // Use motion.span to display animated value
+            // We use a key to force re-render if rounded changes significantly, ensuring localeString updates
+            <motion.span key={displayCount.current}>{displayCount.current}</motion.span>
+          )}
+          { !loading && !error && ' contributions'} 
+        </span>
+      </div>
 
       {/* Main Content Area (Graph or Status) */}
       <div className="flex-grow flex items-center justify-center">
@@ -646,12 +689,14 @@ const ContributionGraph = ({ contributions }: { contributions: any }) => {
           {contributions.weeks.map((week: any, weekIndex: number) => (
             <div key={weekIndex} className="grid grid-rows-7 gap-[2px]">
               {week.contributionDays.map((day: any, dayIndex: number) => (
-                <div
+                <motion.div
                   key={day.date || dayIndex}
                   className={`w-2 h-2 rounded-sm ${getContributionColor(day.contributionCount)} transition-colors cursor-default`}
                   onMouseEnter={(e) => handleMouseEnter(e, day)}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
+                  onMouseMove={handleMouseMove}
+                  onMouseLeave={handleMouseLeave}
+                  whileHover={{ scale: 1.3 }}
+                  transition={{ type: 'spring', stiffness: 400, damping: 10 }}
                 />
               ))}
             </div>
@@ -777,12 +822,22 @@ const ThemeSwitcher = ({ currentTheme, setTheme }: { currentTheme: Theme; setThe
       <button
         onClick={cycleTheme}
         onMouseEnter={handleMouseEnter}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-        className="fixed bottom-6 left-6 z-50 p-2 rounded-full bg-neutral-200/70 dark:bg-neutral-800/70 backdrop-blur-sm border border-black/10 dark:border-white/10 text-neutral-700 dark:text-neutral-300 hover:text-black dark:hover:text-white hover:scale-110 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        className="fixed bottom-6 left-6 z-50 p-2 w-9 h-9 flex items-center justify-center rounded-full bg-neutral-200/70 dark:bg-neutral-800/70 backdrop-blur-sm border border-black/10 dark:border-white/10 text-neutral-700 dark:text-neutral-300 hover:text-black dark:hover:text-white hover:scale-110 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
         aria-label={`Current theme: ${currentTheme}. Switch theme.`}
       >
-        <Icon className="w-5 h-5" />
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.span
+            key={currentTheme} // Key change triggers animation
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 10 }}
+            transition={{ duration: 0.2 }}
+          >
+            <Icon className="w-5 h-5" />
+          </motion.span>
+        </AnimatePresence>
       </button>
       {/* Popover for Theme Switcher */}
       <Popover 
@@ -875,9 +930,11 @@ export default function HomePage() {
           {/* Changed to span 1 column by default, 2 on large screens */}
           {/* Removed row-span, should fill height automatically */}
           {/* Added overflow-hidden to enforce grid cell boundary */}
+          {/* Added lift on hover */} 
           <motion.div 
             className="col-span-1 lg:col-span-2 flex flex-col gap-4 md:gap-6 overflow-hidden"
             variants={itemVariants}
+            whileHover={{ y: -4, transition: { type: 'spring', stiffness: 300 } }} 
           >
              {/* Profile Card Wrapper (Takes full column height) */}
              <div className="flex-1 min-h-0"> 
@@ -912,14 +969,22 @@ export default function HomePage() {
             {/* Bottom Row (GitHub & 3D Model) - Reverted */}
             <div className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-6">
               {/* GitHub Stats - Reverted */} 
-              <div className="col-span-1 md:col-span-7 min-h-0 overflow-hidden"> 
+              {/* Added lift on hover */} 
+              <motion.div 
+                className="col-span-1 md:col-span-7 min-h-0 overflow-hidden"
+                whileHover={{ y: -4, transition: { type: 'spring', stiffness: 300 } }} 
+              >
                 <GitHubStats theme={theme} /> 
-              </div>
+              </motion.div>
               {/* REMOVED Cat Gallery Container */} 
-              {/* Model Viewer - Updated Usage */}
-              <div className="col-span-1 md:col-span-5 min-h-0 overflow-hidden"> 
+              {/* Model Viewer - Updated Usage */} 
+              {/* Added lift on hover */} 
+              <motion.div 
+                className="col-span-1 md:col-span-5 min-h-0 overflow-hidden"
+                whileHover={{ y: -4, transition: { type: 'spring', stiffness: 300 } }} 
+              >
                 <ModelViewer theme={theme} /> 
-              </div>
+              </motion.div>
             </div>
           </motion.div>
 
