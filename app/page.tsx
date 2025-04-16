@@ -192,7 +192,7 @@ const ProfileCard = () => {
           Full-stack developer & creative tech enthusiast from Antwerp, Belgium. Founder of <strong className="font-medium text-black dark:text-white">Okapi Works, my freelance company</strong>, and enjoy collaborating with startups. Focused on building interactive, scalable web experiences.
         </p>
         <p className="text-sm text-neutral-700 dark:text-neutral-300 leading-relaxed mb-6">
-          Currently developing <strong className="font-medium text-black dark:text-white">ORNITHO</strong>, a dinosaur horror game set in Antwerp, in my free time. Actively seeking international freelance/contract opportunities (remote/hybrid) in <strong className="font-medium text-black dark:text-white">North America, Japan, or the UK</strong>. Also, a big fan of cats.
+          Currently developing <strong className="font-medium text-black dark:text-white">ORNITHO</strong>, a dinosaur horror game set in Antwerp, in my free time. Actively seeking international contract opportunities in <strong className="font-medium text-black dark:text-white">North America, Japan, or the UK</strong>. Also, a big fan of cats.
         </p>
       </div>
 
