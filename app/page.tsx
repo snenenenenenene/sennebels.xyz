@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState, useCallback, Suspense } from 'react';
 import type { ReactNode, MouseEvent as ReactMouseEvent } from 'react';
 import { AnimatePresence, motion, PanInfo } from "framer-motion";
-import { ArrowUpRight, Github, Linkedin, Mail, Download, Activity, MapPin, LanguagesIcon, Sun, Moon, Sparkles, Cat } from "lucide-react";
+import { ArrowUpRight, Github, Linkedin, Mail, Download, Activity, MapPin, LanguagesIcon, Sun, Moon, Sparkles, Cat, LayoutGrid, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { projects } from "./constants";
@@ -258,9 +258,9 @@ const FeaturedProjects = ({
   setCurrentProject: React.Dispatch<React.SetStateAction<number>>;
   onScrollingChange: (isScrolling: boolean) => void 
 }) => {
-  // Removed local currentProject state
   const [direction, setDirection] = React.useState(0);
   const [isScrollLocked, setIsScrollLocked] = React.useState(false);
+  const [showOverview, setShowOverview] = React.useState(false); // State for overview modal
   const projectContainerRef = React.useRef<HTMLDivElement>(null);
   const dragThreshold = 50; // Min drag distance in pixels to trigger change
   const dragVelocityThreshold = 300; // Min velocity to trigger change
@@ -300,6 +300,14 @@ const FeaturedProjects = ({
     if (nextProjectIndex !== currentProject) {
        handleProjectChange(nextProjectIndex);
     }
+  };
+
+  // Handle clicking project in overview
+  const handleOverviewClick = (index: number) => {
+    if (index !== currentProject) {
+      handleProjectChange(index);
+    }
+    setShowOverview(false); // Close modal
   };
 
   // Updated variants for slide transition
@@ -392,17 +400,83 @@ const FeaturedProjects = ({
                     </span>
                   ))}
                 </div>
-                {/* Page Number Indicator */} 
-                <div className="text-center mt-4">
+                {/* Page Number Indicator & Overview Trigger */} 
+                <div className="flex justify-center items-center gap-4 mt-4">
                   <span className="text-xs font-medium text-neutral-500 dark:text-neutral-400">
                     {currentProject + 1} / {projects.length}
                   </span>
+                  <button 
+                    onClick={() => setShowOverview(true)}
+                    className="p-1 rounded-md text-neutral-500 dark:text-neutral-400 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/10 transition-colors" 
+                    aria-label="Show all projects"
+                  >
+                    <LayoutGrid className="w-3.5 h-3.5" />
+                  </button>
                 </div>
               </div>
             </div>
           </motion.div>
         </AnimatePresence>
       </div>
+      
+      {/* Project Overview Modal */} 
+      <AnimatePresence>
+        {showOverview && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setShowOverview(false)} // Click backdrop to close
+            className="fixed inset-0 bg-black/50 dark:bg-black/70 backdrop-blur-md z-50 flex items-center justify-center p-4"
+          >
+            {/* Modal Content */} 
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              onClick={(e) => e.stopPropagation()} // Prevent closing when clicking content
+              className="relative bg-white dark:bg-neutral-800 rounded-2xl shadow-xl w-full max-w-3xl max-h-[80vh] overflow-y-auto p-4 md:p-6" // Reduced padding (Re-applying)
+            >
+              <h3 className="text-lg font-medium text-black dark:text-white mb-6 text-center">All Projects</h3>
+              {/* Close Button */} 
+              <button 
+                onClick={() => setShowOverview(false)} 
+                className="absolute top-4 right-4 p-1.5 rounded-full text-neutral-500 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors"
+                aria-label="Close project overview"
+              >
+                <X className="w-5 h-5" />
+              </button>
+
+              {/* Grid of Projects */} 
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+                {projects.map((project, index) => (
+                  <button 
+                    key={project.title}
+                    onClick={() => handleOverviewClick(index)}
+                    className={`relative group block w-full aspect-square rounded-lg overflow-hidden transition-all duration-200 ${currentProject === index ? 'ring-2 ring-sky-500 ring-offset-2 ring-offset-white dark:ring-offset-neutral-800' : 'hover:scale-[1.02] focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-neutral-800'}`}
+                  >
+                    <Image 
+                      src={project.image}
+                      alt={project.title}
+                      fill
+                      className="object-cover transition-transform duration-300 group-hover:scale-105"
+                      sizes="(max-width: 768px) 50vw, 33vw"
+                    />
+                    {/* Subtle overlay for title */}
+                    <div className="absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-black/60 via-black/30 to-transparent">
+                      <h4 className="text-xs font-medium text-white truncate">{project.title}</h4>
+                    </div>
+                     {/* Selection indicator */}
+                    {currentProject === index && (
+                      <div className="absolute inset-0 bg-sky-500/20"></div>
+                    )}
+                  </button>
+                ))}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
