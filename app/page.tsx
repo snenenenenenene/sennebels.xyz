@@ -11,6 +11,7 @@ import { Canvas } from '@react-three/fiber';
 import { OrbitControls, useGLTF, Environment, Html } from '@react-three/drei';
 import * as THREE from 'three';
 import ReactDOM from 'react-dom';
+import { Model as CalicoModel } from './components/models/calico'; // Import Calico Model
 
 // Define Theme Type
 type Theme = 'light' | 'dark' | 'calico' | 'immersive';
@@ -187,8 +188,11 @@ const ProfileCard = () => {
         </div>
 
         {/* Bio */}
+        <p className="text-sm text-neutral-700 dark:text-neutral-300 leading-relaxed mb-3">
+          Full-stack developer & creative tech enthusiast from Antwerp, Belgium. Founder of <strong className="font-medium text-black dark:text-white">Okapi Works, my freelance company</strong>, and enjoy collaborating with startups. Focused on building interactive, scalable web experiences.
+        </p>
         <p className="text-sm text-neutral-700 dark:text-neutral-300 leading-relaxed mb-6">
-          Full-stack developer & creative tech enthusiast from Antwerp, Belgium. Founder of <strong className="font-medium text-black dark:text-white">Okapi Works, my freelance company</strong>, and enjoy collaborating with startups. Focused on building interactive, scalable web experiences. Currently developing <strong className="font-medium text-black dark:text-white">ORNITHO</strong>, a dinosaur horror game set in Antwerp, in my free time. Actively seeking international freelance/contract opportunities (remote/hybrid) in <strong className="font-medium text-black dark:text-white">North America, Japan, or the UK</strong>. Also, a big fan of cats.
+          Currently developing <strong className="font-medium text-black dark:text-white">ORNITHO</strong>, a dinosaur horror game set in Antwerp, in my free time. Actively seeking international freelance/contract opportunities (remote/hybrid) in <strong className="font-medium text-black dark:text-white">North America, Japan, or the UK</strong>. Also, a big fan of cats.
         </p>
       </div>
 
@@ -666,33 +670,8 @@ const ContributionGraph = ({ contributions }: { contributions: any }) => {
   );
 };
 
-// --- Shiba 3D Model Component ---
-
-function ShibaModel(props: any) {
-  const { scene } = useGLTF('/models/shiba/scene.gltf');
-  const modelRef = useRef<THREE.Group>(null);
-
-  // Traverse the model to set castShadow on all meshes
-  useEffect(() => {
-    if (modelRef.current) {
-      modelRef.current.traverse((child) => {
-        if ((child as THREE.Mesh).isMesh) {
-          child.castShadow = true;
-          // Optional: set receiveShadow if needed, e.g., parts of the model itself
-          // child.receiveShadow = true; 
-        }
-      });
-    }
-  }, [scene]);
-
-  // You might need to scale or position the model depending on its origin
-  return <primitive ref={modelRef} object={scene} scale={2.5} position-y={-1} {...props} />;
-}
-
-// Preload the model for smoother loading
-useGLTF.preload('/models/shiba/scene.gltf');
-
-const ShibaModelViewer = ({ theme }: { theme?: Theme }) => {
+// --- Renamed to Generic Model Viewer ---
+const ModelViewer = ({ theme }: { theme?: Theme }) => {
   const controlsRef = useRef<any>(); // Ref for OrbitControls
   const [isRotating, setIsRotating] = React.useState(true); // State to control rotation
 
@@ -727,7 +706,8 @@ const ShibaModelViewer = ({ theme }: { theme?: Theme }) => {
           </Html>
         }>
           <group position={[0, 0, 0]}> {/* Group to hold model and plane */}
-            <ShibaModel />
+            {/* Render Calico Model instead of Shiba - Increased Scale */}
+            <CalicoModel scale={1.5} position-y={-1} /> 
             {/* Simple ground plane */}
             <mesh 
               rotation={[-Math.PI / 2, 0, 0]} // Rotate plane to be horizontal
@@ -936,9 +916,9 @@ export default function HomePage() {
                 <GitHubStats theme={theme} /> 
               </div>
               {/* REMOVED Cat Gallery Container */} 
-              {/* Shiba Model - Reverted */} 
+              {/* Model Viewer - Updated Usage */}
               <div className="col-span-1 md:col-span-5 min-h-0 overflow-hidden"> 
-                <ShibaModelViewer theme={theme} /> 
+                <ModelViewer theme={theme} /> 
               </div>
             </div>
           </motion.div>

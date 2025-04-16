@@ -41,7 +41,7 @@ export const projects = [
     title: "Waddist",
     description: "A modern web application for tracking and sharing your favorite restaurants and food spots",
     image: "/images/work/waddist.png",
-    year: "2023",
+    year: "2021",
     link: "https://ambrassade.be/nl/kennis/waddist",
     tech: ["React Native", "Django", "PostgreSQL"],
     gradientFrom: "#e7d0e9", // Red Light
@@ -52,7 +52,7 @@ export const projects = [
     title: "BeeDee",
     description: "Digital platform for beekeepers to manage their hives and track colony health",
     image: "/images/work/beedee.png",
-    year: "2023",
+    year: "2025",
     link: "https://beedee.com/",
     tech: ["React Native", "Firebase", "XCode"],
     gradientFrom: "#16081b", // Yellow Light
@@ -74,7 +74,7 @@ export const projects = [
     title: "OSOC Projects",
     description: "Open Summer of Code project showcase platform featuring student innovations",
     image: "/images/work/osoc.png",
-    year: "2022",
+    year: "2024",
     link: "https://osoc.be",
     tech: ["Next.js", "GraphQL", "TailwindCSS"],
     gradientFrom: "#eca918", // Green Light
@@ -85,7 +85,7 @@ export const projects = [
     title: "Skinhouse",
     description: "E-commerce platform for premium skincare products with personalized recommendations",
     image: "/images/work/skinhouse.png",
-    year: "2022",
+    year: "2024",
     link: "https://skinhouse.vercel.app/",
     tech: ["Shopify", "React", "TailwindCSS"],
     gradientFrom: "#efefef", // Pink Light
@@ -96,7 +96,7 @@ export const projects = [
     title: "Spotify Artwork",
     description: "Web app that generates beautiful artwork from your Spotify listening history",
     image: "/images/work/spotify-art.png",
-    year: "2022",
+    year: "2024",
     link: "https://spotify-playlist-art-generator.vercel.app/",
     tech: ["Next.js"],
     gradientFrom: "#d1cfd8", // Violet Light
