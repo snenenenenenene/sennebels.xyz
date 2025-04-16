@@ -4,15 +4,15 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "__NEXT_TEST_MODE=1 next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
     "@next/third-parties": "^15.0.1",
     "@react-spring/web": "^9.7.5",
-    "@react-three/drei": "^9.109.2",
-    "@react-three/fiber": "^9.0.0-alpha.8",
+    "@react-three/drei": "^9.122.0",
+    "@react-three/fiber": "^9.1.2",
     "@react-three/postprocessing": "^2.19.1",
     "@studio-freight/react-lenis": "^0.0.47",
     "@types/three": "^0.167.1",

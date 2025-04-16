@@ -3,14 +3,14 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter, usePathname } from "next/navigation";
 import { X } from "lucide-react";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 
-export default function Template({ children }) {
+export default function Template({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
 
   useEffect(() => {
-    const handleEsc = (e) => {
+    const handleEsc = (e: KeyboardEvent) => {
       if (e.key === "Escape") router.back();
     };
     window.addEventListener("keydown", handleEsc);

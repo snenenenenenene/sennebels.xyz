@@ -1,13 +1,16 @@
 "use client"
 
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import React, { useEffect, useRef, useState, useCallback, Suspense } from 'react';
 import type { ReactNode, MouseEvent as ReactMouseEvent } from 'react';
 import { AnimatePresence, motion } from "framer-motion";
-import { MoveUpRight, ArrowUpRight, Github, Linkedin, Mail, X, Download, Moon, Sun } from "lucide-react";
+import { MoveUpRight, ArrowUpRight, Github, Linkedin, Mail, X, Download, Moon, Sun, GitBranch, Layers3, Link2, Activity, CodeXml, Server, Database, Palette, Terminal as TerminalIcon, MapPin, LanguagesIcon, Briefcase } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { projects, NOW_ITEMS, TIMELINE_ITEMS, GEAR_ITEMS, ACHIEVEMENTS } from "./constants";
 import { useSpring, animated } from '@react-spring/web';
+import { Canvas } from '@react-three/fiber';
+import { OrbitControls, useGLTF, Environment, Html } from '@react-three/drei';
+import * as THREE from 'three';
 
 // Pastel color palette
 const COLORS = {
@@ -49,118 +52,6 @@ const TERMINAL_COMMANDS = {
   theme: 'Usage: theme [light|dark] - Toggle or set theme',
   clear: 'Clear terminal history',
 } as const;
-
-const DevTerminal = () => {
-  const [history, setHistory] = useState<Array<{ command: string; response: string }>>([]);
-  const [currentCommand, setCurrentCommand] = useState('');
-  const [isDark, setIsDark] = useState(false);
-  const terminalRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  // Initialize theme on mount
-  useEffect(() => {
-    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      setIsDark(true);
-      document.documentElement.classList.add('dark');
-    }
-  }, []);
-
-  const handleThemeCommand = (args: string[]) => {
-    const mode = args[0]?.toLowerCase();
-    if (mode === 'light' || mode === 'dark') {
-      setIsDark(mode === 'dark');
-      document.documentElement.classList.toggle('dark', mode === 'dark');
-      return `Theme set to ${mode} mode`;
-    } else {
-      const newTheme = !isDark;
-      setIsDark(newTheme);
-      document.documentElement.classList.toggle('dark', newTheme);
-      return `Theme toggled to ${newTheme ? 'dark' : 'light'} mode`;
-    }
-  };
-
-  const handleContainerClick = () => {
-    inputRef.current?.focus();
-  };
-
-  const executeCommand = (cmd: string) => {
-    const [command, ...args] = cmd.toLowerCase().trim().split(' ');
-    
-    let response = '';
-    
-    switch (command) {
-      case 'theme':
-        response = handleThemeCommand(args);
-        break;
-      case 'clear':
-        setHistory([]);
-        return;
-      default:
-        response = TERMINAL_COMMANDS[command as keyof typeof TERMINAL_COMMANDS] || 'Command not found. Type "help" for available commands.';
-    }
-    
-    setHistory(prev => [...prev, { command: cmd, response }]);
-    setCurrentCommand('');
-    
-    setTimeout(() => {
-      if (terminalRef.current) {
-        terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
-      }
-    }, 0);
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      executeCommand(currentCommand);
-    }
-  };
-
-  useEffect(() => {
-    inputRef.current?.focus();
-  }, []);
-
-  return (
-    <div 
-      ref={containerRef}
-      onClick={handleContainerClick}
-      className="relative w-full h-full bg-[#1a1a1a] rounded-[2rem] overflow-hidden font-mono text-sm"
-    >
-      <div 
-        ref={terminalRef}
-        className="absolute inset-0 p-4 overflow-y-auto scrollbar-hide pb-[60px]"
-      >
-        <div className="text-[#27c93f] mb-4">
-          Welcome! Type "help" to see available commands.
-        </div>
-        
-        {history.map((entry, i) => (
-          <div key={i} className="mb-2">
-            <div className="flex items-center text-[#efefef]">
-              <span className="text-[#27c93f]">❯</span>
-              <span className="ml-2">{entry.command}</span>
-            </div>
-            <div className="text-[#efefef] ml-4 opacity-80">
-              {entry.response}
-            </div>
-          </div>
-        ))}
-      </div>
-      
-      <div className="absolute bottom-0 left-0 right-0 flex items-center text-[#efefef] p-4 border-t border-[#3a3a3a] bg-[#2a2a2a]">
-        <span className="text-[#27c93f]">❯</span>
-        <input
-          ref={inputRef}
-          type="text"
-          value={currentCommand}
-          onChange={(e) => setCurrentCommand(e.target.value)}
-          onKeyDown={handleKeyDown}
-          className="ml-2 bg-transparent outline-none flex-1 caret-[#27c93f]"
-        />
-      </div>
-    </div>
-  );
-};
 
 interface ProjectCardProps {
   title: string;
@@ -320,38 +211,76 @@ const BentoCard = ({
   );
 };
 
-const FeaturedProjects = ({ 
-  onScrollingChange 
-}: { 
-  onScrollingChange: (isScrolling: boolean) => void 
-}) => {
+// Featured Projects Card - Keyboard Navigation & useCallback
+const FeaturedProjects = ({ onScrollingChange }: { onScrollingChange: (isScrolling: boolean) => void }) => {
   const [currentProject, setCurrentProject] = React.useState(0);
   const [direction, setDirection] = React.useState(0);
   const [isScrollLocked, setIsScrollLocked] = React.useState(false);
 
-  const handleProjectChange = (index: number) => {
+  // Wrap handleProjectChange in useCallback
+  const handleProjectChange = React.useCallback((index: number) => {
     if (isScrollLocked) return;
     setIsScrollLocked(true);
     onScrollingChange(true);
     
-    setDirection(index > currentProject ? 1 : -1);
-    setCurrentProject(index);
+    // Calculate direction based on current state
+    // Need to use functional updates if relying on previous state inside useCallback without deps
+    // OR include currentProject in dependency array
+    setCurrentProject(prevCurrentProject => {
+        setDirection(index > prevCurrentProject ? 1 : -1);
+        return index;
+    });
 
-    // Reset scroll lock and animation after transition
     setTimeout(() => {
       setIsScrollLocked(false);
       onScrollingChange(false);
-    }, 700); // Increased from 500 to 700ms to ensure complete transition
-  };
+    }, 700);
+    // Dependencies for useCallback
+  }, [isScrollLocked, onScrollingChange]); 
 
+  // Keyboard Navigation Effect (dependencies updated)
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (isScrollLocked) return; 
+      
+      let nextProjectIndex = -1; // Use a temp variable to avoid direct state check
+      if (e.key === 'ArrowRight') {
+        // Use functional update with setCurrentProject to get latest value
+        setCurrentProject(prev => {
+            nextProjectIndex = (prev + 1 + projects.length) % projects.length;
+            return prev; // Don't change state here, handleProjectChange will do it
+        });
+      } else if (e.key === 'ArrowLeft') {
+        setCurrentProject(prev => {
+            nextProjectIndex = (prev - 1 + projects.length) % projects.length;
+            return prev; // Don't change state here
+        });
+      }
+
+      if (nextProjectIndex !== -1) {
+        handleProjectChange(nextProjectIndex);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [handleProjectChange, isScrollLocked]); // Dependency array updated
+
+  // Wheel Handler (already seems okay, but ensure handleProjectChange is stable)
   const handleWheel = (e: React.WheelEvent) => {
     e.preventDefault();
     if (isScrollLocked) return;
-
     const dir = e.deltaY > 0 ? 1 : -1;
-    const nextProject = Math.min(Math.max(0, currentProject + dir), projects.length - 1);
-    if (nextProject !== currentProject) {
-      handleProjectChange(nextProject);
+    // Use functional update pattern here too for safety
+    let nextProjectIndex = -1;
+    setCurrentProject(prev => {
+        nextProjectIndex = (prev + dir + projects.length) % projects.length;
+        return prev; // Let handleProjectChange update the state
+    });
+    if(nextProjectIndex !== -1) {
+        handleProjectChange(nextProjectIndex);
     }
   };
 
@@ -371,13 +300,13 @@ const FeaturedProjects = ({
   };
 
   return (
-    <div 
+      <div 
       className="relative w-full h-full"
-      onWheel={handleWheel}
+        onWheel={handleWheel}
     >
       <div className="absolute inset-0">
         <AnimatePresence initial={false} custom={direction} mode="wait">
-          <motion.div
+                <motion.div
             key={currentProject}
             custom={direction}
             variants={variants}
@@ -402,33 +331,32 @@ const FeaturedProjects = ({
                 View Project <ArrowUpRight className="w-3 h-3 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </Link>
 
-              <Image
+                  <Image
                 src={projects[currentProject].image}
                 alt={projects[currentProject].title}
-                fill
+                    fill
                 className="object-cover rounded-[2rem]"
-                sizes="100vw"
+                    sizes="100vw"
                 priority
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent rounded-[2rem]" />
 
               {/* Project Info - Overlaid on image */}
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
                 className="absolute bottom-0 left-0 right-0 p-8 text-white"
               >
-                <div className="flex items-center mb-4">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-3xl font-medium tracking-tight">
+                    {projects[currentProject].title}
+                  </h3>
                   <span className="text-sm px-3 py-1 rounded-full bg-white/10 backdrop-blur-sm">
                     {projects[currentProject].year}
-                  </span>
+                    </span>
                 </div>
 
-                <h3 className="text-3xl font-medium tracking-tight mb-3">
-                  {projects[currentProject].title}
-                </h3>
-                
                 <p className="text-sm text-white/80 mb-4 leading-relaxed max-w-2xl">
                   {projects[currentProject].description}
                 </p>
@@ -442,25 +370,25 @@ const FeaturedProjects = ({
                       {tech}
                     </span>
                   ))}
+                  </div>
+              </motion.div>
                 </div>
               </motion.div>
-            </div>
-          </motion.div>
         </AnimatePresence>
       </div>
       
       {/* Project Navigation */}
       <div className="absolute right-8 top-1/2 -translate-y-1/2 flex flex-col gap-2 z-50">
-        {projects.map((_, index) => (
+        {projects.map((project, index) => (
           <button
             key={index}
             onClick={() => handleProjectChange(index)}
             className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
               currentProject === index 
                 ? 'bg-white scale-150' 
-                : 'bg-white/50 hover:bg-white/80'
+                : 'bg-white/50 hover:bg-white/80 focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-black/30'
             }`}
-            aria-label={`Go to project ${index + 1}`}
+            aria-label={`Go to project: ${project.title}`}
           />
         ))}
       </div>
@@ -630,101 +558,154 @@ const CustomCursor = () => {
   );
 };
 
-// Enhanced Profile Card
-interface ProfileCardProps {
-  children: ReactNode;
-  [key: string]: any;
-}
-
-const ProfileCard = ({ children, ...props }: ProfileCardProps) => {
-  const [rotation, setRotation] = useState({ x: 0, y: 0 });
-  const cardRef = useRef<HTMLDivElement>(null);
-
-  const handleMouseMove = (e: ReactMouseEvent<HTMLDivElement>) => {
-    if (!cardRef.current) return;
-
-    const rect = cardRef.current.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-
-    setRotation({
-      x: y * 7,
-      y: x * 7,
-    });
-  };
-
-  const handleMouseLeave = () => {
-    setRotation({ x: 0, y: 0 });
-  };
+// Tech Stack Card Component - with Icon
+const TechStackCard = () => {
+  const stack = [
+    { name: "TypeScript", color: "bg-blue-500" },
+    { name: "Next.js", color: "bg-gray-700" },
+    { name: "Prisma", color: "bg-teal-500" },
+    { name: "Tailwind", color: "bg-sky-500" },
+    { name: "ThreeJS", color: "bg-purple-500" },
+    { name: "Python", color: "bg-yellow-500" },
+  ];
 
   return (
-    <motion.div
-      ref={cardRef}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      style={{
-        transform: `perspective(1000px) rotateX(${rotation.x}deg) rotateY(${rotation.y}deg)`,
-        transition: 'transform 0.3s ease-out',
-      }}
-      className="shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(255,255,255,0.04)] backdrop-blur-sm"
-      {...props}
-    >
-      {children}
-    </motion.div>
+    <BentoCard className="h-full py-4 px-6 md:px-8">
+      <h3 className="flex items-center gap-2 font-medium text-sm mb-3 text-black dark:text-white">
+        <Layers3 className="w-4 h-4" /> Primary Stack
+      </h3>
+      <div className="flex flex-wrap gap-2">
+        {stack.map((tech) => (
+          <span
+            key={tech.name}
+            className="flex items-center gap-1.5 px-3 py-1 bg-neutral-100 dark:bg-neutral-800 rounded-full text-xs text-neutral-600 dark:text-neutral-300"
+          >
+            <span className={`w-1.5 h-1.5 rounded-full ${tech.color || 'bg-gray-400'}`}></span> {/* Placeholder Icon */}
+            {tech.name}
+          </span>
+        ))}
+      </div>
+    </BentoCard>
   );
 };
 
-// Enhanced GitHub Stats Card with animations
-const GitHubStats = () => {
-  const [isVisible, setIsVisible] = useState(false);
-  const [stats, setStats] = useState<{
-    publicRepos: number;
-    totalContributions: number;
-    languages: Array<{ name: string; percentage: number }>;
-    followers: number;
-    contributionCalendar: {
-      totalContributions: number;
-      weeks: Array<{
-        contributionDays: Array<{
-          contributionCount: number;
-          date: string;
-        }>;
-      }>;
-    };
-  } | null>(null);
-  const statsRef = useRef<HTMLDivElement>(null);
+// Consolidated Contact Info Card - Enhanced Hover
+const ContactInfoCard = () => {
+  const links = [
+    { icon: Github, href: "https://github.com/snenenenenenene", label: "GitHub" },
+    { icon: Linkedin, href: "https://linkedin.com/in/sennebels", label: "LinkedIn" },
+    { icon: Mail, href: "mailto:contact@sennebels.xyz", label: "Email" }
+    // { icon: Download, href: "/resume.pdf", label: "Resume" }
+  ];
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.1 }
-    );
+  return (
+    <BentoCard className="h-full p-6 md:p-8">
+      <div className="flex flex-col gap-1">
+        {links.map(({ icon: Icon, href, label }) => (
+          <a
+            key={href}
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group flex items-center gap-2 p-2 rounded-md hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-all duration-200 text-xs text-neutral-600 dark:text-neutral-400 hover:text-black dark:hover:text-white"
+          >
+            <Icon className="w-3.5 h-3.5 transition-transform duration-200 group-hover:-translate-y-0.5" />
+            <span className="transition-transform duration-200 group-hover:-translate-y-0.5">{label}</span>
+          </a>
+        ))}
+         {/* Resume Link Placeholder - Enhanced Hover */}
+         <a
+            href="#" // Replace with actual resume path
+            className="group flex items-center gap-2 p-2 rounded-md hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-all duration-200 text-xs text-neutral-600 dark:text-neutral-400 hover:text-black dark:hover:text-white"
+          >
+            <Download className="w-3.5 h-3.5 transition-transform duration-200 group-hover:-translate-y-0.5" />
+            <span className="transition-transform duration-200 group-hover:-translate-y-0.5">Download Resume</span>
+          </a>
+      </div>
+    </BentoCard>
+  );
+};
 
-    if (statsRef.current) {
-      observer.observe(statsRef.current);
-    }
+// Modified Profile Card Component
+const ProfileCard = () => {
+  return (
+    <BentoCard className="h-full flex flex-col justify-between">
+      <div>
+        <div className="flex items-center gap-4 mb-6">
+          {/* Avatar */}
+          <div className="relative w-16 h-16 rounded-full overflow-hidden border-2 border-white/10 shrink-0">
+            <Image src="/images/avatar.png" alt="Senne Bels Avatar" fill className="object-cover" sizes="64px" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-medium tracking-tight text-black dark:text-white">
+              Senne Bels
+            </h1>
+            <p className="text-sm text-gray-600 dark:text-gray-400">
+              Full-stack Developer & Game Dev
+            </p>
+          </div>
+        </div>
 
-    return () => observer.disconnect();
-  }, []);
+        {/* Updated Bio */}
+        <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
+          Hey, I&apos;m <span className="font-medium text-black dark:text-white">Senne</span>! INFP-T, founder of the freelance company <strong className="text-black dark:text-white">Okapi Works</strong>, full-stack developer, and creative tech enthusiast from Antwerp. I focus on building <strong className="text-black dark:text-white">interactive, scalable web experiences</strong>, blending functionality with fun. Currently, I&apos;m diving into creative tech like ThreeJS while building robust applications with modern frameworks. I am actively seeking opportunities internationally, particularly in <strong className="text-black dark:text-white">North America, Japan, or the UK</strong>, and thrive in remote and hybrid environments.
+        </p>
 
-  useEffect(() => {
-    const fetchStats = async () => {
-      try {
-        const response = await fetch('/api/github');
-        const data = await response.json();
-        if (!response.ok) throw new Error(data.error);
-        setStats(data);
-      } catch (error) {
-        console.error('Failed to fetch GitHub stats:', error);
-      }
-    };
+        {/* Location & Languages */}
+        <div className="grid grid-cols-2 gap-4 mb-4">
+          <div className="space-y-2">
+            <h3 className="font-medium text-xs text-neutral-600 dark:text-neutral-400">LOCATION</h3>
+            <p className="text-xs text-neutral-600 dark:text-neutral-300">
+              🇪 Antwerp, Belgium (Open to relocate/remote)
+            </p>
+          </div>
+          <div className="space-y-2">
+            <h3 className="font-medium text-xs text-neutral-600 dark:text-neutral-400">LANGUAGES</h3>
+            <div className="flex flex-wrap gap-2">
+              <span className="text-xs text-neutral-600 dark:text-neutral-300">🇬🇧 English (Fluent)</span>
+              <span className="text-xs text-neutral-600 dark:text-neutral-300">🇳🇱 Dutch (Native)</span>
+              <span className="text-xs text-neutral-600 dark:text-neutral-300">🇩🇪 German</span>
+              <span className="text-xs text-neutral-600 dark:text-neutral-300">🇫🇷 French</span>
+              {/* Add Japanese here if applicable */}
+            </div>
+          </div>
+        </div>
+      </div>
 
-    fetchStats();
-  }, []);
+      {/* Updated Availability & Socials */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <div className="w-2 h-2 rounded-full bg-green-400 sophisticated-pulse" />
+          <span className="text-xs text-neutral-600 dark:text-neutral-400">
+            Available via Okapi Works (Intl. freelance/contracts)
+          </span>
+        </div>
+        {/* Socials moved to QuickLinksCard */}
+      </div>
+    </BentoCard>
+  );
+};
+
+// Utility function for language colors (can be expanded)
+const getLanguageColor = (language: string): string => {
+  const colors: { [key: string]: string } = {
+    TypeScript: 'bg-blue-500',
+    JavaScript: 'bg-yellow-400',
+    Python: 'bg-green-500',
+    HTML: 'bg-orange-500',
+    CSS: 'bg-purple-500',
+    Shell: 'bg-lime-500',
+    CSharp: 'bg-teal-500', // Added C# as it appeared in screenshot
+    // Add more languages and colors as needed
+  };
+  return colors[language] || 'bg-gray-400'; // Default color
+};
+
+// Simplified Contribution Graph Component
+const ContributionGraph = ({ contributions }: { contributions: any }) => {
+  if (!contributions || !contributions.weeks) {
+    return <div className="text-xs text-gray-400">Contribution data not available.</div>;
+  }
 
   const getContributionColor = (count: number) => {
     if (count === 0) return 'bg-neutral-100 dark:bg-neutral-800';
@@ -735,27 +716,14 @@ const GitHubStats = () => {
   };
 
   return (
-    <div ref={statsRef} className="h-full flex flex-col">
-      <div className="flex items-center justify-between mb-3">
-        <h2 className="font-medium text-sm text-black dark:text-white">Coding Activity</h2>
-        <div className="flex items-center gap-2 text-xs text-neutral-600 dark:text-neutral-300">
-          <Github className="w-4 h-4" />
-          <span>{stats?.totalContributions || '...'} contributions</span>
-        </div>
-      </div>
-
-      {/* Contribution Calendar - More Compact */}
-      <div className="flex-1 overflow-x-auto scrollbar-hide">
-        <div className="inline-grid grid-cols-[repeat(53,1fr)] gap-[2px]">
-          {stats?.contributionCalendar.weeks.map((week, weekIndex) => (
-            <div key={weekIndex} className="grid grid-rows-7 gap-[2px]">
-              {week.contributionDays.map((day, dayIndex) => (
-                <motion.div
-                  key={day.date}
-                  initial={{ scale: 0 }}
-                  animate={isVisible ? { scale: 1 } : { scale: 0 }}
-                  transition={{ delay: (weekIndex * 7 + dayIndex) * 0.001 }}
-                  className={`w-1.5 h-1.5 rounded-sm ${getContributionColor(day.contributionCount)}`}
+    <div className="overflow-x-auto scrollbar-hide pb-2">
+      <div className="inline-grid grid-flow-col auto-cols-max gap-[3px]">
+        {contributions.weeks.map((week: any, weekIndex: number) => (
+          <div key={weekIndex} className="grid grid-rows-7 gap-[3px]">
+            {week.contributionDays.map((day: any, dayIndex: number) => (
+              <div
+                key={day.date || dayIndex}
+                className={`w-2.5 h-2.5 rounded-sm ${getContributionColor(day.contributionCount)}`}
                   title={`${day.contributionCount} contributions on ${new Date(day.date).toLocaleDateString()}`}
                 />
               ))}
@@ -763,35 +731,93 @@ const GitHubStats = () => {
           ))}
         </div>
       </div>
+  );
+};
 
-      {/* Language Stats - Horizontal */}
-      <div className="flex gap-3 mt-3">
-        {stats?.languages.map((lang) => (
-          <div key={lang.name} className="flex-1">
-            <div className="flex items-center justify-between mb-1">
-              <span className="text-[10px] text-neutral-600 dark:text-neutral-300">{lang.name}</span>
-              <span className="text-[10px] text-neutral-600 dark:text-neutral-300">{lang.percentage}%</span>
+// Enhanced GitHub Stats Card with animations
+const GitHubStats = () => {
+  const [stats, setStats] = React.useState<any>(null);
+  const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState<string | null>(null);
+
+  React.useEffect(() => {
+    fetch('/api/github')
+      .then(res => {
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        return res.json();
+      })
+      .then(data => {
+        if (data.error) {
+          throw new Error(data.error || 'Failed to fetch GitHub stats');
+        }
+        setStats(data);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error('Error fetching GitHub stats:', err);
+        setError(err.message || 'Could not load GitHub stats.');
+        setLoading(false);
+      });
+  }, []);
+
+  return (
+    <BentoCard className="h-full">
+      <div className="flex justify-between items-center mb-4">
+        <h3 className="flex items-center gap-2 text-lg font-medium text-black dark:text-white">
+          <Activity className="w-5 h-5" /> Coding Activity
+        </h3>
+        {stats && !loading && (
+          <span className="text-sm text-gray-600 dark:text-gray-400 flex items-center gap-1">
+            <GitBranch className="w-4 h-4" /> {stats.totalContributions?.toLocaleString()} contributions
+          </span>
+        )}
             </div>
-            <div className="h-1 bg-neutral-100 dark:bg-neutral-800 rounded-full overflow-hidden">
-              <motion.div
-                initial={{ width: 0 }}
-                animate={isVisible ? { width: `${lang.percentage}%` } : { width: 0 }}
-                transition={{ duration: 1, ease: "easeOut" }}
-                className={`h-full rounded-full ${
-                  lang.name === 'TypeScript' ? 'bg-blue-500' :
-                  lang.name === 'JavaScript' ? 'bg-yellow-500' :
-                  'bg-green-500'
-                }`}
+
+      {loading && (
+        <div className="flex items-center justify-center h-32">
+          <p className="text-sm text-gray-500 dark:text-gray-400">Loading GitHub stats...</p>
+        </div>
+      )}
+
+      {error && (
+        <div className="flex items-center justify-center h-32">
+          <p className="text-sm text-red-600 dark:text-red-400">Error: {error}</p>
+        </div>
+      )}
+
+      {stats && !loading && !error && (
+        <div>
+          {/* Contribution Graph (Simplified representation) */}
+          <div className="mb-4">
+            <ContributionGraph contributions={stats.contributionCalendar} />
+          </div>
+
+          {/* Language Stats */}
+          <div className="flex space-x-4">
+            {stats.languages?.map((lang: any, index: number) => (
+              <div key={index} className="flex-1">
+                <div className="flex justify-between text-xs text-gray-600 dark:text-gray-400 mb-1">
+                  <span>{lang.name}</span>
+                  <span>{lang.percentage}%</span>
+                </div>
+                <div className="w-full h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                  <div 
+                    className={`h-full ${getLanguageColor(lang.name)}`}
+                    style={{ width: `${lang.percentage}%` }}
               />
             </div>
           </div>
         ))}
       </div>
     </div>
+      )}
+    </BentoCard>
   );
 };
 
-// Enhanced Contact Button with magnetic effect
+// Magnetic Contact Button Component
 const ContactButton = ({ children }: { children: React.ReactNode }) => {
   const buttonRef = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -824,6 +850,84 @@ const ContactButton = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
+// --- Shiba 3D Model Component ---
+
+function ShibaModel(props: any) {
+  const { scene } = useGLTF('/models/shiba/scene.gltf');
+  const modelRef = useRef<THREE.Group>(null);
+
+  // Traverse the model to set castShadow on all meshes
+  useEffect(() => {
+    if (modelRef.current) {
+      modelRef.current.traverse((child) => {
+        if ((child as THREE.Mesh).isMesh) {
+          child.castShadow = true;
+          // Optional: set receiveShadow if needed, e.g., parts of the model itself
+          // child.receiveShadow = true; 
+        }
+      });
+    }
+  }, [scene]);
+
+  // You might need to scale or position the model depending on its origin
+  return <primitive ref={modelRef} object={scene} scale={2.5} position-y={-1} {...props} />;
+}
+
+// Preload the model for smoother loading
+useGLTF.preload('/models/shiba/scene.gltf');
+
+const ShibaModelViewer = () => {
+  return (
+    <BentoCard className="h-full !p-0 overflow-hidden relative"> 
+      <Canvas 
+        camera={{ position: [0, 1, 5], fov: 50 }} // Raised camera slightly
+        shadows // Ensure shadows are enabled
+      >
+        <ambientLight intensity={0.6} /> {/* Slightly increased ambient light */}
+        <directionalLight 
+          position={[5, 8, 5]} // Adjusted light position
+          intensity={1.5} 
+          castShadow 
+          shadow-mapSize-width={1024} // Increase shadow map resolution
+          shadow-mapSize-height={1024}
+        />
+        {/* Optional: Add a soft hemisphere light */}
+        {/* <hemisphereLight groundColor="#444444" intensity={0.3} /> */}
+        
+        <Suspense fallback={
+          <Html center className="text-xs text-neutral-500">
+            Loading Model...
+          </Html>
+        }>
+          <group position={[0, 0, 0]}> {/* Group to hold model and plane */}
+            <ShibaModel />
+            {/* Simple ground plane */}
+            <mesh 
+              rotation={[-Math.PI / 2, 0, 0]} // Rotate plane to be horizontal
+              position={[0, -1, 0]} // Position it below the model
+              receiveShadow // Plane receives shadows
+            >
+              <planeGeometry args={[10, 10]} />
+              <shadowMaterial opacity={0.4} /> {/* Use shadowMaterial for soft shadows */}
+            </mesh>
+          </group>
+          <Environment preset="city" /> 
+        </Suspense>
+        <OrbitControls 
+          enableZoom={false}
+          enablePan={false}
+          autoRotate 
+          autoRotateSpeed={0.5} // Slightly slower rotation
+          minPolarAngle={Math.PI / 2.8} // Adjusted rotation limits slightly
+          maxPolarAngle={Math.PI / 1.8}
+          target={[0, 0.2, 0]} // Adjust target slightly higher
+        />
+      </Canvas>
+    </BentoCard>
+  );
+};
+
+// Main Page Component - Staggered Animations
 export default function HomePage() {
   const [isDark, setIsDark] = React.useState(false);
   const [isAvailable, setIsAvailable] = React.useState(true);
@@ -841,159 +945,91 @@ export default function HomePage() {
     document.documentElement.classList.toggle('dark');
   };
 
+  // Animation Variants for Staggering
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15, // Stagger delay between columns
+        delayChildren: 0.1 // Initial delay before staggering starts
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.5, ease: "easeOut" }
+    }
+  };
+
   return (
-    <main className="min-h-screen w-full bg-white dark:bg-black p-4 md:p-6 overflow-x-hidden">
+    <main className="min-h-screen w-full bg-neutral-100 dark:bg-black p-4 md:p-6 lg:p-8 overflow-hidden">
       <ParticleEffect />
       <CustomCursor />
       
-      <div className="max-w-[2000px] mx-auto h-[calc(100vh-3rem)]">
-        <div className="grid grid-cols-6 gap-4 h-full auto-rows-[minmax(0,1fr)]">
-          <div className="col-span-2 row-span-4 grid grid-rows-[3fr,1fr] gap-4">
-            {/* Profile Card */}
-            <ProfileCard className="row-span-1 bg-white/80 dark:bg-neutral-900/80 rounded-[2rem] p-6 md:p-8 border border-neutral-200/50 dark:border-neutral-800/50 hover:border-neutral-300/50 dark:hover:border-neutral-700/50 transition-all duration-300 ease-out">
-              <div className="h-full flex flex-col justify-between group">
-                <div>
+      <div className="max-w-7xl mx-auto h-[calc(100vh-4rem)] lg:h-[calc(100vh-5rem)]">
                   <motion.div 
-                    className="flex items-center gap-4 mb-4"
-                    whileHover={{ scale: 1.02 }}
-                    transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                  >
-                    <Image
-                      src="/images/me.png"
-                      alt="Senne Bels"
-                      width={56}
-                      height={56}
-                      className="rounded-full ring-1 ring-neutral-200 dark:ring-neutral-800"
-                    />
-                    <div>
-                      <h1 className="text-xl md:text-2xl font-bold tracking-tight mb-1 gradient-text">Senne Bels</h1>
-                      <div className="flex items-center gap-2">
-                        <p className="text-sm text-neutral-600 dark:text-neutral-400">
-                          Full-stack Developer & Game Dev
-                        </p>
-                        <span className="text-xs bg-neutral-100 dark:bg-neutral-800 px-2 py-0.5 rounded-full text-neutral-600 dark:text-neutral-300">24</span>
-                      </div>
+          className="grid grid-cols-6 gap-4 md:gap-6 h-full auto-rows-[minmax(0,1fr)]"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          {/* --- Left Column --- */}
+          <motion.div 
+            className="col-span-6 lg:col-span-2 row-span-4 flex flex-col gap-4 md:gap-6"
+            variants={itemVariants} // Apply item variant to the column itself
+          >
+             {/* Profile Card Wrapper */}
+             <div className="flex-[2_1_0%] min-h-0">
+               <ProfileCard />
                     </div>
-                  </motion.div>
-                  
-                  <p className="text-neutral-600 dark:text-neutral-400 text-sm mb-6 leading-relaxed">
-                    Hey, I&apos;m <span className="font-medium text-black dark:text-white">Senne</span>! <span className="font-medium text-black dark:text-white">INFP-T</span>, full-stack developer, and a creative tech enthusiast from <span className="font-medium text-black dark:text-white">Antwerp</span>.
-                    I focus on building <span className="font-medium text-black dark:text-white">interactive and innovative web experiences</span>, blending functionality with fun.
-                    Currently, I&apos;m diving into <span className="font-medium text-black dark:text-white">creative tech</span> while tackling projects like <span className="font-medium text-black dark:text-white">The Okapi Store</span>—my e-commerce platform to support okapi conservation.
-                  </p>
-                  
-                  {/* Tech Stack */}
-                  <div className="mb-4">
-                    <h2 className="font-medium text-xs mb-2 text-neutral-600 dark:text-neutral-400">PRIMARY STACK</h2>
-                    <div className="flex flex-wrap gap-2">
-                      {["TypeScript", "Next.js", "Prisma", "Tailwind", "ThreeJS", "Python"].map((tech) => (
-                        <span
-                          key={tech}
-                          className="px-3 py-1 bg-neutral-100 dark:bg-neutral-800 rounded-full text-xs text-neutral-600 dark:text-neutral-300"
-                        >
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
+             {/* Tech Stack Card Wrapper */}
+             <div className="flex-[1_1_0%] min-h-0">
+               <TechStackCard />
                   </div>
+             {/* Contact Info Card Wrapper */}
+             <div className="flex-[1_1_0%] min-h-0">
+               <ContactInfoCard />
+                    </div>
+          </motion.div>
 
-                  {/* Additional Info */}
-                  <div className="grid grid-cols-2 gap-4 mb-4">
-                    <div className="space-y-2">
-                      <h3 className="font-medium text-xs text-neutral-600 dark:text-neutral-400">LOCATION</h3>
-                      <p className="text-xs text-neutral-600 dark:text-neutral-300">
-                        🇧🇪 Antwerp, Belgium
-                      </p>
-                    </div>
-                    <div className="space-y-2">
-                      <h3 className="font-medium text-xs text-neutral-600 dark:text-neutral-400">LANGUAGES</h3>
-                      <div className="flex flex-wrap gap-2">
-                        <span className="text-xs text-neutral-600 dark:text-neutral-300">🇬🇧 English</span>
-                        <span className="text-xs text-neutral-600 dark:text-neutral-300">🇳🇱 Dutch</span>
-                        <span className="text-xs text-neutral-600 dark:text-neutral-300">🇩🇪 German</span>
-                        <span className="text-xs text-neutral-600 dark:text-neutral-300">🇫🇷 French</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 rounded-full bg-green-400 sophisticated-pulse" />
-                    <span className="text-xs text-neutral-600 dark:text-neutral-400">
-                      Available for freelance projects
-                    </span>
-                  </div>
-                  <div className="flex gap-2">
-                    {[
-                      { icon: Github, href: "https://github.com/snenenenenenene" },
-                      { icon: Linkedin, href: "https://linkedin.com/in/sennebels" },
-                      { icon: Mail, href: "mailto:contact@sennebels.xyz" }
-                    ].map(({ icon: Icon, href }) => (
-                      <motion.a
-                        key={href}
-                        href={href}
-                        target="_blank"
-                        className="p-2 bg-neutral-100 dark:bg-neutral-800 rounded-md hover:-translate-y-0.5 transition-transform"
-                      >
-                        <Icon className="w-4 h-4 text-neutral-600 dark:text-neutral-400" />
-                      </motion.a>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </ProfileCard>
-
-            {/* Contact Button */}
-            <BentoCard 
-              href="/contact"
-              size="medium" 
-              className="!p-0 overflow-hidden hover:scale-[1.02] transition-transform duration-300"
-            >
-              <div className="w-full h-full bg-black dark:bg-white rounded-[2rem] border border-neutral-200 dark:border-neutral-800">
-                <div className="w-full h-full flex items-center justify-between px-8">
-                  <span className="text-base font-medium text-white dark:text-black">Let's work together</span>
+          {/* --- Right Column --- */}
+          <motion.div 
+            className="col-span-6 lg:col-span-4 row-span-4 grid grid-rows-[minmax(0,3fr)_minmax(0,1fr)] gap-4 md:gap-6"
+            variants={itemVariants} // Apply item variant to the column itself
+          >
+            {/* Projects Carousel Wrapper */}
                   <motion.div
-                    animate={{ x: [0, 5, 0] }}
-                    transition={{ duration: 1, repeat: Infinity, repeatType: "reverse" }}
-                  >
-                    <ArrowUpRight className="w-5 h-5 text-white dark:text-black" />
-                  </motion.div>
-                </div>
-              </div>
-            </BentoCard>
-          </div>
-
-          <div className="col-span-4 row-span-4 grid grid-rows-[4fr,1fr] gap-4">
-            {/* Project Carousel */}
-            <motion.div
               initial={false}
               animate={{ scale: isProjectScrolling ? 0.97 : 1 }}
               transition={{ duration: 0.5, ease: [0.32, 0.72, 0, 1] }}
               className="row-span-1 w-full h-full"
             >
               <BentoCard className="h-full overflow-hidden !p-0">
-                <div className="relative w-full h-full">
+              <div className="relative w-full h-full">
                   <FeaturedProjects onScrollingChange={setIsProjectScrolling} />
-                </div>
-              </BentoCard>
+              </div>
+            </BentoCard>
             </motion.div>
 
-            <div className="grid grid-cols-12 gap-4">
+            {/* Bottom Row (GitHub & 3D Model) */}
+            <div className="grid grid-cols-12 gap-4 md:gap-6">
               {/* GitHub Stats */}
-              <BentoCard className="col-span-6 !p-4">
-                <div className="h-full flex flex-col scrollbar-hide">
+              <div className="col-span-12 md:col-span-7">
                   <GitHubStats />
                 </div>
-              </BentoCard>
+              {/* 3D Model Viewer (Replacing Terminal) */}
+              <div className="col-span-12 md:col-span-5">
+                 <ShibaModelViewer />
+                    </div>
+                    </div>
+          </motion.div>
 
-              {/* Terminal (now includes theme control) */}
-              <BentoCard className="col-span-6 !p-0 overflow-hidden">
-                <DevTerminal />
-              </BentoCard>
-            </div>
-          </div>
-        </div>
+                    </motion.div>
       </div>
     </main>
   );
