@@ -90,7 +90,7 @@ export const projects = [
     tech: ["Shopify", "React", "TailwindCSS"],
     gradientFrom: "#efefef", // Pink Light
     gradientVia: "#d6c5bf",  // Pink Mid
-    gradientTo: "#694031",   // Pink Darker
+    gradientTo: "#ff9874",   // Pink Darker
   },
   {
     title: "Spotify Artwork",

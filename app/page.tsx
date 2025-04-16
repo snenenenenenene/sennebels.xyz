@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState, useCallback, Suspense } from 'react';
 import type { ReactNode, MouseEvent as ReactMouseEvent } from 'react';
 import { AnimatePresence, motion, PanInfo } from "framer-motion";
-import { ArrowUpRight, Github, Linkedin, Mail, Download, Activity, MapPin, LanguagesIcon, Sun, Moon, Sparkles, Cat, LayoutGrid, X } from "lucide-react";
+import { ArrowUpRight, Github, Linkedin, Mail, Download, Activity, MapPin, LanguagesIcon, Sun, Moon, Sparkles, Cat, LayoutGrid, X, ChevronLeft } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { projects } from "./constants";
@@ -188,7 +188,7 @@ const ProfileCard = () => {
 
         {/* Bio */}
         <p className="text-sm text-neutral-700 dark:text-neutral-300 leading-relaxed mb-6">
-          Full-stack developer & creative tech enthusiast from Antwerp, Belgium. Founder of <strong className="font-medium text-black dark:text-white">Okapi Works, my freelance company</strong>. Focused on building interactive, scalable web experiences. Actively seeking international freelance/contract opportunities (remote/hybrid) in <strong className="font-medium text-black dark:text-white">North America, Japan, or the UK</strong>.
+          Full-stack developer & creative tech enthusiast from Antwerp, Belgium. Founder of <strong className="font-medium text-black dark:text-white">Okapi Works, my freelance company</strong>, and enjoy collaborating with startups. Focused on building interactive, scalable web experiences. Currently developing <strong className="font-medium text-black dark:text-white">ORNITHO</strong>, a dinosaur horror game set in Antwerp, in my free time. Actively seeking international freelance/contract opportunities (remote/hybrid) in <strong className="font-medium text-black dark:text-white">North America, Japan, or the UK</strong>. Also, a big fan of cats.
         </p>
       </div>
 
@@ -213,7 +213,7 @@ const ProfileCard = () => {
           </div>
         </div>
         {/* Links Section */}
-        <div className="flex items-center justify-between border-t border-black/5 dark:border-white/10 pt-4">
+        <div className="flex items-center justify-between border-t border-black/5 dark:border-white/10 pt-4 mb-4"> {/* Added mb-4 */} 
            <span className="text-xs text-neutral-500 dark:text-neutral-400">Get in touch:</span>
            <div className="flex gap-3">
             {links.map(({ icon: Icon, href, label, download }) => (
@@ -235,6 +235,35 @@ const ProfileCard = () => {
             ))}
           </div>
         </div>
+        
+        {/* --- Cats Section --- */} 
+        {/* {(() => {
+          // Define cat data inside an IIFE to keep it scoped
+          const catImages = [
+            { src: '/assets/Brie.png', alt: 'Brie' },
+            { src: '/assets/placeholder-cat-2.png', alt: 'Cat 2' },
+            { src: '/assets/placeholder-cat-3.png', alt: 'Cat 3' },
+            { src: '/assets/placeholder-cat-4.png', alt: 'Cat 4' },
+          ];
+          return (
+            <div className="border-t border-black/5 dark:border-white/10 pt-4">
+              <h3 className="text-xs font-medium text-neutral-500 dark:text-neutral-400 mb-2 text-center">Supervisors</h3>
+              <div className="flex justify-center gap-2">
+                {catImages.map((cat) => (
+                  <div key={cat.alt} className="relative w-10 h-10 rounded-full overflow-hidden ring-1 ring-black/10 dark:ring-white/10">
+                    <Image
+                      src={cat.src}
+                      alt={cat.alt}
+                      fill
+                      className="object-cover"
+                      sizes="40px"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        })()} */}
       </div>
 
       {/* Use Popover Component - Renders via Portal */}
@@ -261,6 +290,7 @@ const FeaturedProjects = ({
   const [direction, setDirection] = React.useState(0);
   const [isScrollLocked, setIsScrollLocked] = React.useState(false);
   const [showOverview, setShowOverview] = React.useState(false); // State for overview modal
+  const [showNudgeHint, setShowNudgeHint] = React.useState(true); // State for hint visibility
   const projectContainerRef = React.useRef<HTMLDivElement>(null);
   const dragThreshold = 50; // Min drag distance in pixels to trigger change
   const dragVelocityThreshold = 300; // Min velocity to trigger change
@@ -310,6 +340,14 @@ const FeaturedProjects = ({
     setShowOverview(false); // Close modal
   };
 
+  // Effect to hide nudge hint after a delay
+  React.useEffect(() => {
+    const hintTimeout = setTimeout(() => {
+      setShowNudgeHint(false);
+    }, 3500); // Corresponds to hint animation duration + delay
+    return () => clearTimeout(hintTimeout);
+  }, []);
+
   // Updated variants for slide transition
   const variants = {
     enter: (direction: number) => ({
@@ -332,6 +370,29 @@ const FeaturedProjects = ({
         className="relative w-full h-full cursor-grab active:cursor-grabbing" // Added grab cursors
       >
       <div className="absolute inset-0 overflow-hidden"> {/* Added overflow hidden here */} 
+        {/* Animated Nudge Hint */} 
+        <AnimatePresence>
+          {showNudgeHint && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{
+                opacity: [0, 1, 1, 0], // Fade in, stay, fade out
+                x: [0, 0, -10, -10], // Stay, nudge left, stay nudged
+                transition: {
+                  duration: 2.5, // Total duration
+                  times: [0, 0.2, 0.8, 1], // Timing points for keyframes
+                  delay: 0.8, // Start after initial load
+                  ease: "easeInOut"
+                }
+              }}
+              exit={{ opacity: 0 }} // Optional exit animation
+              className="absolute top-1/2 right-4 -translate-y-1/2 z-10 pointer-events-none"
+            >
+              <ChevronLeft className="w-6 h-6 text-white/60" />
+            </motion.div>
+          )}
+        </AnimatePresence>
+
         <AnimatePresence initial={false} custom={direction} mode="wait">
                 <motion.div
             key={currentProject}
@@ -350,6 +411,8 @@ const FeaturedProjects = ({
             dragConstraints={{ left: 0, right: 0 }}
             dragElastic={0.1}
             onDragEnd={handleDragEnd}
+            // Add styles during drag
+            whileDrag={{ scale: 0.97, opacity: 0.85 }} 
           >
             <div className="relative w-full h-full flex flex-col"> {/* Changed to flex column */} 
               {/* Image Container (Takes up most space) */} 
@@ -361,6 +424,9 @@ const FeaturedProjects = ({
                   className="object-cover"
                   sizes="(max-width: 768px) 100vw, 50vw"
                   priority
+                  // Prevent native image dragging
+                  draggable={false}
+                  onDragStart={(e) => e.preventDefault()}
                 />
                 {/* Removed gradient overlay div */} 
               </div>
@@ -863,14 +929,18 @@ export default function HomePage() {
             </BentoCard>
                     </motion.div>
 
-            {/* Bottom Row (GitHub & 3D Model) */}
-            {/* Changed to 1 column by default, 12 columns on medium screens */}
+            {/* Bottom Row (GitHub & 3D Model) - Reverted */}
             <div className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-6">
-              {/* Changed to span 1 column by default, 7 on medium screens. Added overflow-hidden */}
-              <div className="col-span-1 md:col-span-7 min-h-0 overflow-hidden"> <GitHubStats theme={theme} /> </div>
-              {/* Changed to span 1 column by default, 5 on medium screens. Added overflow-hidden */}
-              <div className="col-span-1 md:col-span-5 min-h-0 overflow-hidden"> <ShibaModelViewer theme={theme} /> </div>
+              {/* GitHub Stats - Reverted */} 
+              <div className="col-span-1 md:col-span-7 min-h-0 overflow-hidden"> 
+                <GitHubStats theme={theme} /> 
               </div>
+              {/* REMOVED Cat Gallery Container */} 
+              {/* Shiba Model - Reverted */} 
+              <div className="col-span-1 md:col-span-5 min-h-0 overflow-hidden"> 
+                <ShibaModelViewer theme={theme} /> 
+              </div>
+            </div>
           </motion.div>
 
                     </motion.div>
