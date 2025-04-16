@@ -10,6 +10,7 @@ import { projects } from "./constants";
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, useGLTF, Environment, Html } from '@react-three/drei';
 import * as THREE from 'three';
+import ReactDOM from 'react-dom';
 
 // Base Bento Card Styling
 const BENTO_BASE_CLASSES = "bg-neutral-100/80 dark:bg-[#1D1D1F]/80 backdrop-blur-lg border border-black/5 dark:border-white/10 rounded-3xl shadow-sm transition-colors duration-300";
@@ -48,7 +49,43 @@ const BentoCard = ({
   );
 };
 
-// Profile Card (Integrating Links into Footer)
+// --- Reusable Popover Component ---
+const Popover = ({ 
+  content, 
+  x, 
+  y, 
+  visible 
+}: { 
+  content: React.ReactNode; 
+  x: number; 
+  y: number; 
+  visible: boolean; 
+}) => {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true); // Ensure component is mounted client-side before using portal
+  }, []);
+
+  if (!visible || !isMounted) return null;
+
+  return ReactDOM.createPortal(
+    <div 
+      className="fixed z-[999] px-2 py-1 bg-black/80 dark:bg-white/90 text-white dark:text-black text-[11px] font-medium rounded-md shadow-lg pointer-events-none whitespace-nowrap transition-opacity duration-150"
+      style={{
+        top: `${y + 15}px`, // Position below cursor
+        left: `${x}px`,    // Position at cursor X
+        transform: 'translateX(-50%)', // Center horizontally
+        opacity: visible ? 1 : 0, // Fade effect
+      }}
+    >
+      {content}
+    </div>,
+    document.body // Render directly into the body element
+  );
+};
+
+// Profile Card (Using Popover Component)
 const ProfileCard = () => {
   const links = [
     { icon: Github, href: "https://github.com/snenenenenenene", label: "GitHub" },
@@ -56,6 +93,28 @@ const ProfileCard = () => {
     { icon: Mail, href: "mailto:contact@sennebels.xyz", label: "Email" },
     { icon: Download, href: "/assets/CV Senne Bels.pdf", label: "Resume", download: "CV Senne Bels.pdf" }
   ];
+
+  // State for icon popovers
+  const [iconPopover, setIconPopover] = React.useState<{
+    visible: boolean; 
+    content: string; 
+    x: number; 
+    y: number; 
+  } | null>(null);
+
+  const handleIconMouseEnter = (e: React.MouseEvent<HTMLAnchorElement>, label: string) => {
+    setIconPopover({ visible: true, content: label, x: e.clientX, y: e.clientY });
+  };
+
+  const handleIconMouseMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (iconPopover?.visible) {
+      setIconPopover(prev => prev ? { ...prev, x: e.clientX, y: e.clientY } : null);
+    }
+  };
+
+  const handleIconMouseLeave = () => {
+    setIconPopover(prev => prev ? { ...prev, visible: false } : null);
+  };
 
   return (
     <BentoCard className="h-full flex flex-col p-6 md:p-8 overflow-hidden">
@@ -101,7 +160,7 @@ const ProfileCard = () => {
             <p className="text-neutral-600 dark:text-neutral-300">🇳🇱 Dutch (Native)</p>
           </div>
         </div>
-        {/* Links Section Added */}
+        {/* Links Section */}
         <div className="flex items-center justify-between border-t border-black/5 dark:border-white/10 pt-4">
            <span className="text-xs text-neutral-500 dark:text-neutral-400">Get in touch:</span>
            <div className="flex gap-3">
@@ -111,10 +170,13 @@ const ProfileCard = () => {
                 href={href}
                 target="_blank"
                 rel="noopener noreferrer"
-                download={download} // Add download attribute if present
-                className="p-1.5 text-neutral-500 dark:text-neutral-400 hover:text-black dark:hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-sky-500 dark:focus-visible:ring-offset-black rounded-lg" // Simpler styling, icon only visual
-                whileTap={{ scale: 0.90 }} // Slightly stronger tap feedback
-                aria-label={label} // Keep aria-label
+                download={download}
+                className="p-1.5 text-neutral-500 dark:text-neutral-400 hover:text-black dark:hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-sky-500 dark:focus-visible:ring-offset-black rounded-lg"
+                whileTap={{ scale: 0.90 }}
+                aria-label={label}
+                onMouseEnter={(e) => handleIconMouseEnter(e, label)}
+                onMouseMove={handleIconMouseMove}
+                onMouseLeave={handleIconMouseLeave}
               >
                 <Icon className="w-4 h-4" />
               </motion.a>
@@ -122,6 +184,14 @@ const ProfileCard = () => {
           </div>
         </div>
       </div>
+
+      {/* Use Popover Component - Renders via Portal */}
+      <Popover 
+        visible={!!iconPopover?.visible} 
+        content={iconPopover?.content || ''} 
+        x={iconPopover?.x || 0} 
+        y={iconPopover?.y || 0} 
+      />
     </BentoCard>
   );
 };
@@ -380,11 +450,28 @@ const getLanguageColor = (language: string): string => {
   return colors[language] || 'bg-gray-400'; // Default color
 };
 
-// Simplified Contribution Graph Component
+// Contribution Graph Component (Using Popover Component)
 const ContributionGraph = ({ contributions }: { contributions: any }) => {
+  const [popover, setPopover] = React.useState<{ visible: boolean; content: string; x: number; y: number; } | null>(null);
+
   if (!contributions || !contributions.weeks) {
     return <div className="text-xs text-gray-400">Contribution data not available.</div>;
   }
+
+  const handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>, day: any) => {
+    const content = `${day.contributionCount} contributions on ${new Date(day.date).toLocaleDateString()}`;
+    setPopover({ visible: true, content, x: e.clientX, y: e.clientY });
+  };
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (popover?.visible) {
+      setPopover(prev => prev ? { ...prev, x: e.clientX, y: e.clientY } : null);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    setPopover(prev => prev ? { ...prev, visible: false } : null);
+  };
 
   const getContributionColor = (count: number) => {
     if (count === 0) return 'bg-neutral-100 dark:bg-neutral-800';
@@ -395,20 +482,34 @@ const ContributionGraph = ({ contributions }: { contributions: any }) => {
   };
 
   return (
-    <div className="overflow-x-auto scrollbar-hide pb-2">
-      <div className="inline-grid grid-flow-col auto-cols-max gap-[3px]">
-        {contributions.weeks.map((week: any, weekIndex: number) => (
-          <div key={weekIndex} className="grid grid-rows-7 gap-[3px]">
-            {week.contributionDays.map((day: any, dayIndex: number) => (
-              <div
-                key={day.date || dayIndex}
-                className={`w-2.5 h-2.5 rounded-sm ${getContributionColor(day.contributionCount)}`}
-                  title={`${day.contributionCount} contributions on ${new Date(day.date).toLocaleDateString()}`}
+    <div className="relative"> {/* Added relative positioning context */}
+      {/* Contribution Grid */}
+      <div className="overflow-x-auto scrollbar-hide pb-1">
+        <div className="inline-grid grid-flow-col auto-cols-max gap-[3px]">
+          {contributions.weeks.map((week: any, weekIndex: number) => (
+            <div key={weekIndex} className="grid grid-rows-7 gap-[3px]">
+              {week.contributionDays.map((day: any, dayIndex: number) => (
+                <div
+                  key={day.date || dayIndex}
+                  className={`w-2.5 h-2.5 rounded-sm ${getContributionColor(day.contributionCount)} transition-colors cursor-default`} // Added transition and cursor
+                  onMouseEnter={(e) => handleMouseEnter(e, day)}
+                  onMouseMove={handleMouseMove}
+                  onMouseLeave={handleMouseLeave}
+                  // Removed title attribute as popover replaces it
                 />
               ))}
-          </div>
-        ))}
+            </div>
+          ))}
+        </div>
       </div>
+
+      {/* Use Popover Component - Renders via Portal */}
+      <Popover 
+        visible={!!popover?.visible} 
+        content={popover?.content || ''} 
+        x={popover?.x || 0} 
+        y={popover?.y || 0} 
+      />
     </div>
   );
 };
