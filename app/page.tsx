@@ -982,21 +982,22 @@ export default function HomePage() {
   const [currentProject, setCurrentProject] = React.useState(0);
   const [backgroundStyle, setBackgroundStyle] = React.useState({});
   
-  // Define themes array *before* using it in useState
   const themes: Theme[] = ['light', 'dark', 'calico', 'immersive']; 
 
-  // Theme State
-  const [theme, setTheme] = useState<Theme>(() => {
-    // Check local storage or system preference on initial load
+  // Theme State - Initialize with default, load from localStorage in effect
+  const [theme, setTheme] = useState<Theme>('immersive'); // Default theme
+
+  // Effect to load theme from localStorage on client-side mount
+  useEffect(() => {
     if (typeof window !== 'undefined') {
       const savedTheme = localStorage.getItem('portfolio-theme') as Theme;
-      // Now themes is accessible here
-      if (savedTheme && themes.includes(savedTheme)) return savedTheme;
+      if (savedTheme && themes.includes(savedTheme)) {
+        setTheme(savedTheme);
+      }
     }
-    return 'immersive'; // Default theme
-  });
+  }, []); // Empty dependency array ensures this runs only once on mount
 
-  // Effect to update background based on theme and currentProject
+  // Effect to update background and save theme choice
   React.useEffect(() => {
     const themeConfig = THEME_COLORS[theme];
     if (theme === 'immersive') {
@@ -1022,7 +1023,7 @@ export default function HomePage() {
       localStorage.setItem('portfolio-theme', theme);
     }
 
-  }, [theme, currentProject]);
+  }, [theme, currentProject]); // Keep dependencies for this effect
 
   // Animation Variants for Staggering
   const containerVariants = {
