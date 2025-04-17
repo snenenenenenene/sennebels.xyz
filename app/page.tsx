@@ -327,21 +327,18 @@ const FeaturedProjects = ({
   } | null>(null);
 
   const handleProjectChange = React.useCallback((index: number) => {
-    if (isScrollLocked || index === currentProject) return; // Don't change if locked or same index
+    if (isScrollLocked || index === currentProject) return; 
     setIsScrollLocked(true);
     onScrollingChange(true);
-    
-    // Use the passed-in state to determine direction
     setDirection(index > currentProject ? 1 : -1);
-    setCurrentProject(index); // Call the setter from HomePage
+    setCurrentProject(index); 
 
     setTimeout(() => {
       setIsScrollLocked(false);
       onScrollingChange(false);
-    }, 500); // Reduced timeout slightly to match faster animation
-  }, [isScrollLocked, onScrollingChange, currentProject, setCurrentProject]); // Added dependencies
+    }, 500); 
+  }, [isScrollLocked, onScrollingChange, currentProject, setCurrentProject]);
 
-  // Drag End Handler for Kinetic Swipe
   const handleDragEnd = (event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
     const offset = info.offset.x;
     const velocity = info.velocity.x;
@@ -349,37 +346,31 @@ const FeaturedProjects = ({
 
     if (Math.abs(offset) > dragThreshold || Math.abs(velocity) > dragVelocityThreshold) {
       if (offset < -dragThreshold || velocity < -dragVelocityThreshold) {
-        // Swiped Left
         nextProjectIndex = (currentProject + 1 + projects.length) % projects.length;
       } else if (offset > dragThreshold || velocity > dragVelocityThreshold) {
-        // Swiped Right
         nextProjectIndex = (currentProject - 1 + projects.length) % projects.length;
       }
     }
     
-    // Only trigger change if the index is different
     if (nextProjectIndex !== currentProject) {
        handleProjectChange(nextProjectIndex);
     }
   };
 
-  // Handle clicking project in overview
   const handleOverviewClick = (index: number) => {
     if (index !== currentProject) {
       handleProjectChange(index);
     }
-    setShowOverview(false); // Close modal
+    setShowOverview(false); 
   };
 
-  // Effect to hide nudge hint after a delay
   React.useEffect(() => {
     const hintTimeout = setTimeout(() => {
       setShowNudgeHint(false);
-    }, 3500); // Corresponds to hint animation duration + delay
+    }, 3500); 
     return () => clearTimeout(hintTimeout);
   }, []);
 
-  // Platform Popover Handlers
   const handlePlatformMouseEnter = (e: React.MouseEvent<HTMLDivElement>, label: string) => {
     setPlatformPopover({ visible: true, content: label, x: e.clientX, y: e.clientY });
   };
@@ -394,28 +385,32 @@ const FeaturedProjects = ({
     setPlatformPopover(prev => prev ? { ...prev, visible: false } : null);
   };
 
-  // Updated variants for slide transition
   const variants = {
-    enter: (direction: number) => ({
-      x: direction > 0 ? '100%' : '-100%', // Start off-screen
-      opacity: 0
-    }),
-    center: {
-      x: 0, // Center position
-      opacity: 1
-    },
-    exit: (direction: number) => ({
-      x: direction < 0 ? '100%' : '-100%', // Exit off-screen
-      opacity: 0
-    })
+    enter: (direction: number) => ({ x: direction > 0 ? '100%' : '-100%', opacity: 0 }),
+    center: { x: 0, opacity: 1 },
+    exit: (direction: number) => ({ x: direction < 0 ? '100%' : '-100%', opacity: 0 })
   };
 
   return (
       <div 
         ref={projectContainerRef}
-        className="relative w-full h-full cursor-grab active:cursor-grabbing" // Added grab cursors
+        className="relative w-full h-full cursor-grab active:cursor-grabbing group/nav" // Keep group/nav for hover detection
       >
-      <div className="absolute inset-0 overflow-hidden"> {/* Added overflow hidden here */} 
+        {/* Remove Navigation Arrow Buttons */}
+
+        {/* Add Hover Text Hints (Positioned at Bottom) */} 
+        <div className="absolute left-2 md:left-4 bottom-2 md:bottom-4 z-20 pointer-events-none transition-opacity duration-300 opacity-0 group-hover/nav:opacity-100">
+          <div className="px-3 py-1 rounded-full bg-black/40 dark:bg-white/10 backdrop-blur-sm text-white dark:text-neutral-200 text-[10px] md:text-xs font-medium whitespace-nowrap">
+            Slide Right
+          </div>
+        </div>
+        <div className="absolute right-2 md:right-4 bottom-2 md:bottom-4 z-20 pointer-events-none transition-opacity duration-300 opacity-0 group-hover/nav:opacity-100">
+           <div className="px-3 py-1 rounded-full bg-black/40 dark:bg-white/10 backdrop-blur-sm text-white dark:text-neutral-200 text-[10px] md:text-xs font-medium whitespace-nowrap">
+            Slide Left
+          </div>
+        </div>
+
+      <div className="absolute inset-0 overflow-hidden"> {/* Project content container */}
         {/* Animated Nudge Hint */} 
         <AnimatePresence>
           {showNudgeHint && (
