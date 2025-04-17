@@ -605,11 +605,12 @@ const GitHubStats = ({ theme, overrideBg }: { theme?: Theme; overrideBg?: string
     };
   }, [count]); // Dependency array includes count
 
-  // Use a separate effect to format the number to avoid re-renders on every frame
-  const displayCount = React.useRef<string>("0");
+  // Use state for the display count to ensure re-renders
+  const [displayCount, setDisplayCount] = React.useState("0");
   React.useEffect(() => {
     return rounded.on("change", (latest) => {
-      displayCount.current = latest.toLocaleString("en-US", { maximumFractionDigits: 0 });
+      // Update state with the formatted number
+      setDisplayCount(latest.toLocaleString("en-US", { maximumFractionDigits: 0 }));
     });
   }, [rounded]);
 
@@ -628,9 +629,8 @@ const GitHubStats = ({ theme, overrideBg }: { theme?: Theme; overrideBg?: string
           ) : error ? (
             'Error'
           ) : (
-            // Use motion.span to display animated value
-            // We use a key to force re-render if rounded changes significantly, ensuring localeString updates
-            <motion.span key={displayCount.current}>{displayCount.current}</motion.span>
+            // Use motion.span to display animated value from state
+            <motion.span>{displayCount}</motion.span>
           )}
           { !loading && !error && ' contributions'} 
         </span>
