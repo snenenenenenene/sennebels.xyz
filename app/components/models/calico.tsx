@@ -6,19 +6,85 @@ Source: https://sketchfab.com/3d-models/minecraft-calico-cat-b73100dea68e4e3ca42
 Title: minecraft calico cat
 */
 
-import React, { useRef } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { useGLTF, useAnimations } from '@react-three/drei'
+import { useSpring, animated } from '@react-spring/three'
+import * as THREE from 'three'
 
-export function Model(props: any) {
-  const group = useRef()
-  const { nodes, materials, animations } : {
-    nodes: any,
-    materials: any,
-    animations: any
-  } = useGLTF('/models/calico.glb')
-  const { actions } = useAnimations(animations, group)
+export function Model(props: any & { 
+  onModelClick?: () => void;
+  isHovered?: boolean;
+}) {
+  const group = useRef<THREE.Group>(null)
+  const { nodes, materials, animations } = useGLTF('/models/calico.glb')
+  const { actions } = useAnimations(animations as THREE.AnimationClip[], group)
+
+  const [isClicked, setIsClicked] = useState(false)
+
+  // Store original emissive color
+  const originalEmissive = useRef<THREE.Color | null>(null);
+
+  // Effect to handle hover glow via emissive property
+  useEffect(() => {
+    // Ensure material exists and is a standard mesh material
+    const material = (materials as any).material_0;
+    if (material instanceof THREE.MeshStandardMaterial) {
+      // Store original color only once
+      if (originalEmissive.current === null) {
+        originalEmissive.current = material.emissive.clone();
+      }
+      
+      // Set emissive color based on hover state
+      if (props.isHovered) {
+        material.emissive.set(0x333333); // Set to a dim gray for a subtle glow
+      } else {
+        // Restore original emissive color
+        material.emissive.copy(originalEmissive.current);
+      }
+    } else if (material) {
+      console.warn("Calico model material is not MeshStandardMaterial, cannot apply emissive glow.");
+    }
+
+    // Cleanup function to restore original color if component unmounts while hovered
+    return () => {
+      if (material instanceof THREE.MeshStandardMaterial && originalEmissive.current) {
+        material.emissive.copy(originalEmissive.current);
+      }
+    };
+  }, [props.isHovered, materials]); // Depend on hover state and materials
+
+  const { scale } = useSpring({
+    scale: isClicked ? 1.65 : 1.5,
+    config: { tension: 400, friction: 10 },
+    onRest: () => {
+      // Reset click state after animation settles (if needed, but onClick timeout is simpler)
+      // setIsClicked(false); 
+    },
+  })
+
+  const handleClick = (event: any) => {
+    if (event?.stopPropagation) {
+      event.stopPropagation();
+    } 
+    setIsClicked(true)
+    setTimeout(() => setIsClicked(false), 150)
+    
+    if (props.onModelClick) {
+      props.onModelClick()
+    }
+  }
+
+  // Explicitly extract isHovered from props to avoid spreading it
+  const { isHovered, ...restProps } = props;
+
   return (
-    <group ref={group} {...props} dispose={null}>
+    <animated.group 
+      ref={group} 
+      {...restProps} // Spread remaining props
+      dispose={null} 
+      scale={scale}
+      onClick={handleClick}
+    >
       <group name="Sketchfab_Scene">
         <group
           name="Sketchfab_model"
@@ -39,8 +105,8 @@ export function Model(props: any) {
                       name="Object_6"
                       castShadow
                       receiveShadow
-                      geometry={nodes.Object_6.geometry}
-                      material={materials.material_0}
+                      geometry={(nodes.Object_6 as any)?.geometry}
+                      material={(materials as any).material_0}
                       userData={{ name: 'Object_6' }}
                     />
                   </group>
@@ -53,8 +119,8 @@ export function Model(props: any) {
                         name="Object_9"
                         castShadow
                         receiveShadow
-                        geometry={nodes.Object_9.geometry}
-                        material={materials.material_0}
+                        geometry={(nodes.Object_9 as any)?.geometry}
+                        material={(materials as any).material_0}
                         userData={{ name: 'Object_9' }}
                       />
                     </group>
@@ -66,8 +132,8 @@ export function Model(props: any) {
                         name="Object_11"
                         castShadow
                         receiveShadow
-                        geometry={nodes.Object_11.geometry}
-                        material={materials.material_0}
+                        geometry={(nodes.Object_11 as any)?.geometry}
+                        material={(materials as any).material_0}
                         userData={{ name: 'Object_11' }}
                       />
                     </group>
@@ -79,8 +145,8 @@ export function Model(props: any) {
                         name="Object_13"
                         castShadow
                         receiveShadow
-                        geometry={nodes.Object_13.geometry}
-                        material={materials.material_0}
+                        geometry={(nodes.Object_13 as any)?.geometry}
+                        material={(materials as any).material_0}
                         userData={{ name: 'Object_13' }}
                       />
                     </group>
@@ -92,8 +158,8 @@ export function Model(props: any) {
                         name="Object_15"
                         castShadow
                         receiveShadow
-                        geometry={nodes.Object_15.geometry}
-                        material={materials.material_0}
+                        geometry={(nodes.Object_15 as any)?.geometry}
+                        material={(materials as any).material_0}
                         userData={{ name: 'Object_15' }}
                       />
                     </group>
@@ -107,8 +173,8 @@ export function Model(props: any) {
                         name="Object_18"
                         castShadow
                         receiveShadow
-                        geometry={nodes.Object_18.geometry}
-                        material={materials.material_0}
+                        geometry={(nodes.Object_18 as any)?.geometry}
+                        material={(materials as any).material_0}
                         userData={{ name: 'Object_18' }}
                       />
                     </group>
@@ -125,8 +191,8 @@ export function Model(props: any) {
                           name="Object_21"
                           castShadow
                           receiveShadow
-                          geometry={nodes.Object_21.geometry}
-                          material={materials.material_0}
+                          geometry={(nodes.Object_21 as any)?.geometry}
+                          material={(materials as any).material_0}
                           userData={{ name: 'Object_21' }}
                         />
                       </group>
@@ -144,8 +210,8 @@ export function Model(props: any) {
                         name="Object_24"
                         castShadow
                         receiveShadow
-                        geometry={nodes.Object_24.geometry}
-                        material={materials.material_0}
+                        geometry={(nodes.Object_24 as any)?.geometry}
+                        material={(materials as any).material_0}
                         userData={{ name: 'Object_24' }}
                       />
                     </group>
@@ -162,8 +228,8 @@ export function Model(props: any) {
                         name="Object_27"
                         castShadow
                         receiveShadow
-                        geometry={nodes.Object_27.geometry}
-                        material={materials.material_0}
+                        geometry={(nodes.Object_27 as any)?.geometry}
+                        material={(materials as any).material_0}
                         userData={{ name: 'Object_27' }}
                       />
                     </group>
@@ -180,8 +246,8 @@ export function Model(props: any) {
                         name="Object_30"
                         castShadow
                         receiveShadow
-                        geometry={nodes.Object_30.geometry}
-                        material={materials.material_0}
+                        geometry={(nodes.Object_30 as any)?.geometry}
+                        material={(materials as any).material_0}
                         userData={{ name: 'Object_30' }}
                       />
                     </group>
@@ -198,8 +264,8 @@ export function Model(props: any) {
                         name="Object_33"
                         castShadow
                         receiveShadow
-                        geometry={nodes.Object_33.geometry}
-                        material={materials.material_0}
+                        geometry={(nodes.Object_33 as any)?.geometry}
+                        material={(materials as any).material_0}
                         userData={{ name: 'Object_33' }}
                       />
                     </group>
@@ -210,7 +276,7 @@ export function Model(props: any) {
           </group>
         </group>
       </group>
-    </group>
+    </animated.group>
   )
 }
 

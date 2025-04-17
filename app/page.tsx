@@ -8,7 +8,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { projects } from "./constants";
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls, useGLTF, Environment, Html } from '@react-three/drei';
+import { OrbitControls, useGLTF, Environment, Html, useCursor } from '@react-three/drei';
 import * as THREE from 'three';
 import ReactDOM from 'react-dom';
 import { Model as CalicoModel } from './components/models/calico'; // Import Calico Model
@@ -788,6 +788,53 @@ const ContributionGraph = ({ contributions }: { contributions: any }) => {
 const ModelViewer = ({ theme }: { theme?: Theme }) => {
   const controlsRef = useRef<any>(); // Ref for OrbitControls
   const [isRotating, setIsRotating] = React.useState(true); // State to control rotation
+  const [isHovered, setIsHovered] = React.useState(false); // Keep hover state
+
+  // Use the useCursor hook based on the hover state
+  useCursor(isHovered);
+
+  // --- Audio Setup ---
+  const audioContextRef = useRef<AudioContext | null>(null);
+  const audioBufferRef = useRef<AudioBuffer | null>(null);
+
+  useEffect(() => {
+    // Initialize AudioContext on mount (client-side only)
+    if (typeof window !== 'undefined') {
+      audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+      const audioCtx = audioContextRef.current;
+
+      // Fetch and decode the audio file
+      fetch('/assets/audio/meow.mp3') // Ensure this path is correct!
+        .then(response => response.arrayBuffer())
+        .then(arrayBuffer => audioCtx.decodeAudioData(arrayBuffer))
+        .then(decodedBuffer => {
+          audioBufferRef.current = decodedBuffer;
+        })
+        .catch(error => console.error('Error loading audio file:', error));
+    }
+
+    // Cleanup function
+    return () => {
+      audioContextRef.current?.close();
+    };
+  }, []);
+
+  // Function to play the sound
+  const playMeowSound = () => {
+    const audioCtx = audioContextRef.current;
+    const audioBuffer = audioBufferRef.current;
+    if (audioCtx && audioBuffer && audioCtx.state !== 'closed') {
+      // Ensure context is running (might be suspended initially)
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      const source = audioCtx.createBufferSource();
+      source.buffer = audioBuffer;
+      source.connect(audioCtx.destination);
+      source.start(0);
+    }
+  };
+  // --- End Audio Setup ---
 
   const handleInteractionStart = () => {
     setIsRotating(false);
@@ -819,20 +866,30 @@ const ModelViewer = ({ theme }: { theme?: Theme }) => {
             Loading Model...
           </Html>
         }>
-          <group position={[0, 0, 0]}> {/* Group to hold model and plane */}
-            {/* Render Calico Model instead of Shiba - Increased Scale */}
-            <CalicoModel scale={1.5} position-y={-1} /> 
-            {/* Simple ground plane */}
-            <mesh 
-              rotation={[-Math.PI / 2, 0, 0]} // Rotate plane to be horizontal
-              position={[0, -1, 0]} // Position it below the model
-              receiveShadow // Plane receives shadows
-            >
-              <planeGeometry args={[10, 10]} />
-              <shadowMaterial opacity={0.4} /> {/* Use shadowMaterial for soft shadows */}
-            </mesh>
+          {/* Model group for hover detection and click */}
+          <group
+            position={[0, 0, 0]}
+            onPointerEnter={() => setIsHovered(true)}
+            onPointerLeave={() => setIsHovered(false)}
+          >
+            <CalicoModel
+              position-y={-1}
+              onModelClick={playMeowSound}
+              isHovered={isHovered}
+            />
           </group>
-          <Environment preset="city" /> 
+
+          {/* Simple ground plane */}
+          <mesh
+            rotation={[-Math.PI / 2, 0, 0]}
+            position={[0, -1, 0]}
+            receiveShadow
+          >
+            <planeGeometry args={[10, 10]} />
+            <shadowMaterial opacity={0.4} />
+          </mesh>
+
+          <Environment preset="city" />
         </Suspense>
         <OrbitControls
           ref={controlsRef}
