@@ -87,7 +87,7 @@ export const metadata: Metadata = {
   verification: {
     google: "your-google-site-verification",
     yandex: "yandex-verification",
-    me: ["mailto:contact@sennebels.xyz"],
+    me: ["mailto:sennebels@gmail.com"],
   },
   alternates: {
     canonical: "https://sennebels.xyz",
@@ -100,7 +100,6 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-  modal
 }: {
   children: React.ReactNode;
   modal: React.ReactNode;
@@ -117,7 +116,6 @@ export default function RootLayout({
       <body className="min-h-full">
         <Analytics />
         {children}
-        {modal}
       </body>
     </html>
   );

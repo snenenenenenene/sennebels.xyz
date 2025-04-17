@@ -143,7 +143,7 @@ const ProfileCard = () => {
   const links = [
     { icon: Github, href: "https://github.com/snenenenenenene", label: "GitHub" },
     { icon: Linkedin, href: "https://linkedin.com/in/sennebels", label: "LinkedIn" },
-    { icon: Mail, href: "mailto:contact@sennebels.xyz", label: "Email" },
+    { icon: Mail, href: "mailto:sennebels@gmail.com", label: "Email" },
     { icon: Download, href: "/assets/CV Senne Bels.pdf", label: "Resume", download: "CV Senne Bels.pdf" }
   ];
 
