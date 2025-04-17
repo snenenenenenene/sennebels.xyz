@@ -8,7 +8,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { projects } from "./constants";
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls, useGLTF, Environment, Html, useCursor } from '@react-three/drei';
+import { OrbitControls, useGLTF, Environment, Html } from '@react-three/drei';
 import * as THREE from 'three';
 import ReactDOM from 'react-dom';
 import { Model as CalicoModel } from './components/models/calico'; // Import Calico Model
@@ -790,13 +790,24 @@ const ModelViewer = ({ theme }: { theme?: Theme }) => {
   const [isRotating, setIsRotating] = React.useState(true); // State to control rotation
   const [isHovered, setIsHovered] = React.useState(false); // Keep hover state
 
-  // Use the useCursor hook based on the hover state
-  useCursor(isHovered);
+  // --- Manual Cursor Change Effect ---
+  useEffect(() => {
+    if (typeof document !== 'undefined') { // Ensure document exists (client-side)
+      document.body.style.cursor = isHovered ? 'pointer' : 'auto';
+    }
+    // Cleanup function to reset cursor on unmount
+    return () => {
+       if (typeof document !== 'undefined') {
+          document.body.style.cursor = 'auto';
+       }
+    };
+  }, [isHovered]); // Run effect when isHovered changes
+  // --- End Manual Cursor Change ---
 
-  // --- Audio Setup ---
+  // --- Audio Setup (Keep this) ---
   const audioContextRef = useRef<AudioContext | null>(null);
   const audioBufferRef = useRef<AudioBuffer | null>(null);
-
+  
   useEffect(() => {
     // Initialize AudioContext on mount (client-side only)
     if (typeof window !== 'undefined') {
@@ -824,7 +835,6 @@ const ModelViewer = ({ theme }: { theme?: Theme }) => {
     const audioCtx = audioContextRef.current;
     const audioBuffer = audioBufferRef.current;
     if (audioCtx && audioBuffer && audioCtx.state !== 'closed') {
-      // Ensure context is running (might be suspended initially)
       if (audioCtx.state === 'suspended') {
         audioCtx.resume();
       }
@@ -847,26 +857,22 @@ const ModelViewer = ({ theme }: { theme?: Theme }) => {
   return (
     <BentoCard theme={theme} className="h-full !p-0 overflow-hidden relative">
       <Canvas 
-        camera={{ position: [0, 1, 5], fov: 50 }} // Raised camera slightly
-        shadows // Ensure shadows are enabled
+        camera={{ position: [0, 1, 5], fov: 50 }} 
+        shadows 
       >
-        <ambientLight intensity={0.6} /> {/* Slightly increased ambient light */}
+        <ambientLight intensity={0.6} /> 
         <directionalLight 
-          position={[5, 8, 5]} // Adjusted light position
+          position={[5, 8, 5]} 
           intensity={1.5} 
           castShadow 
-          shadow-mapSize-width={1024} // Increase shadow map resolution
+          shadow-mapSize-width={1024} 
           shadow-mapSize-height={1024}
         />
-        {/* Optional: Add a soft hemisphere light */}
-        {/* <hemisphereLight groundColor="#444444" intensity={0.3} /> */}
-        
         <Suspense fallback={
           <Html center className="text-xs text-neutral-500">
             Loading Model...
           </Html>
         }>
-          {/* Model group for hover detection and click */}
           <group
             position={[0, 0, 0]}
             onPointerEnter={() => setIsHovered(true)}
@@ -878,8 +884,6 @@ const ModelViewer = ({ theme }: { theme?: Theme }) => {
               isHovered={isHovered}
             />
           </group>
-
-          {/* Simple ground plane */}
           <mesh
             rotation={[-Math.PI / 2, 0, 0]}
             position={[0, -1, 0]}
@@ -888,7 +892,6 @@ const ModelViewer = ({ theme }: { theme?: Theme }) => {
             <planeGeometry args={[10, 10]} />
             <shadowMaterial opacity={0.4} />
           </mesh>
-
           <Environment preset="city" />
         </Suspense>
         <OrbitControls
