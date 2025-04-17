@@ -8,7 +8,6 @@ Title: minecraft calico cat
 
 import React, { useRef, useState, useEffect } from 'react'
 import { useGLTF, useAnimations } from '@react-three/drei'
-import { useSpring, animated } from '@react-spring/three'
 import * as THREE from 'three'
 
 export function Model(props: any & { 
@@ -18,8 +17,6 @@ export function Model(props: any & {
   const group = useRef<THREE.Group>(null)
   const { nodes, materials, animations } = useGLTF('/models/calico.glb')
   const { actions } = useAnimations(animations as THREE.AnimationClip[], group)
-
-  const [isClicked, setIsClicked] = useState(false)
 
   // Store original emissive color
   const originalEmissive = useRef<THREE.Color | null>(null);
@@ -53,22 +50,10 @@ export function Model(props: any & {
     };
   }, [props.isHovered, materials]); // Depend on hover state and materials
 
-  const { scale } = useSpring({
-    scale: isClicked ? 1.65 : 1.5,
-    config: { tension: 400, friction: 10 },
-    onRest: () => {
-      // Reset click state after animation settles (if needed, but onClick timeout is simpler)
-      // setIsClicked(false); 
-    },
-  })
-
   const handleClick = (event: any) => {
     if (event?.stopPropagation) {
       event.stopPropagation();
     } 
-    setIsClicked(true)
-    setTimeout(() => setIsClicked(false), 150)
-    
     if (props.onModelClick) {
       props.onModelClick()
     }
@@ -78,12 +63,12 @@ export function Model(props: any & {
   const { isHovered, ...restProps } = props;
 
   return (
-    <animated.group 
+    <group 
       ref={group} 
       {...restProps} // Spread remaining props
       dispose={null} 
-      scale={scale}
       onClick={handleClick}
+      scale={1.5}
     >
       <group name="Sketchfab_Scene">
         <group
@@ -276,7 +261,7 @@ export function Model(props: any & {
           </group>
         </group>
       </group>
-    </animated.group>
+    </group>
   )
 }
 
