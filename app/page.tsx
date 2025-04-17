@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState, useCallback, Suspense } from 'react';
 import type { ReactNode, MouseEvent as ReactMouseEvent } from 'react';
 import { AnimatePresence, motion, PanInfo, useAnimation, useMotionValue, useSpring, animate } from "framer-motion";
-import { ArrowUpRight, Github, Linkedin, Mail, Download, Activity, MapPin, LanguagesIcon, Sun, Moon, Sparkles, Cat, LayoutGrid, X, ChevronLeft } from "lucide-react";
+import { ArrowUpRight, Github, Linkedin, Mail, Download, Activity, MapPin, LanguagesIcon, Sun, Moon, Sparkles, Cat, LayoutGrid, X, ChevronLeft, Apple, Smartphone, Globe, LayoutDashboard } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { projects } from "./constants";
@@ -289,6 +289,16 @@ const ProfileCard = () => {
   );
 };
 
+// Map platform names to icons (Ensure type safety)
+const platformIcons: { [key: string]: React.ElementType | undefined } = {
+  iOS: Apple,
+  Android: Smartphone,
+  Web: Globe,
+  Mobile: Smartphone,
+  Desktop: Activity, // Placeholder, maybe Laptop icon?
+  Dashboard: LayoutDashboard,
+};
+
 // Featured Projects Card (Matching Border Radius)
 const FeaturedProjects = ({ 
   currentProject, 
@@ -306,6 +316,14 @@ const FeaturedProjects = ({
   const projectContainerRef = React.useRef<HTMLDivElement>(null);
   const dragThreshold = 50; // Min drag distance in pixels to trigger change
   const dragVelocityThreshold = 300; // Min velocity to trigger change
+
+  // State for platform icon popovers
+  const [platformPopover, setPlatformPopover] = React.useState<{
+    visible: boolean; 
+    content: string; 
+    x: number; 
+    y: number; 
+  } | null>(null);
 
   const handleProjectChange = React.useCallback((index: number) => {
     if (isScrollLocked || index === currentProject) return; // Don't change if locked or same index
@@ -359,6 +377,21 @@ const FeaturedProjects = ({
     }, 3500); // Corresponds to hint animation duration + delay
     return () => clearTimeout(hintTimeout);
   }, []);
+
+  // Platform Popover Handlers
+  const handlePlatformMouseEnter = (e: React.MouseEvent<HTMLDivElement>, label: string) => {
+    setPlatformPopover({ visible: true, content: label, x: e.clientX, y: e.clientY });
+  };
+
+  const handlePlatformMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (platformPopover?.visible) {
+      setPlatformPopover(prev => prev ? { ...prev, x: e.clientX, y: e.clientY } : null);
+    }
+  };
+
+  const handlePlatformMouseLeave = () => {
+    setPlatformPopover(prev => prev ? { ...prev, visible: false } : null);
+  };
 
   // Updated variants for slide transition
   const variants = {
@@ -478,6 +511,33 @@ const FeaturedProjects = ({
                     </span>
                   ))}
                 </div>
+
+                {/* Conditionally render Platform Icons */} 
+                {((projects[currentProject] as any).platforms && (projects[currentProject] as any).platforms.length > 0) && (
+                  <div className="flex flex-wrap items-center gap-2 mt-3 pt-3 border-t border-black/5 dark:border-white/10"> 
+                    <span className="text-xs font-medium text-neutral-500 dark:text-neutral-400 mr-1">Platforms:</span>
+                    {(projects[currentProject] as any).platforms?.map((platform: string) => { 
+                      const IconComponent = platformIcons[platform]; 
+                      // Check if it's a valid component type (function or object)
+                      if (typeof IconComponent !== 'function' && typeof IconComponent !== 'object') {
+                        return null; 
+                      }
+                      return (
+                        <motion.div
+                          key={platform}
+                          className="flex items-center justify-center p-1.5 bg-black/5 dark:bg-white/5 rounded-md cursor-default"
+                          onMouseEnter={(e) => handlePlatformMouseEnter(e, platform)}
+                          onMouseMove={handlePlatformMouseMove}
+                          onMouseLeave={handlePlatformMouseLeave}
+                        >
+                          {/* Render the component */}
+                          <IconComponent className="w-3.5 h-3.5 text-neutral-600 dark:text-neutral-400" />
+                        </motion.div>
+                      );
+                    })}
+                  </div>
+                )}
+
                 {/* Page Number Indicator & Overview Trigger */} 
                 <div className="flex justify-center items-center gap-4 mt-4">
                   <span className="text-xs font-medium text-neutral-500 dark:text-neutral-400">
@@ -555,6 +615,14 @@ const FeaturedProjects = ({
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Platform Icon Popover */} 
+      <Popover 
+        visible={!!platformPopover?.visible} 
+        content={platformPopover?.content || ''} 
+        x={platformPopover?.x || 0} 
+        y={platformPopover?.y || 0} 
+      />
     </div>
   );
 };
