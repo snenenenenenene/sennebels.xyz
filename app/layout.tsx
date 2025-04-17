@@ -2,6 +2,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/react"
+import { projects } from "./constants"; // Import projects data
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://sennebels.xyz'),
@@ -132,6 +133,19 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full">
       <head>
+        {/* Preload all project images */}
+        {projects.map((project, index) => (
+          <link
+            key={`preload-${project.title}`}
+            rel="preload"
+            as="image"
+            href={project.image}
+            // Optional: Add imagesizes and srcset if using responsive images in constants
+            // imagesizes="(max-width: 768px) 100vw, 50vw" 
+            // imagesrcset="..." // If you have different sizes defined
+          />
+        ))}
+        
         <script src="https://cdn.jsdelivr.net/npm/circletype@2.3.0/dist/circletype.min.js" defer />
         <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
         <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
