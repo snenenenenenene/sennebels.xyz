@@ -98,6 +98,31 @@ export const metadata: Metadata = {
   category: "technology",
 };
 
+const personSchema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Senne Bels",
+  "url": "https://sennebels.xyz",
+  "sameAs": [
+    // Add links to your social profiles here if available, e.g.:
+    // "https://www.linkedin.com/in/yourprofile",
+    // "https://github.com/yourprofile",
+    // "https://twitter.com/yourprofile"
+  ],
+  "jobTitle": "Creative Developer",
+  "worksFor": {
+    "@type": "Organization",
+    "name": "Freelance" // Or your current company
+  },
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Antwerp",
+    "addressCountry": "BE"
+  },
+  "email": "mailto:sennebels@gmail.com"
+  // Add "image": "URL_to_your_profile_picture.jpg" if you have one
+};
+
 export default function RootLayout({
   children,
 }: {
@@ -114,6 +139,10 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
       <body className="min-h-full">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
+        />
         <Analytics />
         {children}
       </body>

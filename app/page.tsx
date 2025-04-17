@@ -12,6 +12,7 @@ import { OrbitControls, useGLTF, Environment, Html } from '@react-three/drei';
 import * as THREE from 'three';
 import ReactDOM from 'react-dom';
 import { Model as CalicoModel } from './components/models/calico'; // Import Calico Model
+import type { Metadata } from 'next';
 
 // Define Theme Type
 type Theme = 'light' | 'dark' | 'calico' | 'immersive';
@@ -179,7 +180,7 @@ const ProfileCard = () => {
             whileHover={{ scale: 1.05 }}
             transition={{ type: 'spring', stiffness: 300 }}
           >
-            <Image src="/images/avatar.png" alt="Senne Bels Avatar" fill className="object-cover" sizes="64px" />
+            <Image src="/images/avatar.png" alt="Senne Bels profile picture" fill className="object-cover" sizes="64px" />
           </motion.div>
           <div>
             <h1 className="text-xl font-semibold tracking-tight text-black dark:text-white mb-0.5">
