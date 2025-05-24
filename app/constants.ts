@@ -63,6 +63,18 @@ export const projects = [
     gradientTo: "#891e3c",   // Yellow Darker (Amber)
   },
   {
+    title: "Devloaf.app",
+    description: "Project management tool for indie game devs",
+    image: "/images/work/devloaf.png",
+    year: "2025",
+    link: "https://devloaf.app/",
+    tech: ["Next.js", "Tailwind"],
+    platforms: ["Web"],
+    gradientFrom: "#16081b", // Yellow Light
+    gradientVia: "#53132c",  // Yellow Mid
+    gradientTo: "#891e3c",   // Yellow Darker (Amber)
+  },
+  {
     title: "Musicians Hub",
     description: "Social platform connecting musicians through connecting demos and music snippets to NFTs",
     image: "/images/work/musicians.png",
