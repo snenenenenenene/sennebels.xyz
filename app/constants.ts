@@ -1,31 +1,16 @@
-export const TIMELINE_ITEMS = [
-  { year: "2024", description: "Joined Specular Consulting" },
-  { year: "2022 - 2024", description: "Flanders Agency of Home Affairs, Lokaal Beslist project" },
-  { year: "2022", description: "Graduated Cum Laude in Computer Science" },
-  { year: "2021", description: "Software Engineer at Inuits" },
-  { year: "2019", description: "Started Computer Science at AP University College" },
-];
-
-export const NOW_ITEMS = [
-  { title: "Full Stack Developer @ Specular", description: "Developing a sustainability platform with React and TypeScript.", link: "#" },
-  { title: "The Okapi Shop", description: "My e-commerce project for Okapi preservation.", link: "#" },
-  { title: "Creative Technologies", description: "Exploring 3D Dev, VFX, and Creative Coding.", link: "#" },
-];
-
-export const GEAR_ITEMS = [
-  'MacBook Pro 14" M1',
-  "iPhone 13",
-  "Keycool 60% Keyboard",
-  "MSI G27 Display",
-];
-
-export const ACHIEVEMENTS = [
-  "Graduated Cum Laude, AP University College Antwerp (2022)",
-  "IELTS 8.0, British Consulate Brussels (2021)",
-  "Chinese A1 Certification, Linguapolis Antwerp (2020)",
-];
-
 export const projects = [
+  {
+    title: "Kaedim",
+    description: "AI-powered platform for on-demand 3D model generation from 2D images, enabling rapid production-ready asset creation",
+    image: "/images/work/kaedim.png",
+    year: "2025",
+    link: "https://www.kaedim3d.com/",
+    tech: ["React", "TypeScript", "Three.js", "AI/ML"],
+    platforms: ["Web", "API"],
+    gradientFrom: "#bda5cd", // Coral Light
+    gradientVia: "#ff9b8a",  // Coral Mid
+    gradientTo: "#ff6b57",   // Coral Darker
+  },
   {
     title: "Lokaal Beslist",
     description: "Front-end for citizen engagement platform using linked data to empower Flanders citizens to consult municipal decisions",

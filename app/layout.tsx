@@ -132,16 +132,17 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full">
       <head>
-        {/* Preload all project images */}
+        {/* Preload all project images with priority for first few */}
         {projects.map((project, index) => (
           <link
             key={`preload-${project.title}`}
             rel="preload"
             as="image"
             href={project.image}
-            // Optional: Add imagesizes and srcset if using responsive images in constants
-            // imagesizes="(max-width: 768px) 100vw, 50vw" 
-            // imagesrcset="..." // If you have different sizes defined
+            type="image/png"
+            fetchPriority={index < 3 ? "high" : "low"}
+            // @ts-ignore - fetchpriority is valid but not in types
+            fetchpriority={index < 3 ? "high" : "low"}
           />
         ))}
         

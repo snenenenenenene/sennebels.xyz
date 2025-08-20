@@ -7,6 +7,8 @@ import { ArrowUpRight, Github, Linkedin, Mail, Download, Activity, MapPin, Langu
 import Image from "next/image";
 import Link from "next/link";
 import { projects } from "./constants";
+import { useImagePreloader } from "./hooks/useImagePreloader";
+import HiddenImagePreloader from "./components/HiddenImagePreloader";
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, useGLTF, Environment, Html } from '@react-three/drei';
 import * as THREE from 'three';
@@ -180,7 +182,7 @@ const ProfileCard = () => {
             whileHover={{ scale: 1.05 }}
             transition={{ type: 'spring', stiffness: 300 }}
           >
-            <Image src="/images/avatar.png" alt="Senne Bels profile picture" fill className="object-cover" sizes="64px" />
+            <Image src="/images/avatar.png" alt="Senne Bels profile picture" fill className="object-cover" sizes="64px" priority loading="eager" />
           </motion.div>
           <div>
             <h1 className="text-xl font-semibold tracking-tight text-black dark:text-white mb-0.5">
@@ -434,6 +436,35 @@ const FeaturedProjects = ({
           )}
         </AnimatePresence>
 
+        {/* Preload adjacent project images in hidden divs */}
+        <div className="absolute inset-0 pointer-events-none">
+          {projects.map((project, index) => {
+            // Only render adjacent images (previous, current, next)
+            const diff = Math.abs(index - currentProject);
+            const isAdjacent = diff <= 1 || diff === projects.length - 1;
+            if (!isAdjacent) return null;
+            
+            return (
+              <div
+                key={`preload-${project.title}`}
+                className="absolute inset-0 opacity-0"
+                aria-hidden="true"
+              >
+                <Image
+                  src={project.image}
+                  alt=""
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  priority={true}
+                  loading="eager"
+                  quality={90}
+                />
+              </div>
+            );
+          })}
+        </div>
+
         <AnimatePresence initial={false} custom={direction} mode="wait">
                 <motion.div
             key={currentProject}
@@ -464,12 +495,13 @@ const FeaturedProjects = ({
                   fill
                   className="object-cover"
                   sizes="(max-width: 768px) 100vw, 50vw"
-                  priority
+                  priority={true}
+                  loading="eager"
+                  quality={90}
                   // Prevent native image dragging
                   draggable={false}
                   onDragStart={(e) => e.preventDefault()}
                 />
-                {/* Removed gradient overlay div */} 
               </div>
 
               {/* Info Panel Container (Bottom section) */} 
@@ -594,7 +626,11 @@ const FeaturedProjects = ({
                       alt={project.title}
                       fill
                       className="object-cover transition-transform duration-300 group-hover:scale-105"
-                      sizes="(max-width: 768px) 50vw, 33vw"
+                      sizes="(max-width: 768px) 50vw, (max-width: 1024px) 25vw, 20vw"
+                      priority={true}
+                      loading="eager"
+                      quality={85}
+                      unoptimized={false}
                     />
                     {/* Subtle overlay for title */}
                     <div className="absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-black/60 via-black/30 to-transparent">
@@ -984,6 +1020,14 @@ export default function HomePage() {
 
   // Theme State - Initialize with default, load from localStorage in effect
   const [theme, setTheme] = useState<Theme>('immersive'); // Default theme
+  
+  // Preload all project images and avatar
+  const allImages = [
+    ...projects.map(p => p.image),
+    '/images/avatar.png',
+    '/assets/Brie.png'
+  ];
+  const { imagesLoaded, loadingProgress } = useImagePreloader(allImages);
 
   // Effect to load theme from localStorage on client-side mount
   useEffect(() => {
@@ -1033,11 +1077,33 @@ export default function HomePage() {
     visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } }
   };
 
+  // Show loading screen until all images are loaded
+  if (!imagesLoaded) {
+    return (
+      <div className="fixed inset-0 flex items-center justify-center bg-white dark:bg-black">
+        <div className="text-center">
+          <div className="mb-4">
+            <div className="w-48 h-2 bg-gray-200 dark:bg-gray-800 rounded-full overflow-hidden">
+              <div 
+                className="h-full bg-gradient-to-r from-blue-500 to-purple-500 transition-all duration-300"
+                style={{ width: `${loadingProgress}%` }}
+              />
+            </div>
+          </div>
+          <p className="text-sm text-gray-600 dark:text-gray-400">Loading assets...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <main 
       className={`min-h-screen w-full p-4 md:p-6 lg:p-8 overflow-hidden transition-background duration-1000 ease-in-out`} // Increased duration
       style={backgroundStyle} 
     >
+      {/* Hidden preloader to force all images to load */}
+      <HiddenImagePreloader />
+      
       {/* Grain Overlay - Moved outside main for fixed positioning */} 
       <div className="grain-overlay"></div> 
       

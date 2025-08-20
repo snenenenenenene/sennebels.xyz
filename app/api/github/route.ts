@@ -32,6 +32,12 @@ async function fetchContributions() {
   });
 
   const data = await response.json();
+  
+  if (data.errors || !data.data?.user) {
+    console.error('GitHub GraphQL error:', data.errors || 'User not found');
+    return null;
+  }
+  
   return data.data.user.contributionsCollection.contributionCalendar;
 }
 
@@ -75,6 +81,17 @@ async function fetchGitHubStats() {
 
     // Fetch contribution data
     const contributionData = await fetchContributions();
+    
+    if (!contributionData) {
+      // Return basic stats without contribution data
+      return {
+        publicRepos: userData.public_repos,
+        totalContributions: 0,
+        languages,
+        followers: userData.followers,
+        contributionCalendar: null,
+      };
+    }
 
     return {
       publicRepos: userData.public_repos,
